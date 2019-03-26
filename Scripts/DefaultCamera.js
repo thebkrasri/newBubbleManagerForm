@@ -321,9 +321,7 @@ function displayWhenChecked(checkBox, element) {
     }
 }
 
-$('#Insurance').change(function () {
-    displayWhenChecked("Insurance", "InsuranceNameDiv");
-})
+
 
 
 // Get the modal
@@ -352,6 +350,10 @@ $(document).ready(function () {
         if (this.classList.contains("invalid") && this.value != "") {
             this.classList.remove("invalid");
         }
+    })
+
+    $('#Insurance').change(function () {
+        displayWhenChecked("Insurance", "InsuranceNameDiv");
     })
 })
 

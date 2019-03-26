@@ -122,8 +122,8 @@ public partial class DefaultCamera : System.Web.UI.Page
         PersonalInfoPanel.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
         AddressPanel.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
         AddressPanel.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
-        //lblPersonalInfo.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
-        //lblMailingAddress.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
+        lblPersonalInfoPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
+        lblAddressPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
         //lblSelfie.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
         // lblBirthDate.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
         cbCertifiedDiver.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
