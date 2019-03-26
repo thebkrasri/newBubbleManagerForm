@@ -1,0 +1,457 @@
+* {
+    box-sizing: border-box;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+[class*="col-"] {
+    float: left;
+    padding: 0;
+}
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+body {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: black;
+    font-family: 'Raleway';
+    margin: auto;
+}
+
+form {
+    max-width: 700px;
+    margin: auto;
+}
+
+#statelabel
+ {
+    margin: 0;
+}
+
+body span {
+    font-size: 1em;
+}
+
+h2 {
+    background-color: Black;
+    color: black;
+    max-width: 90%;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px dimgrey;
+    margin: Auto;
+}
+
+h3 {
+    text-align: center;
+    font-size: 1.25em;
+    color: White;
+    padding: 0px;
+} 
+
+.pnlCSS {
+    display: block;
+    background-color:rgba(150, 150, 150, 1);
+    max-width: 600px;
+    border: none;
+    border-radius: 20px;
+    color: black;
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: 'Raleway';
+    line-height: 1.8;
+    padding: 20px;
+    margin: auto;
+    margin-bottom: 20px;
+    overflow: auto;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .7);
+}
+
+
+.pnlCSS div select {
+     margin: auto;
+     align-items: center;
+     line-height: 1.8;
+     color: DarkGrey;
+}
+
+.pnlCSS span {
+   font-size: 1em;
+   display: block;
+   text-align: center;
+}
+
+
+
+
+select {
+    position: relative;
+    display: inline-block;
+    border-color: Black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: Black;
+    height: 35px;
+    font-family: 'Raleway';
+    text-align: center;
+    font-size: 1em;
+    max-width: 75%;
+    margin: auto;
+}
+
+.col-6 select{
+    min-width: 25%;
+    max-width: 85%;
+}
+
+
+
+
+.RadioButton {
+    margin: auto;
+}
+select:hover {
+    background-color: Black;
+    color: Black;
+}
+
+option:hover{
+    background-color: rgba(221, 221, 221, 1);
+    color: Black;
+}
+
+.tbCSS {
+    background-color: rgba(221, 221, 221, 1);
+    width: 75%;
+    height: 25px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.bdCSS {
+    background-color: rgba(221, 221, 221, 1);
+    height: 25px;
+    text-align: center;
+    margin: 0 auto;
+}
+  
+.btn {
+    margin: auto;
+    align: center;
+    background-color: #888;
+    border-radius: 10px;
+    border: #888;
+    text-align: center;
+    color: White;
+    font-size: 2em;
+    font-weight: bold;
+    font-family: 'Raleway';
+    line-height: 1.2;
+    padding: 5px 10px;
+    box-shadow: 
+      0 2px 3px #000000, /*bottom external highlight*/
+      0 -1px 1px #666, /*top external shadow*/ 
+      inset 0 -5px 5px rgba(0,0,0,0.5), /*bottom internal shadow*/ 
+      inset 0 5px 5px #d6d6d6; /*top internal highlight*/
+}
+
+#Button1:hover {
+    box-shadow: none;
+}
+
+#FileUpload1 {
+   margin: auto;
+   padding: 5px;
+   line-height: 1.2;
+   max-width: 90%;
+   text-align: center;
+   font-size: 1em;
+}
+
+#CertifiedDiverDiv .row {
+    padding: 10px;
+    text-align: center;
+}
+
+#InsuranceDiv {
+    text-align: left;
+}
+#Insurance, #lblInsurance {
+    display: inline-block;
+    width: auto;
+}
+
+#InsuranceDiv span {
+    width: auto;
+    display: inline-block;
+}
+
+#InsuranceNameDiv span, #InsuranceDiv span, #CertifiedDiverDiv, #CertifiedDiverDiv span {
+    text-align: left;
+}
+#InsuranceName, #lblInsuranceName {
+    display: inline-block;
+}
+
+#DiveCertTypes * {
+    text-align:center !important;
+}
+
+.ReqFieldCSS {
+   color: blue;
+   text-align: center;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 10%; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+#termsModal {
+    padding-top: 5px;
+}
+
+#pTerms {
+    text-align: left;
+    margin-top: 0;
+}
+
+.modal-body {
+    max-width: 95%;
+    max-height: 90vh;
+    background-color: rgba(230, 230, 230, 1);
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: fit-content;
+    text-align: center;
+}
+/* Modal Content */
+.modal-content {
+    background:transparent;
+    margin: auto;
+    width: auto;
+    position: relative;
+    max-height: 60vh;
+    padding: 10px 20px;
+    border: none;
+    overflow: auto; /* Enable scroll if needed */
+    display: block;
+
+}
+
+.modal-header {
+    background: transparent;
+    width: auto;
+    height: fit-content;
+    margin: auto;
+    display: block;
+    padding: 10px 20px;
+    font-size: 16pt;
+    font-weight: bold;
+ }
+
+.btn-group {
+float:right;
+}
+/* The Close Button */
+ .close {
+    background: transparent;
+    border:none;
+    color: rgb(26, 26, 26);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0px;
+    margin: 0px;
+    width: auto;
+}
+
+ .close:hover,
+ .close:focus {
+    color: grey;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close:active {
+    color: red;
+}
+
+.fileContainer {
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #00004d;
+    padding: 1px 5px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: auto;
+}
+
+.fileContainer:hover {
+    background-color: rgba(0, 0, 77, 0.2);
+}
+.fileContainer:active {
+        background-color: rgba(0, 0, 77, 0.5);
+    }
+
+    .fileContainer [type=file] {
+        cursor: inherit;
+        display: block;
+        font-size: 999px;
+        filter: alpha(opacity=0);
+        min-height: 100%;
+        min-width: 100%;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        text-align: right;
+        top: 0;
+        height: auto;
+    }
+
+    img {
+        margin: auto;
+        vertical-align: middle;
+        max-height: 100px;
+        max-width: 75%;
+        margin: auto;
+    }
+    
+    #imgPreview {
+        border-radius: 20px;
+    }
+    
+    #dvPreview {
+        display: none;
+    }
+    
+    .imageLoader {
+        display: inline-block;
+        width: auto;
+        margin: auto;
+    }
+
+    #cameraDiv div * {
+        display: block;
+    }
+
+    #cameraDiv div input {
+        float: right;
+        margin: 5px;
+    }
+
+    /*Tab View CSS*/
+    /* Style the form */
+#regForm {
+    background-color: #ffffff;
+    margin: 100px auto;
+    padding: 40px;
+    width: 70%;
+    min-width: 300px;
+  }
+  
+  /* Style the input fields */
+  input {
+    padding: 10px;
+    width: 350px;
+    max-width:75%;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 1em;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+  }
+
+  input[type=radio], input[type=checkbox] {
+    max-width: 100%;
+    width: auto;
+  }
+ 
+  .button {
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 1em;
+    width: auto;
+    margin: 5px;
+}
+  
+  /* Mark input boxes that gets an error on validation: */
+  input.invalid, select.invalid {
+    background-color: #ff9999 !important;
+  }
+  
+  /* Hide all steps by default: */
+  .tab {
+    display: none;
+  }
+
+  #stepbuttons {
+    overflow:auto;
+    max-width:90%;
+    display:block;
+  }
+  
+  #stepsDiv {
+    text-align:center;
+    margin:auto;
+    width:80%;
+    display: block;
+  }
+  /* Make circles that indicate the steps of the form: */
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none; 
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+  }
+  
+  /* Mark the active step: */
+  .step.active {
+    opacity: 1;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+    background-color: #4CAF50;
+  }
+
+  @media only screen and (max-width: 600px) {
+      #stepbuttons {
+          display: block;
+      }
+      .pnlCSS {
+          max-width: 90%;
+      }
+  }

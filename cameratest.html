@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        video,
+        button,
+        canvas {
+            display: block;
+        }
+
+        div {
+            display: block;
+            width: 240px;
+        }
+
+        button {
+            float: right;
+            margin: 10px 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="captureDiv">
+        <video id="player" controls autoplay width=240 height=320></video>
+        <button id="capture">Capture</button>
+    </div>
+    <div id="canvasDiv" style="display: none">
+        <canvas id="canvas" width=240 height=320></canvas>
+        <button id="btnSave">Save</button>
+        <button id="redo">Redo</button>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        const player = document.getElementById('player');
+        const canvas = document.getElementById('canvas');
+        //const img = document.getElementById('img');
+        const context = canvas.getContext('2d');
+        const captureButton = document.getElementById('capture');
+        const saveButton = document.getElementById('btnSave');
+        const redoButton = document.getElementById('redo');
+
+        const constraints = {
+            video: { width: 240, height: 320 }
+        };
+
+        captureButton.addEventListener('click', () => {
+            // Draw the video frame to the canvas.
+            context.drawImage(player, 0, 0, canvas.width, canvas.height);
+            //img.src = canvas.toDataURL('image/webp');
+            document.getElementById('canvasDiv').style.display = "block";
+            document.getElementById('captureDiv').style.display = "none";
+            // Stop all video streams.
+            player.srcObject.getVideoTracks().forEach(track => track.enabled = false);
+            //return false;
+        });
+
+        redoButton.addEventListener('click', () => {
+            document.getElementById('canvasDiv').style.display = "none";
+            document.getElementById('captureDiv').style.display = "block";
+            // Stop all video streams.
+            player.srcObject.getVideoTracks().forEach(track => track.enabled = true);
+        });
+
+        // Attach the video stream to the video element and autoplay.
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => {
+                player.srcObject = stream;
+            });
+
+        $("#btnSave").click(function () {
+
+            var image = document.getElementById("canvas").toDataURL("image/png");
+          //  image = image.replace('data:image/png;base64,', '');
+
+            $.ajax({
+                type: 'POST',
+                url: "../",
+                data: '{ "imageData" : "' + image + '" }',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (msg) {
+                    alert('Image saved successfully !');
+                },
+                error: function (msg) {
+                    alert('failed');
+                }
+            });
+        });
+    </script>
+</body>
+
+
+
+</html>
