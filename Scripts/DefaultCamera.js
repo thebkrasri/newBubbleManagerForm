@@ -90,7 +90,7 @@ function nextPrev(n) {
         alert('Please fill in ALL required fields');
     }
 
-} */
+} 
 $('#optLanguage').change(function (d) {
     var language = $(this).val();//d.value;
 
@@ -111,6 +111,7 @@ $('#optLanguage').change(function (d) {
     });
     return false;
 });
+*/
 
 function validateForm() {
     // This function deals with validation of the form fields
@@ -128,6 +129,9 @@ function validateForm() {
             // add an "invalid" class to the field:
             y[i].className += " invalid";
             // and set the current valid status to false:
+            if (y[i].id == "imageData") {
+                alert("CAPTURE and SAVE a selfie!")
+            }
             valid = false;
         }
         if (y[i].Validators != null)
@@ -245,6 +249,7 @@ $(function () {
             })
         document.getElementById('cameraDiv').style.display = "inline-block";
         document.getElementById('fileUploadDiv').style.display = "none";
+        document.getElementById('imageData').className += " req";
         const player = document.getElementById('player');
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
@@ -265,6 +270,7 @@ $(function () {
             context.drawImage(player, 0, 0, canvas.width, canvas.height);
             //img.src = canvas.toDataURL('image/webp');
             document.getElementById('canvasDiv').style.display = "block";
+            document.getElementById('canvas').style.border = "solid 3px yellow";
             document.getElementById('captureDiv').style.display = "none";
             // Stop all video streams.
             player.srcObject.getVideoTracks().forEach(track => track.enabled = false);
@@ -273,38 +279,27 @@ $(function () {
 
         redoButton.addEventListener('click', () => {
             document.getElementById('canvasDiv').style.display = "none";
+            document.getElementById('canvas').style.border = "solid 3px yellow";
             document.getElementById('captureDiv').style.display = "block";
             // Stop all video streams.
             player.srcObject.getVideoTracks().forEach(track => track.enabled = true);
             return false;
         });
-
+         saveButton.addEventListener('click', () => {
+            var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
+            //imageSrc = image.replace('data:image/jpg;base64,', '');
+            document.getElementById('canvas').style.border = "solid 5px green";
+            $("#imageData").val(image);
+         })
 
     }
     else {
         document.getElementById('cameraDiv').style.display = "none";
         document.getElementById('fileUploadDiv').style.display = "block";
+        document.getElementById('imageData').classList.remove('req');
 
     }
-    $("#btnSave").click(function () {
-
-        var image = document.getElementById("canvas").toDataURL("image/png");
-        //  image = image.replace('data:image/png;base64,', '');
-
-        $.ajax({
-            type: 'POST',
-            url: "../",
-            data: '{"imageData" : "' + image + '" }',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (msg) {
-                alert('Image saved successfully !');
-            },
-            error: function (msg) {
-                alert('failed');
-            }
-        });
-    });
+   
 })
 
 
@@ -320,8 +315,6 @@ function displayWhenChecked(checkBox, element) {
         text.style.display = "none";
     }
 }
-
-
 
 
 // Get the modal

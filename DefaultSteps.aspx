@@ -11,12 +11,6 @@
     <link rel="stylesheet" type="text/css" href="Content/StyleSheet.css" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
-
-    <script src="Scripts/DefaultCamera.js" type="text/javascript"></script>
-
     <title>Bubble Manager</title>
 </head>
 
@@ -346,7 +340,7 @@
                 <asp:CheckBox id="Insurance" TextAlign="Right" Checked="False" runat="server" Text="" />
                 <asp:label runat="server" class="controlLabel" id="lblInsurance" Text="lblInsuranceName"></asp:Label>
             </div>
-            <div class="row" id="InsuranceNameDiv" style="display: none">
+            <div class="row" id="InsuranceNameDiv" style="display: none; text-align: center">
                 <asp:label runat="server" class="controlLabel" ID="lblInsuranceName" Text="lblInsuranceName"></asp:Label>
                 <asp:TextBox ID="InsuranceName" runat="server" CssClass=" " />
                 <span>
@@ -475,13 +469,14 @@
             <br />
             <div id="cameraDiv" runat="server">
                 <div id="captureDiv">
-                    <video id="player" controls autoplay width=240 height=320></video>
+                    <video id="player" controls autoplay width=240 height=320 style="border: solid 3px red"></video>
                     <input type="button" id="capture" value="Capture" />
                 </div>
                 <div id="canvasDiv" style="display: none">
                     <canvas id="canvas" width=240 height=320></canvas>
                     <input type="button" id="btnSave" value="Save" />
                     <input type="button" id="redo" value="Redo" />
+                    <input type="hidden" name="imageData" id="imageData" runat="server"/>
                 </div>
             </div>
             <div id="fileUploadDiv" runat="server">
@@ -510,7 +505,7 @@
         </div>
 
         <div id="stepbuttons">
-            <div style="float:right;">
+            <div>
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="button">Previous</button>
                 <button type="button" id="nextBtn" onclick="nextPrev(1)" class="button">Next</button>
             </div>
@@ -533,3 +528,10 @@
 
     </form>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+
+<script src="Scripts/DefaultCamera.js" type="text/javascript"></script>
+</html>

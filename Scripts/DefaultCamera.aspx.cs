@@ -17,7 +17,7 @@ public partial class DefaultCamera : System.Web.UI.Page
         get
         {
             if (Request.QueryString["Camera"] == null)
-                return "";
+                return "No";
             else
                 return Request.QueryString["Camera"];
         }
@@ -33,6 +33,8 @@ public partial class DefaultCamera : System.Web.UI.Page
     {
         if (!this.IsPostBack)
         {
+            
+            
             Insurance.LabelAttributes.Add("ID", "lblInsurance");
             CountryID.DataBind();
             EmergencyCountryID.DataBind();
@@ -92,6 +94,12 @@ public partial class DefaultCamera : System.Web.UI.Page
                 this.Session["fieldsdt"] = fieldsdt;
             }
             ChangeForm();
+            if (useCamera == "Yes")
+            {
+                //ShowMessage("title", FileUploadValidator.ValidationGroup);
+                FileUploadValidator.Enabled = false;
+                //ShowMessage("title", FileUploadValidator.ValidationGroup);
+            } 
         }
     }
 
@@ -224,9 +232,9 @@ public partial class DefaultCamera : System.Web.UI.Page
                     }
                     else if (controlName.EndsWith("ID") || controlName.StartsWith("cmb") || controlName == "Gender")
                     {
-                         if (displayType == "Included and Required")
+                        if (displayType == "Included and Required")
                         {
-                            ((DropDownList)MyControl).CssClass= "req";
+                            ((DropDownList)MyControl).CssClass = "req";
                         }
                         ((DropDownList)MyControl).BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox BackgroundColor"].ToString());
                         ((DropDownList)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox TextColor"].ToString());
@@ -234,9 +242,9 @@ public partial class DefaultCamera : System.Web.UI.Page
                     }
                     else
                     {
-                         if (displayType == "Included and Required")
+                        if (displayType == "Included and Required")
                         {
-                            ((TextBox)MyControl).CssClass= "req";
+                            ((TextBox)MyControl).CssClass = "req";
                         }
                         ((TextBox)MyControl).BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox BackgroundColor"].ToString());
                         ((TextBox)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox TextColor"].ToString());
@@ -400,9 +408,6 @@ public partial class DefaultCamera : System.Web.UI.Page
 
         AccessDataSource2.InsertCommand = "INSERT INTO Customer (FirstName, LastName, Gender, BirthDate ,Address1,Address2,City, StateID,CountryID,PostalCode,Email, Phone, PassportNum, LanguageID, HowHearTextID, HowHearSpecific, WhereStayID, RoomOther,RoomNo, EmergencyName, Relationship, EmergencyNumber, EmergencyEmail, DiveLevelID, DiveOrgID, NumberOfDives, Insurance, InsuranceName, EmergencyCountryID, ArrivalDate, [image]) VALUES (@FirstName,@LastName, @Gender, @BirthDate, @Address1,@Address2,@City,@StateID, @Country,@PostalCode,@Email, @Phone, @PassportNum, @LanguageID, @HowHear, @HowHearSpecific, @WhereStayID, @RoomOther, @RoomNo, @EmergencyName, @Relationship, @EmergencyNumber, @EmergencyEmail, @DiveLevelID, @DiveOrgID, @NumberOfDives, @EmergencyCountryID, @ArrivalDate, @Insurance, @InsuranceName, @MyImage)";
         AccessDataSource2.UpdateCommand = "Update Customer Set FirstName=@FirstName, LastName=@LastName, Gender=@Gender, BirthDate=@BirthDate, Address1=@Address1,Address2=@Address2,City=@City, StateID=@StateID, CountryID=@CountryID, PostalCode=@PostalCode,Email=@Email, Phone=@Phone, PassportNum=@PassportNum, LanguageID=@LanguageID, HowHearTextID=@HowHearTextID, HowHearSpecific=@HowHearSpecific, WhereStayID =@WhereStayID, RoomOther=@RoomOther,RoomNo=@RoomNo, EmergencyName=@EmergencyName, Relationship=@Relationship, EmergencyNumber=@EmergencyNumber, EmergencyEmail=@EmergencyEmail, DiveLevelID=@DiveLevelID, DiveOrgID=@DiveOrgID, NumberOfDives=@NumberOfDives, Insurance=@Insurance, InsuranceName=@InsuranceName, EmergencyCountryID=@EmergencyCountryID, ArrivalDate=@ArrivalDate, [image]=@MyImage WHERE CustomerID=" + CustomerNumberHidden.Value;
-
-
-
         AccessDataSource2.InsertParameters.Add("FirstName", FirstName.Text);
         AccessDataSource2.InsertParameters.Add("LastName", LastName.Text);
         AccessDataSource2.InsertParameters.Add("Gender", Gender.SelectedValue);
@@ -433,8 +438,6 @@ public partial class DefaultCamera : System.Web.UI.Page
         AccessDataSource2.InsertParameters.Add("InsuranceName", InsuranceName.Text);
         AccessDataSource2.InsertParameters.Add("EmergencyCountryID", EmergencyCountryID.Text);
         AccessDataSource2.InsertParameters.Add("ArrivalDate", DateTime.Now.ToShortDateString());
-
-
         AccessDataSource2.UpdateParameters.Add("FirstName", FirstName.Text);
         AccessDataSource2.UpdateParameters.Add("LastName", LastName.Text);
         AccessDataSource2.UpdateParameters.Add("Gender", Gender.SelectedValue);
@@ -467,77 +470,97 @@ public partial class DefaultCamera : System.Web.UI.Page
         AccessDataSource2.UpdateParameters.Add("ArrivalDate", DateTime.Now.ToShortDateString());
 
 
-        if (FileUpload1.FileName != "")
+        DataView dv = (DataView)LatestCustomerDataSource.Select(DataSourceSelectArguments.Empty);
+        int lastID = (int)dv.Table.Rows[0][0];
+        string fileName = "";
+        if (CustomerNumberHidden.Value == null || CustomerNumberHidden.Value == "")
+            fileName = FirstName.Text + " " + LastName.Text + "-" + lastID + ".jpg";
+        else
+            fileName = FirstName.Text + " " + LastName.Text + "-" + CustomerNumberHidden.Value + ".jpg";
+
+        //dv = (DataView)ImageFolderDataSource.Select(DataSourceSelectArguments.Empty);
+        string imagefolder = "C:/BubbleManager/Customer Photos/";
+        //(string)dv.Table.Rows[0][0];
+
+        if (!Directory.Exists(imagefolder))
         {
-            DataView dv = (DataView)LatestCustomerDataSource.Select(DataSourceSelectArguments.Empty);
-            int lastID = (int)dv.Table.Rows[0][0];
-            string fileName = "";
-            if (CustomerNumberHidden.Value == null || CustomerNumberHidden.Value == "")
-                fileName = FirstName.Text + " " + LastName.Text + "-" + lastID + ".jpg";
-            else
-                fileName = FirstName.Text + " " + LastName.Text + "-" + CustomerNumberHidden.Value + ".jpg";
+            //If it doesn't then we just create it before going any further
+            Directory.CreateDirectory(imagefolder);
+        }
 
-            //dv = (DataView)ImageFolderDataSource.Select(DataSourceSelectArguments.Empty);
-            string imagefolder = "C:/BubbleManager/Customer Photos/";
-            //(string)dv.Table.Rows[0][0];
-
-            if (!Directory.Exists(imagefolder))
+        if (useCamera == "Yes")
+        {
+             using (var fs = new FileStream(imagefolder + fileName, FileMode.Create))
             {
-                //If it doesn't then we just create it before going any further
-                Directory.CreateDirectory(imagefolder);
+                using (var bw = new BinaryWriter(fs))
+                {
+                    var image = this.imageData.Value;
+                    var data = Convert.FromBase64String(image);
+                    bw.Write(data);
+                    bw.Close();
+                }
+                fs.Close();
             }
-
-            //UpdateImageDataSource.UpdateParameters[0].DefaultValue = fileName;
-            // UpdateImageDataSource.UpdateParameters[1].DefaultValue = "" + lastID;
-
-            // Create a bitmap of the content of the fileUpload control in memory
-            Bitmap originalBMP = new Bitmap(FileUpload1.FileContent);
-
-            // Calculate the new image dimensions
-            int origWidth = originalBMP.Width;
-            int origHeight = originalBMP.Height;
-            int maxSize = 240;
-            int newHeight = (origHeight * maxSize) / origWidth;
-            int newWidth = maxSize;
-            if (origHeight > origWidth)
-            {
-                newWidth = (origWidth * maxSize) / origHeight;
-                newHeight = maxSize;
-            }
-            //int sngRatio = origWidth / origHeight;
-            //int newWidth = 240;
-            //int newHeight = newWidth / sngRatio;
-
-
-            // Create a new bitmap which will hold the previous resized bitmap
-            Bitmap newBMP = new Bitmap(originalBMP, newWidth, newHeight);
-            // Create a graphic based on the new bitmap
-            Graphics oGraphics = Graphics.FromImage(newBMP);
-
-            // Set the properties for the new graphic file
-            oGraphics.SmoothingMode = SmoothingMode.AntiAlias; oGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            // Draw the new graphic based on the resized bitmap
-            oGraphics.DrawImage(originalBMP, 0, 0, newWidth, newHeight);
-
-            //dv = (DataView)ImageFolderDataSource.Select(DataSourceSelectArguments.Empty);
-            //string imagefolder = (string)dv.Table.Rows[0][0];
-            // Save the new graphic file to the server
-            newBMP.Save(imagefolder + fileName);
             AccessDataSource2.InsertParameters.Add("MyImage", fileName);
-            AccessDataSource2.UpdateParameters.Add("MyImage", fileName);
+                AccessDataSource2.UpdateParameters.Add("MyImage", fileName);
 
-            // Once finished with the bitmap objects, we deallocate them.
-            originalBMP.Dispose();
-            newBMP.Dispose();
-            oGraphics.Dispose();
-
-            //UpdateImageDataSource.Update();
         }
         else
         {
-            AccessDataSource2.InsertParameters.Add("MyImage", "");
-            AccessDataSource2.UpdateParameters.Add("MyImage", "");
+            if (FileUpload1.FileName != "")
+            {
 
+
+                //UpdateImageDataSource.UpdateParameters[0].DefaultValue = fileName;
+                // UpdateImageDataSource.UpdateParameters[1].DefaultValue = "" + lastID;
+
+                // Create a bitmap of the content of the fileUpload control in memory
+                Bitmap originalBMP = new Bitmap(FileUpload1.FileContent);
+
+                // Calculate the new image dimensions
+                int origWidth = originalBMP.Width;
+                int origHeight = originalBMP.Height;
+                int maxSize = 240;
+                int newHeight = (origHeight * maxSize) / origWidth;
+                int newWidth = maxSize;
+                if (origHeight > origWidth)
+                {
+                    newWidth = (origWidth * maxSize) / origHeight;
+                    newHeight = maxSize;
+                }
+                //int sngRatio = origWidth / origHeight;
+                //int newWidth = 240;
+                //int newHeight = newWidth / sngRatio;
+
+
+                // Create a new bitmap which will hold the previous resized bitmap
+                Bitmap newBMP = new Bitmap(originalBMP, newWidth, newHeight);
+                // Create a graphic based on the new bitmap
+                Graphics oGraphics = Graphics.FromImage(newBMP);
+
+                // Set the properties for the new graphic file
+                oGraphics.SmoothingMode = SmoothingMode.AntiAlias; oGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                // Draw the new graphic based on the resized bitmap
+                oGraphics.DrawImage(originalBMP, 0, 0, newWidth, newHeight);
+
+                //dv = (DataView)ImageFolderDataSource.Select(DataSourceSelectArguments.Empty);
+                //string imagefolder = (string)dv.Table.Rows[0][0];
+                // Save the new graphic file to the server
+                newBMP.Save(imagefolder + fileName);
+                AccessDataSource2.InsertParameters.Add("MyImage", fileName);
+                AccessDataSource2.UpdateParameters.Add("MyImage", fileName);
+
+                // Once finished with the bitmap objects, we deallocate them.
+                originalBMP.Dispose();
+                newBMP.Dispose();
+                oGraphics.Dispose();
+                //UpdateImageDataSource.Update();
+            }
+            else
+            {
+                AccessDataSource2.InsertParameters.Add("MyImage", "");
+                AccessDataSource2.UpdateParameters.Add("MyImage", "");
+            }
         }
         if (CustomerNumberHidden.Value == null || CustomerNumberHidden.Value == "")
             AccessDataSource2.Insert();

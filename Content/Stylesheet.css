@@ -378,11 +378,13 @@ float:right;
 
     #cameraDiv div * {
         display: block;
+        margin: auto;
     }
 
     #cameraDiv div input {
         float: right;
         margin: 5px;
+        width: auto;
     }
 
     /*Tab View CSS*/
@@ -435,6 +437,10 @@ float:right;
     max-width:90%;
     display:block;
   }
+
+  #stepbuttons div {
+      float: right;
+  }
   
   #stepsDiv {
     text-align:center;
@@ -467,6 +473,11 @@ float:right;
   @media only screen and (max-width: 600px) {
       #stepbuttons {
           display: block;
+          margin: auto;
+      }
+
+      #stepbuttons div {
+          float: unset;
       }
       .pnlCSS {
           max-width: 90%;
