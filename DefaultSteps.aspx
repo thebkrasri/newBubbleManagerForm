@@ -2,9 +2,6 @@
 
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head runat="server">
@@ -112,7 +109,7 @@
 
 
 
-        <div id="onloadModal" class="modal" style="display:block" runat="server">
+        <div id="onloadModal" class="modal" style="display:table" runat="server">
 
             <!-- Modal content -->
             <div class="modal-body">
@@ -127,7 +124,8 @@
                         it here</asp:label>
                     <br>
 
-                    <asp:TextBox ID="CustomerNumber" runat="server" style="width:100px; text-align:right;" autocomplete="off">
+                    <asp:TextBox ID="CustomerNumber" runat="server" style="width:100px; text-align:right;"
+                        autocomplete="off">
                     </asp:TextBox>
                     <asp:HiddenField ID="CustomerNumberHidden" runat="server"></asp:HiddenField>
                     <asp:button ID="prevCustBtn" runat="server" onClick="prevCustClick" Text="Submit" CssClass="button">
@@ -154,14 +152,16 @@
             <asp:label runat="server" class="sectionHeader" ID="lblPersonalInfoPanel">Personal Details</asp:label>
             <div class="row">
                 <div class="col-12">
-                    <asp:label runat="server" class="controlLabel" ID="lblFirstName" Text="lblFirstName"></asp:label><span>
+                    <asp:label runat="server" class="controlLabel" ID="lblFirstName" Text="lblFirstName"></asp:label>
+                    <span>
                         <asp:RequiredFieldValidator runat="server" ID="FirstNameValidator" ControlToValidate="FirstName"
                             Display="Dynamic" ErrorMessage="Please Fill in First Name" CssClass="ReqFieldCSS"
                             ValidationGroup="Submit" /></span>
                     <asp:TextBox ID="FirstName" runat="server" AutoCompleteType="FirstName" cssClass="req"
                         ValidateRequestMode="Enabled" />
                     <br />
-                    <asp:label runat="server" class="controlLabel" ID="lblLastName" Text="lblLastName"></asp:label><span>
+                    <asp:label runat="server" class="controlLabel" ID="lblLastName" Text="lblLastName"></asp:label>
+                    <span>
                         <asp:RequiredFieldValidator runat="server" ID="LastNameValidator" ControlToValidate="LastName"
                             Display="Dynamic" ErrorMessage="Please Fill in Last Name" CssClass="ReqFieldCSS"
                             ValidationGroup="Submit" /></span>
@@ -219,7 +219,8 @@
                             Display="Dynamic" ErrorMessage="Please fill in a phone number" CssClass="ReqFieldCSS"
                             ValidationGroup="Submit" /></span>
                     <asp:TextBox ID="Phone" runat="server" AutoCompleteType="HomePhone" CssClass=" " />
-                    <asp:label runat="server" class="controlLabel" ID="lblPassportNum" Text="lblPassPortNum"></asp:label>
+                    <asp:label runat="server" class="controlLabel" ID="lblPassportNum" Text="lblPassPortNum">
+                    </asp:label>
                     <span>
                         <asp:RequiredFieldValidator ID="PassportNumValidator" runat="server"
                             ControlToValidate="PassportNum" Display="Dynamic"
@@ -270,7 +271,8 @@
                     <asp:TextBox ID="PostalCode" runat="server" AutoCompleteType="HomeZipCode" CssClass="req" />
                     <asp:UpdatePanel ID="StateUpdatePanel" runat="server">
                         <ContentTemplate>
-                            <asp:label runat="server" class="controlLabel" ID="lblCountryID" Text="lblCountryID"></asp:label>
+                            <asp:label runat="server" class="controlLabel" ID="lblCountryID" Text="lblCountryID">
+                            </asp:label>
                             <span>
                                 <asp:RequiredFieldValidator ID="CountryIDValidator" runat="server"
                                     ControlToValidate="CountryID" ErrorMessage="Please Select a Country"
@@ -282,8 +284,8 @@
                 </div>
             </div>
             <div class="row">
-                <asp:label runat="server" class="controlLabel" ID="lblStateID" Text="State/Province*" AutoPostBack="True"
-                    style="display:none;" />
+                <asp:label runat="server" class="controlLabel" ID="lblStateID" Text="State/Province*"
+                    AutoPostBack="True" style="display:none;" />
                 <span>
                     <asp:RequiredFieldValidator ID="StateValidator" runat="server" ControlToValidate="StateID"
                         ErrorMessage="Please Select a State" Display="Dynamic" CssClass="ReqFieldCSS"
@@ -298,33 +300,38 @@
             <asp:label runat="server" class="sectionHeader" ID="lblEmergencyContactDiv">Emergency Contact</asp:label>
             <div class="row">
                 <div class="col-12">
-                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyName" Text="lblEmergencyName"></asp:Label>
+                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyName" Text="lblEmergencyName">
+                    </asp:Label>
                     <span>
                         <asp:RequiredFieldValidator ID="EmergencyNameValidator" runat="server"
                             ControlToValidate="EmergencyName" ErrorMessage="Please enter an emergency contact name"
                             Display="Dynamic" CssClass="ReqFieldCSS" ValidationGroup="Submit" /></span>
                     <asp:TextBox ID="EmergencyName" runat="server" CssClass=" " />
-                    <asp:label runat="server" class="controlLabel" ID="lblRelationship" Text="lblRelationship"></asp:Label>
+                    <asp:label runat="server" class="controlLabel" ID="lblRelationship" Text="lblRelationship">
+                    </asp:Label>
                     <span>
                         <asp:RequiredFieldValidator ID="RelationshipValidator" runat="server"
                             ControlToValidate="Relationship" ErrorMessage="Please enter an emergency relationship"
                             Display="Dynamic" CssClass="ReqFieldCSS" ValidationGroup="Submit" /></span>
                     <asp:TextBox ID="Relationship" runat="server" CssClass=" " />
-                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyCountryID" Text="lblEmergencyCountryID"></asp:label>
+                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyCountryID"
+                        Text="lblEmergencyCountryID"></asp:label>
                     <span>
                         <asp:RequiredFieldValidator ID="EmergencyCountryIDValidator" runat="server"
                             ControlToValidate="EmergencyCountryID" ErrorMessage="Please Select a Country"
                             Display="Dynamic" CssClass="ReqFieldCSS" ValidationGroup="Submit" /></span>
                     <asp:DropDownList ID="EmergencyCountryID" runat="server" datasourceid="CountryDataSource"
                         datatextfield="CountryName" datavaluefield="CountryID" CssClass="ddCSS" />
-                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyNumber" Text="lblEmergencyNumber"></asp:Label>
+                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyNumber" Text="lblEmergencyNumber">
+                    </asp:Label>
                     <span>
                         <asp:RequiredFieldValidator ID="EmergencyNumberValidator" runat="server"
                             ControlToValidate="EmergencyNumber" ErrorMessage="Please enter an emergency number"
                             Display="Dynamic" CssClass="ReqFieldCSS" ValidationGroup="Submit" /></span>
                     <asp:TextBox ID="EmergencyNumber" runat="server" CssClass=" " />
 
-                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyEmail" Text="lblEmergencyEmail"></asp:Label>
+                    <asp:label runat="server" class="controlLabel" ID="lblEmergencyEmail" Text="lblEmergencyEmail">
+                    </asp:Label>
                     <span>
                         <asp:RequiredFieldValidator ID="EmergencyEmailValidator" runat="server"
                             ControlToValidate="EmergencyEmail" ErrorMessage="Please enter an emergency email"
@@ -335,13 +342,15 @@
             </div>
         </asp:Panel>
         <asp:Panel ID="CertifiedDiverDiv" runat="server" CssClass="pnlCSS tab">
-                <asp:label runat="server" class="sectionHeader" ID="lblCertifiedDiverDiv">SCUBA Diving Background</asp:label>
+            <asp:label runat="server" class="sectionHeader" ID="lblCertifiedDiverDiv">SCUBA Diving Background
+            </asp:label>
             <div class="row" id="InsuranceDiv" style="text-align: left">
                 <asp:CheckBox id="Insurance" TextAlign="Right" Checked="False" runat="server" Text="" />
                 <asp:label runat="server" class="controlLabel" id="lblInsurance" Text="lblInsuranceName"></asp:Label>
             </div>
             <div class="row" id="InsuranceNameDiv" style="display: none; text-align: center">
-                <asp:label runat="server" class="controlLabel" ID="lblInsuranceName" Text="lblInsuranceName"></asp:Label>
+                <asp:label runat="server" class="controlLabel" ID="lblInsuranceName" Text="lblInsuranceName">
+                </asp:Label>
                 <asp:TextBox ID="InsuranceName" runat="server" CssClass=" " />
                 <span>
                     <asp:RequiredFieldValidator ID="InsuranceNameValidator" runat="server"
@@ -358,7 +367,8 @@
                     </div>
                     <div id="DiveCertTypes" class="row" style="display:none;margin:auto" runat="server">
                         <div class="col-6">
-                            <asp:label runat="server" class="controlLabel" ID="lblDiveOrgID" Text="lblDiveOrgID"></asp:Label>
+                            <asp:label runat="server" class="controlLabel" ID="lblDiveOrgID" Text="lblDiveOrgID">
+                            </asp:Label>
                             <asp:DropDownList ID="DiveOrgID" runat="server" DataSourceID="DiveOrgDataSource"
                                 DataTextField="DiveOrg" DataValueField="DiveOrgID">
                             </asp:DropDownList>
@@ -369,7 +379,8 @@
                             </span>
                         </div>
                         <div class="col-6">
-                            <asp:label runat="server" class="controlLabel" ID="lblDiveLevelID" Text="lblDiveLevelID"></asp:Label>
+                            <asp:label runat="server" class="controlLabel" ID="lblDiveLevelID" Text="lblDiveLevelID">
+                            </asp:Label>
                             <asp:DropDownList ID="DiveLevelID" runat="server" DataSourceID="DiveLevelDataSource"
                                 DataTextField="DiveLevel" DataValueField="DiveLevelID">
                             </asp:DropDownList>
@@ -395,10 +406,11 @@
             </asp:UpdatePanel>
         </asp:Panel>
         <asp:Panel ID="WhereStayDiv" runat="server" CssClass="pnlCSS tab">
-                <asp:label runat="server" class="sectionHeader" ID="lblWhereStayDiv">Accommodation</asp:label>
+            <asp:label runat="server" class="sectionHeader" ID="lblWhereStayDiv">Accommodation</asp:label>
             <div class="row">
                 <div class="col-12">
-                    <asp:label runat="server" class="controlLabel" ID="lblWhereStayID" Text="lblWhereStayID"></asp:Label>
+                    <asp:label runat="server" class="controlLabel" ID="lblWhereStayID" Text="lblWhereStayID">
+                    </asp:Label>
                     <span>
                         <asp:RequiredFieldValidator ID="WhereStayIDValidator" runat="server"
                             ControlToValidate="WhereStayID" ErrorMessage="Please enter a resort/hotel" Display="Dynamic"
@@ -408,7 +420,8 @@
                         DataTextField="WhereStay" DataValueField="WhereStayID">
                     </asp:DropDownList>
                     <span>
-                        <asp:label runat="server" class="controlLabel" ID="lblRoomOther" Text="lblRoomOther"></asp:Label>
+                        <asp:label runat="server" class="controlLabel" ID="lblRoomOther" Text="lblRoomOther">
+                        </asp:Label>
                     </span>
                     <span>
                         <asp:RequiredFieldValidator ID="RoomOtherValidator" runat="server" ControlToValidate="RoomOther"
@@ -428,7 +441,7 @@
             </div>
         </asp:Panel>
         <asp:Panel ID="LanguageDiv" runat="server" CssClass="pnlCSS tab">
-                <asp:label runat="server" class="sectionHeader" ID="lblLanguageDiv">Language</asp:label>
+            <asp:label runat="server" class="sectionHeader" ID="lblLanguageDiv">Language</asp:label>
             <div class="row">
                 <div class="col-12">
                     <asp:label runat="server" class="controlLabel" ID="lblLanguageID" Text="lblLanguageID"></asp:Label>
@@ -447,15 +460,18 @@
             <div class="row">
                 <div class="col-12">
                     <span>
-                    <asp:label runat="server" class="controlLabel" ID="lblHowHearTextID" Text="lblHowHearTextID"></asp:Label>
-                    <asp:RequiredFieldValidator ID="HowHearTextIDValidator" runat="server"
+                        <asp:label runat="server" class="controlLabel" ID="lblHowHearTextID" Text="lblHowHearTextID">
+                        </asp:Label>
+                        <asp:RequiredFieldValidator ID="HowHearTextIDValidator" runat="server"
                             ControlToValidate="HowHearTextID" Display="Dynamic"
                             ErrorMessage="Please tell us how you heard about us." CssClass="ReqFieldCSS"
-                            ValidationGroup="Submit" InitialValue="0" /></span>
+                            ValidationGroup="Submit" InitialValue="0" />
+                    </span>
                     <asp:DropDownList ID="HowHearTextID" runat="server" DataSourceID="HowHearDataSource"
                         DataTextField="HowHear" DataValueField="HowHearID">
                     </asp:DropDownList>
-                    <asp:label runat="server" class="controlLabel" ID="lblHowHearSpecific" Text="lblHowHearSpecific"></asp:Label>
+                    <asp:label runat="server" class="controlLabel" ID="lblHowHearSpecific" Text="lblHowHearSpecific">
+                    </asp:Label>
                     <span>
                         <asp:RequiredFieldValidator ID="HowHearSpecificValidator" runat="server"
                             ControlToValidate="HowHearSpecific" Display="Dynamic"
@@ -468,15 +484,16 @@
         <asp:Panel ID="PhotoPanel" runat="server" cssClass="pnlCSS tab">
             <br />
             <div id="cameraDiv" runat="server">
-                <div id="captureDiv">
-                    <video id="player" controls autoplay width=240 height=320 style="border: solid 3px red"></video>
+                <div id="cameraAlert">Capture and save a selfie!</div>
+                <div id="captureDiv" width=auto height=auto>
+                    <video id="player" autoplay width=auto height=auto style="border: solid 3px red"></video>
                     <input type="button" id="capture" value="Capture" />
                 </div>
                 <div id="canvasDiv" style="display: none">
                     <canvas id="canvas" width=240 height=320></canvas>
                     <input type="button" id="btnSave" value="Save" />
                     <input type="button" id="redo" value="Redo" />
-                    <input type="hidden" name="imageData" id="imageData" runat="server"/>
+                    <input type="hidden" name="imageData" id="imageData" runat="server" />
                 </div>
             </div>
             <div id="fileUploadDiv" runat="server">
@@ -534,4 +551,5 @@
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
 
 <script src="Scripts/DefaultCamera.js" type="text/javascript"></script>
+
 </html>

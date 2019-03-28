@@ -241,22 +241,13 @@ option:hover{
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 10%; /* Location of the box */
+    padding-top: 10vh; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(64,64,64,0.6); /* Black w/ opacity */
-}
-
-#termsModal {
-    padding-top: 5px;
-}
-
-#pTerms {
-    text-align: left;
-    margin-top: 0;
 }
 
 .modal-body {
@@ -267,6 +258,9 @@ option:hover{
     padding: 20px;
     border-radius: 20px;
     width: fit-content;
+    width: -moz-fit-content;
+    width: intrinsic;
+    display: table;
     text-align: center;
 }
 /* Modal Content */
@@ -275,7 +269,7 @@ option:hover{
     margin: auto;
     width: auto;
     position: relative;
-    max-height: 60vh;
+    max-height: 80vh;
     padding: 10px 20px;
     border: none;
     overflow: auto; /* Enable scroll if needed */
@@ -293,6 +287,19 @@ option:hover{
     font-size: 16pt;
     font-weight: bold;
  }
+
+ #termsModal {
+     padding-top: 5vh;
+ }
+ #termsModal .modal-body {
+    padding-top: 5px;
+    max-width: 95%;
+}
+
+#pTerms {
+    text-align: left;
+    margin-top: 0;
+}
 
 .btn-group {
 float:right;
@@ -385,6 +392,10 @@ float:right;
         float: right;
         margin: 5px;
         width: auto;
+    }
+
+    #cameraAlert {
+        display: none;
     }
 
     /*Tab View CSS*/
@@ -482,4 +493,13 @@ float:right;
       .pnlCSS {
           max-width: 90%;
       }
+    #termsModal .modal-content {
+        max-height: 80vh;
+    }
+  }
+
+  @media only screen and (max-height: 600px) {
+    #termsModal .modal-content {
+        max-height: 70vh;
+    }
   }

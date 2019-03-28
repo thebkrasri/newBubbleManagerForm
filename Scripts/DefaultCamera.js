@@ -14,6 +14,16 @@ function getAge(dateString) {
     return age;
 }
 
+$.urlParam = function (name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results == null) {
+        return null;
+    }
+    else {
+        return decodeURI(results[1]) || 0;
+    }
+}
+
 $(function () {
     // Current tab is set to be the first tab (0)
     showTab(currentTab); // Display the current tab
@@ -60,7 +70,7 @@ function nextPrev(n) {
     }
     if (currentTab >= x.length) {
         //...the form gets submitted:
-        document.getElementById("termsModal").style.display = "block";
+        document.getElementById("termsModal").style.display = "table";
         return false;
     }
     // Otherwise, display the correct tab:
@@ -130,15 +140,14 @@ function validateForm() {
             y[i].className += " invalid";
             // and set the current valid status to false:
             if (y[i].id == "imageData") {
+                document.getElementById("cameraAlert").style.display = "block";
                 alert("CAPTURE and SAVE a selfie!")
             }
             valid = false;
         }
-        if (y[i].Validators != null)
-        {
-            var vals = y[i].Validators;     
-            for (j = 0; j < vals.length; j++)
-            {
+        if (y[i].Validators != null) {
+            var vals = y[i].Validators;
+            for (j = 0; j < vals.length; j++) {
                 if (vals[j].validationGroup == "validator" && !vals[j].isvalid) {
 
                     y[i].className += " invalid";
@@ -156,11 +165,9 @@ function validateForm() {
             // and set the current valid status to false:
             valid = false;
         }
-        if (z[i].Validators != null)
-        {
-            var vals = z[i].Validators;     
-            for (j = 0; j < vals.length; j++)
-            {
+        if (z[i].Validators != null) {
+            var vals = z[i].Validators;
+            for (j = 0; j < vals.length; j++) {
                 if (vals[j].validationGroup == "validator" && !vals[j].isvalid) {
 
                     y[i].className += " invalid";
@@ -190,11 +197,13 @@ function validateForm() {
 function fixStepIndicator(n) {
     // This function removes the "active" class of all steps...
     var i, x = document.getElementsByClassName("step");
-    for (i = 0; i < x.length; i++) {
-        x[i].className = x[i].className.replace(" active", "");
+    if (x.length > 0) {
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+        }
+        //... and adds the "active" class to the current step:
+        x[n].className += " active";
     }
-    //... and adds the "active" class to the current step:
-    x[n].className += " active";
 }
 
 
@@ -237,16 +246,16 @@ $(function () {
 });
 
 $(function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const useCamera = urlParams.get('Camera');
+    //const urlParams = new URLSearchParams(window.location.search);
+    const useCamera = $.urlParam('Camera');//urlParams.get('Camera');
     if (useCamera == "Yes") {
-        navigator.permissions.query({ name: 'camera' })
-            .then((permissionObj) => {
+        /*navigator.permissions.query({ name: 'camera' })
+            .then(function (permissionObj) {
                 console.log(permissionObj.state);
             })
-            .catch((error) => {
+            .catch(function (error) {
                 console.log('Got error :', error);
-            })
+            })*/
         document.getElementById('cameraDiv').style.display = "inline-block";
         document.getElementById('fileUploadDiv').style.display = "none";
         document.getElementById('imageData').className += " req";
@@ -258,39 +267,79 @@ $(function () {
         const redoButton = document.getElementById('redo');
 
         const constraints = {
-            video: { width: 240, height: 320 }
+            audio: false,
+            video: {
+                width: 240,
+                height: 320
+            }
         };
         // Attach the video stream to the video element and autoplay.
         navigator.mediaDevices.getUserMedia(constraints)
-            .then((stream) => {
+            .then(function (stream) {
                 player.srcObject = stream;
             });
-        captureButton.addEventListener('click', () => {
+        captureButton.addEventListener('click', function () {
             // Draw the video frame to the canvas.
-            context.drawImage(player, 0, 0, canvas.width, canvas.height);
+            fitImage(context, player);
+            //context.drawImage(player, 0, 0, canvas.width, canvas.height);
             //img.src = canvas.toDataURL('image/webp');
             document.getElementById('canvasDiv').style.display = "block";
             document.getElementById('canvas').style.border = "solid 3px yellow";
             document.getElementById('captureDiv').style.display = "none";
             // Stop all video streams.
-            player.srcObject.getVideoTracks().forEach(track => track.enabled = false);
+            player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
+
             return false;
         });
 
-        redoButton.addEventListener('click', () => {
+        function fitImage(context, imageObj) {
+            var imageAspectRatio = imageObj.videoWidth / imageObj.videoHeight;
+            var canvasAspectRatio = canvas.width / canvas.height;
+            var renderableHeight, renderableWidth, xStart, yStart;
+
+            // If image's aspect ratio is less than canvas's we fit on height
+            // and place the image centrally along width
+            if (imageAspectRatio > canvasAspectRatio) {
+                renderableHeight = canvas.height;
+                renderableWidth = imageObj.videoWidth * (renderableHeight / imageObj.videoHeight);
+                xStart = (canvas.width - renderableWidth) / 2;
+                yStart = 0;
+            }
+
+            // If image's aspect ratio is greater than canvas's we fit on width
+            // and place the image centrally along height
+            else if (imageAspectRatio < canvasAspectRatio) {
+                renderableWidth = canvas.width
+                renderableHeight = imageObj.videoHeight * (renderableWidth / imageObj.videoWidth);
+                xStart = 0;
+                yStart = (canvas.height - renderableHeight) / 2;
+            }
+
+            // Happy path - keep aspect ratio
+            else {
+                renderableHeight = canvas.height;
+                renderableWidth = canvas.width;
+                xStart = 0;
+                yStart = 0;
+            }
+            context.drawImage(imageObj, xStart, yStart, renderableWidth, renderableHeight);
+        }
+
+        redoButton.addEventListener('click', function () {
             document.getElementById('canvasDiv').style.display = "none";
             document.getElementById('canvas').style.border = "solid 3px yellow";
             document.getElementById('captureDiv').style.display = "block";
             // Stop all video streams.
-            player.srcObject.getVideoTracks().forEach(track => track.enabled = true);
+            player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = true });
             return false;
         });
-         saveButton.addEventListener('click', () => {
+        saveButton.addEventListener('click', function () {
             var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
             //imageSrc = image.replace('data:image/jpg;base64,', '');
             document.getElementById('canvas').style.border = "solid 5px green";
+            document.getElementById('cameraAlert').style.display = "none";
             $("#imageData").val(image);
-         })
+        })
 
     }
     else {
@@ -299,7 +348,7 @@ $(function () {
         document.getElementById('imageData').classList.remove('req');
 
     }
-   
+
 })
 
 
