@@ -104,6 +104,12 @@ function validateForm() {
                 document.getElementById("cameraAlert").style.display = "block";
                 alert("CAPTURE and SAVE a selfie!")
             }
+            if (y[i].id == "FileUpload1") {
+                if (document.getElementById("FileUpload1").files.length == 0) {
+                    alert("Upload a photo before submiting!");
+                    document.getElementById('fileContainer').className += " invalid";
+                }
+            }
             valid = false;
         }
         if (y[i].Validators != null) {
@@ -220,6 +226,7 @@ $(function () {
         document.getElementById('cameraDiv').style.display = "inline-block";
         document.getElementById('fileUploadDiv').style.display = "none";
         document.getElementById('imageData').className += " req";
+        document.getElementById('FileUpload1').classList.remove('req');
         const player = document.getElementById('player');
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
@@ -308,6 +315,7 @@ $(function () {
         document.getElementById('cameraDiv').style.display = "none";
         document.getElementById('fileUploadDiv').style.display = "block";
         document.getElementById('imageData').classList.remove('req');
+        document.getElementById('FileUpload1').className += " req";
 
     }
 
@@ -353,6 +361,10 @@ $(document).ready(function () {
     $('input').change(function () {
         if (this.classList.contains("invalid") && this.value != "") {
             this.classList.remove("invalid");
+        }
+        if(this.id == "FileUpload1" && this.files.length > 0) 
+        {
+            document.getElementById("fileContainer").classList.remove("invalid");
         }
     })
 

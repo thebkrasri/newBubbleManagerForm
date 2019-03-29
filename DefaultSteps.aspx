@@ -506,8 +506,8 @@
                     Display="Dynamic" ErrorMessage="Please Upload a Photo<br />" ValidationGroup="Submit"
                     CssClass="ReqFieldCSS" />
                 <div class="imageLoader">
-                    <label class="fileContainer">
-                        <img src="Content/upload.png" height="20" />Upload Image
+                    <label class="fileContainer" id="fileContainer">
+                        <img src="Content/upload.png" height="50" />Upload Image
                         <asp:FileUpload ID="FileUpload1" accept="image/*" runat="server"
                             text="Choose Photo or Take Selfie" style="display:none" />
                     </label>
