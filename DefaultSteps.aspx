@@ -486,7 +486,12 @@
             <div id="cameraDiv" runat="server">
                 <div id="cameraAlert">Capture and save a selfie!</div>
                 <div id="captureDiv" width=auto height=auto>
-                    <video id="player" autoplay width=auto height=auto style="border: solid 3px red"></video>
+                    <div style="display:table;position: relative;">
+                    <div id="pictureBox"></div>
+                    <video id="player" autoplay width=auto height=auto style="border:none;">
+                    </video>
+                    </div>
+
                     <input type="button" id="capture" value="Capture" />
                 </div>
                 <div id="canvasDiv" style="display: none">

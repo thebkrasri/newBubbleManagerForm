@@ -51,6 +51,13 @@ function showTab(n) {
     } else {
         document.getElementById("nextBtn").innerHTML = "Next";
     }
+    if (x[n].id == "PhotoPanel") {
+        if ($.urlParam('Camera') == "Yes") {
+            var vheight = document.getElementById('pictureBox').clientHeight;
+            var boxWidth = vheight * .75;
+            document.getElementById('pictureBox').style.width = boxWidth + "px";
+        }
+    }
     // ... and run a function that displays the correct step indicator:
     fixStepIndicator(n)
 }
@@ -76,52 +83,6 @@ function nextPrev(n) {
     // Otherwise, display the correct tab:
     showTab(currentTab);
 }
-
-// When the user clicks the "Submit", open the modal
-/* myBtn.onclick = function () {
-    if (typeof (Page_ClientValidate) == 'function') {
-        Page_ClientValidate("Submit");
-    }
-    var birthdate = new Date(document.getElementById("cmbMonth").value + " " + document.getElementById("cmbDay").value + " " + document.getElementById("cmbYear").value);
-    var age = getAge(birthdate);
-    if (age < 10) {
-        var confirmStr = 'You have entered that you are ' + age + ' years old.\nPlease confirm your age.';
-        if (confirm(confirmStr) == false) { return; }
-    }
-
-    if (Page_IsValid) {
-        //do something
-        if ('<%= Session["ShowTerms"] %>' == 'True') {
-            modal.style.display = "block";
-        }
-        else { btnShipper.click(); }
-    }
-    else {
-        alert('Please fill in ALL required fields');
-    }
-
-} 
-$('#optLanguage').change(function (d) {
-    var language = $(this).val();//d.value;
-
-    $.ajax({
-        type: "POST",
-        url: '<%=ResolveUrl("DefaultCamera.aspx/ChangeLang") %>',
-        cache: false,
-        data: '{ lang: "' + language + '"}',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function () {
-            $(".tab").load(location.href + " .tab>*", "");
-        },
-        error: function () {
-            alert("failed");
-        }
-
-    });
-    return false;
-});
-*/
 
 function validateForm() {
     // This function deals with validation of the form fields
@@ -278,6 +239,7 @@ $(function () {
             .then(function (stream) {
                 player.srcObject = stream;
             });
+
         captureButton.addEventListener('click', function () {
             // Draw the video frame to the canvas.
             fitImage(context, player);

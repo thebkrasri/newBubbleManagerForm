@@ -91,7 +91,7 @@ h2 {
     padding: 20px;
     margin: auto;
     margin-bottom: 20px;
-    overflow: auto;
+    overflow: hidden;
     box-shadow: 0 5px 10px rgba(0, 0, 0, .7);
 }
 
@@ -396,6 +396,18 @@ float:right;
 
     #cameraAlert {
         display: none;
+    }
+
+    #pictureBox{
+        border: 3px solid red;
+        background: transparent;
+        height: 100%;
+        left:50%;
+        top:50%;
+        -webkit-transform: translate(-50%, -50%);
+         -moz-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        position:absolute;
     }
 
     /*Tab View CSS*/
