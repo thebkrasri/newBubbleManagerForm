@@ -7,18 +7,13 @@
         {
             "name": "Browser/Server",
             "configurations": [
-                "Server",
+            
                 "Chrome"
             ]
         }
     ],
     "configurations": [
-        {
-            "name": "Server",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceFolder}/DefaultCamera.aspx.cs"
-     },
+        
         {
             "type": "chrome",
             "request": "launch",

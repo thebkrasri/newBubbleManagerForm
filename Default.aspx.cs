@@ -8,9 +8,10 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System;
 using System.Web.UI.WebControls;
+using System.Collections.Generic;
+using System.Linq;
 
-
-public partial class DefaultCamera : System.Web.UI.Page
+public partial class Default : System.Web.UI.Page
 {
     public string useCamera
     {
@@ -33,9 +34,7 @@ public partial class DefaultCamera : System.Web.UI.Page
     {
         if (!this.IsPostBack)
         {
-            
-            
-            Insurance.LabelAttributes.Add("ID", "lblInsurance");
+            Insurance.SelectedIndex = -1;
             CountryID.DataBind();
             EmergencyCountryID.DataBind();
             HowHearTextID.DataBind();
@@ -67,7 +66,7 @@ public partial class DefaultCamera : System.Web.UI.Page
             {
                 adapter.Fill(Termsdt);
             }
-            if (Termsdt.Rows[0].ItemArray[1].ToString() == "True")
+            if (Termsdt.Rows[0]["ShowTerms"].ToString() == "True")
             {
                 this.Session["ShowTerms"] = true;
                 pTerms.InnerHtml = Termsdt.Rows[0].ItemArray[0].ToString().Replace(System.Environment.NewLine, "<br />");
@@ -94,12 +93,12 @@ public partial class DefaultCamera : System.Web.UI.Page
                 this.Session["fieldsdt"] = fieldsdt;
             }
             ChangeForm();
-            if (useCamera == "Yes")
+            if (useCamera.ToLower() == "yes")
             {
                 //ShowMessage("title", FileUploadValidator.ValidationGroup);
                 FileUploadValidator.Enabled = false;
                 //ShowMessage("title", FileUploadValidator.ValidationGroup);
-            } 
+            }
         }
     }
 
@@ -222,15 +221,17 @@ public partial class DefaultCamera : System.Web.UI.Page
 
                 else
                 {
-                    if (controlName == "Insurance")
+                    // if (controlName == "Insurance")
+                    if (MyControl is CheckBox)
                     {
                         if (displayType == "Included and Required")
                         {
                             ((CheckBox)MyControl).CssClass = "req";
                         }
-                        ((CheckBox)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox BackgroundColor"].ToString());
+                         ((CheckBox)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox BackgroundColor"].ToString());
                     }
-                    else if (controlName.EndsWith("ID") || controlName.StartsWith("cmb") || controlName == "Gender")
+                    // else if (controlName.EndsWith("ID") || controlName.StartsWith("cmb") || controlName == "Gender")
+                    else if (MyControl is DropDownList)
                     {
                         if (displayType == "Included and Required")
                         {
@@ -240,7 +241,7 @@ public partial class DefaultCamera : System.Web.UI.Page
                         ((DropDownList)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox TextColor"].ToString());
 
                     }
-                    else
+                    else if (MyControl is TextBox)
                     {
                         if (displayType == "Included and Required")
                         {
@@ -349,20 +350,41 @@ public partial class DefaultCamera : System.Web.UI.Page
         string connection = System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         mycon.ConnectionString = connection;
         var dt = new DataTable();
-        using (OleDbDataAdapter adapter = new OleDbDataAdapter("SELECT FirstName, LastName, Email FROM Customer WHERE CustomerID = " + CustomerNumber.Text, mycon))
+        using (OleDbDataAdapter adapter = new OleDbDataAdapter("SELECT * FROM Customer WHERE CustomerID = " + CustomerNumber.Text, mycon))
         {
             adapter.Fill(dt);
         }
 
         if (dt.Rows.Count > 0)
         {
-            FirstName.Text = (string)dt.Rows[0].ItemArray[0];
-            LastName.Text = (string)dt.Rows[0].ItemArray[1];
-            Email.Text = (string)dt.Rows[0].ItemArray[2];
+            FirstName.Text = (string)dt.Rows[0]["FirstName"];
+            LastName.Text = (string)dt.Rows[0]["LastName"];
+            Email.Text = (string)dt.Rows[0]["Email"];
+            DateTime BirthDate = (DateTime)dt.Rows[0]["BirthDate"];
+            cmbDay.SelectedValue = BirthDate.Day.ToString();
+            cmbMonth.SelectedIndex = BirthDate.Month;
+            cmbYear.SelectedValue = BirthDate.Year.ToString();
+            Gender.SelectedValue = (string)dt.Rows[0]["Gender"];
+            Address1.Text = (string)dt.Rows[0]["Address1"];
+            if (dt.Rows[0]["Address2"] != DBNull.Value)
+            {
+                Address2.Text = (string)dt.Rows[0]["Address2"];
+            };
+            City.Text = (string)dt.Rows[0]["City"];
+            PostalCode.Text = (string)dt.Rows[0]["PostalCode"];
+            DropDownList CountryDD = (DropDownList)Page.FindControl("CountryID");
+            DropDownList StateDD = (DropDownList)Page.FindControl("StateID");
+            Label StateLabel = (Label)Page.FindControl("lblStateID");
+            CountryDD.SelectedValue = dt.Rows[0]["CountryID"].ToString();
+            FindStates(CountryDD, StateDD, StateLabel);
+            if (dt.Rows[0]["StateID"] != DBNull.Value)
+            {
+                StateDD.SelectedValue = dt.Rows[0]["StateID"].ToString();
+            }
             CustomerNumberError.Text = "Customer " + FirstName.Text + " " + LastName.Text + " Found";
             CustomerNumberError.Style["color"] = "green";
             CustomerNumberHidden.Value = CustomerNumber.Text;
-            onloadModal.Style["display"] = "none";
+            prevCustomerModal.Style["display"] = "none";
         }
         else
         {
@@ -370,12 +392,14 @@ public partial class DefaultCamera : System.Web.UI.Page
             CustomerNumberError.Text = "Customer Number not found.";
             FirstName.Text = "";
             LastName.Text = "";
+            prevCustomerModal.Style["display"] = "table";
         }
     }
 
     protected void Button1_Click(Object Sender, EventArgs E)
     {
         Page.Validate("Submit");
+        List<IValidator> errored = this.Validators.Cast<IValidator>().Where(v => !v.IsValid).ToList();
         if (Page.IsValid)
         {
             InsertShipper();
@@ -434,7 +458,7 @@ public partial class DefaultCamera : System.Web.UI.Page
         AccessDataSource2.InsertParameters.Add("DiveLevelID", DiveLevelID.SelectedValue);
         AccessDataSource2.InsertParameters.Add("DiveOrgID", DiveOrgID.SelectedValue);
         AccessDataSource2.InsertParameters.Add("NumberOfDives", NumberOfDives.Text);
-        AccessDataSource2.InsertParameters.Add("Insurance", "1");
+        AccessDataSource2.InsertParameters.Add("Insurance", Insurance.SelectedValue);
         AccessDataSource2.InsertParameters.Add("InsuranceName", InsuranceName.Text);
         AccessDataSource2.InsertParameters.Add("EmergencyCountryID", EmergencyCountryID.Text);
         AccessDataSource2.InsertParameters.Add("ArrivalDate", DateTime.Now.ToShortDateString());
@@ -464,7 +488,7 @@ public partial class DefaultCamera : System.Web.UI.Page
         AccessDataSource2.UpdateParameters.Add("DiveLevelID", DiveLevelID.SelectedValue);
         AccessDataSource2.UpdateParameters.Add("DiveOrgID", DiveOrgID.SelectedValue);
         AccessDataSource2.UpdateParameters.Add("NumberOfDives", NumberOfDives.Text);
-        AccessDataSource2.UpdateParameters.Add("Insurance", "1");
+        AccessDataSource2.UpdateParameters.Add("Insurance", Insurance.SelectedValue);
         AccessDataSource2.UpdateParameters.Add("InsuranceName", InsuranceName.Text);
         AccessDataSource2.UpdateParameters.Add("EmergencyCountryID", EmergencyCountryID.Text);
         AccessDataSource2.UpdateParameters.Add("ArrivalDate", DateTime.Now.ToShortDateString());
@@ -488,9 +512,9 @@ public partial class DefaultCamera : System.Web.UI.Page
             Directory.CreateDirectory(imagefolder);
         }
 
-        if (useCamera == "Yes")
+        if (this.CameraUsed.Value == "true")
         {
-             using (var fs = new FileStream(imagefolder + fileName, FileMode.Create))
+            using (var fs = new FileStream(imagefolder + fileName, FileMode.Create))
             {
                 using (var bw = new BinaryWriter(fs))
                 {
@@ -502,7 +526,7 @@ public partial class DefaultCamera : System.Web.UI.Page
                 fs.Close();
             }
             AccessDataSource2.InsertParameters.Add("MyImage", fileName);
-                AccessDataSource2.UpdateParameters.Add("MyImage", fileName);
+            AccessDataSource2.UpdateParameters.Add("MyImage", fileName);
 
         }
         else
@@ -567,30 +591,40 @@ public partial class DefaultCamera : System.Web.UI.Page
         else
             AccessDataSource2.Update();
 
-        Response.Redirect("FormSubmitted.aspx");
+        string urlStr = "FormSubmitted.aspx?Camera=" + useCamera;
+
+        Response.Redirect(urlStr);
     }
 
     protected void CountryID_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        //ShowMessage("test", "message");
+        DropDownList CountryDD = sender as DropDownList;
+        DropDownList StateDD = (DropDownList)Page.FindControl("StateID") as DropDownList;
+        Label StateLabel = (Label)Page.FindControl("lblStateID") as Label;
+        FindStates(CountryDD, StateDD, StateLabel);
+    }
+
+    protected void FindStates(DropDownList CountryDD, DropDownList StateDD, Label StateLabel)
     {
         System.Data.DataView dv = (System.Data.DataView)this.HasStateDataSource.Select(DataSourceSelectArguments.Empty);
         string hasState = dv[0][0].ToString();
         if (hasState == "True")
         {
-            this.lblStateID.Style.Add("display", "");
-            StateID.Style.Add("display", "");
-            StateID.DataBind();
+            StateDiv.Style.Add("display", "block");
+            StateDD.DataBind();
             StateID.Items.Insert(0, new ListItem("--Select--", "0"));
-            StateID.SelectedIndex = -1;
-            StateValidator.Enabled = true;
+            StateDD.SelectedIndex = -1;
+            StateDD.CssClass = "req";
+
         }
+
         else
         {
-            this.lblStateID.Style.Add("display", "none");
-            StateID.Style.Add("display", "none");
-            StateValidator.Enabled = false;
+            StateDiv.Style.Add("display", "none");
         }
     }
-
     protected void cbCertifiedDiver_Checked(object sender, EventArgs e)
     {
         if (cbCertifiedDiver.Checked)
@@ -604,5 +638,6 @@ public partial class DefaultCamera : System.Web.UI.Page
             this.NumberOfDivesDiv.Style.Add("display", "none");
         }
     }
+
 }
 

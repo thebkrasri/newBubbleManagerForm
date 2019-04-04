@@ -44,7 +44,13 @@ form {
     max-width: 700px;
     margin: auto;
 }
+#btnCustomerNumber {
+    position: absolute;
+    width: auto;
+    margin: 2em;
+    float: right;
 
+}
 #statelabel
  {
     margin: 0;
@@ -57,7 +63,7 @@ body span {
 }
 
 h2 {
-    background-color: Black;
+
     color: black;
     max-width: 90%;
     text-align: center;
@@ -201,12 +207,13 @@ option:hover{
    font-size: 1em;
 }
 
-#CertifiedDiverDiv .row {
+#DivingDiv .row {
     padding: 10px;
 }
 
 #InsuranceDiv {
-    text-align: left;
+    text-align: center;
+    padding-bottom: 0px;
 }
 #Insurance, #lblInsurance {
     display: inline-block;
@@ -215,10 +222,10 @@ option:hover{
 
 #InsuranceDiv span {
     width: auto;
-    display: inline-block;
+    display: block;
 }
 
-#InsuranceNameDiv span, #InsuranceDiv span, #CertifiedDiverDiv {
+#InsuranceNameDiv span, #CertifiedDiverDiv {
     text-align: left;
 }
 #InsuranceName, #lblInsuranceName {
@@ -403,8 +410,8 @@ float:right;
         display: none;
     }
 
-    #pictureBox{
-        border: 3px solid red;
+    #pictureBox, #loadingImg{
+        border: none;
         background: transparent;
         height: 100%;
         left:50%;
@@ -499,6 +506,12 @@ float:right;
   }
 
   @media only screen and (max-width: 600px) {
+    #btnCustomerNumber {
+        position: relative;
+        float: unset;
+        margin: 0px;
+    
+    }
       #stepbuttons {
           display: block;
           margin: auto;

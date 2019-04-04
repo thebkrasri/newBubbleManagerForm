@@ -1,0 +1,6 @@
+{
+  "port": 23155,
+  "path": "c:\\inetpub\\wwwroot\\Test",
+  "clr": "v4.0",
+  "protocol": "http"
+}

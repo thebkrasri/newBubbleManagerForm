@@ -2,6 +2,17 @@
 
 var currentTab = 0;
 var birthdate = "";
+var UseCamera;
+$(function () {
+    if ($.urlParam('Camera').toLowerCase() == "yes") {
+        UseCamera = true;
+        document.getElementById('CameraUsed').value = "true";
+    }
+    else {
+        UseCamera = false;
+        document.getElementById('CameraUsed').value = "false";
+    }
+});
 
 function getAge(dateString) {
     var today = new Date();
@@ -14,6 +25,17 @@ function getAge(dateString) {
     return age;
 }
 
+function SetUseCamera(bool) {
+    UseCamera = bool;
+    document.getElementById('CameraUsed').value = UseCamera.toString();
+    // alert(UseCamera);
+}
+
+function GetUseCamera() {
+    //alert(UseCamera);
+    return UseCamera;
+
+}
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results == null) {
@@ -43,8 +65,10 @@ function showTab(n) {
     // ... and fix the Previous/Next buttons:
     if (n == 0) {
         document.getElementById("prevBtn").style.display = "none";
+        document.getElementById("btnCustomerNumber").style.display = '';
     } else {
         document.getElementById("prevBtn").style.display = "inline";
+        document.getElementById("btnCustomerNumber").style.display = 'none';
     }
     if (n == (x.length - 1)) {
         document.getElementById("nextBtn").innerHTML = "Submit";
@@ -52,10 +76,12 @@ function showTab(n) {
         document.getElementById("nextBtn").innerHTML = "Next";
     }
     if (x[n].id == "PhotoPanel") {
-        if ($.urlParam('Camera') == "Yes") {
-            var vheight = document.getElementById('pictureBox').clientHeight;
-            var boxWidth = vheight * .75;
-            document.getElementById('pictureBox').style.width = boxWidth + "px";
+        //if ($.urlParam('Camera') == "Yes") {
+        if (UseCamera) {
+            loadCamera();
+        }
+        else {
+            loadFileUpload();
         }
     }
     // ... and run a function that displays the correct step indicator:
@@ -173,6 +199,12 @@ function fixStepIndicator(n) {
     }
 }
 
+function loadFileUpload() {
+    document.getElementById('cameraDiv').style.display = "none";
+    document.getElementById('fileUploadDiv').style.display = "block";
+    document.getElementById('imageData').classList.remove('req');
+    document.getElementById('FileUpload1').className += " req";
+}
 
 $(function () {
     $("#FileUpload1").change(function () {
@@ -212,129 +244,123 @@ $(function () {
     });
 });
 
-$(function () {
+function loadCamera() {
     //const urlParams = new URLSearchParams(window.location.search);
-    const useCamera = $.urlParam('Camera');//urlParams.get('Camera');
-    if (useCamera == "Yes") {
-        /*navigator.permissions.query({ name: 'camera' })
-            .then(function (permissionObj) {
-                console.log(permissionObj.state);
-            })
-            .catch(function (error) {
-                console.log('Got error :', error);
-            })*/
-        document.getElementById('cameraDiv').style.display = "inline-block";
-        document.getElementById('fileUploadDiv').style.display = "none";
-        document.getElementById('imageData').className += " req";
-        document.getElementById('FileUpload1').classList.remove('req');
-        const player = document.getElementById('player');
-        const canvas = document.getElementById('canvas');
-        const context = canvas.getContext('2d');
-        const captureButton = document.getElementById('capture');
-        const saveButton = document.getElementById('btnSave');
-        const redoButton = document.getElementById('redo');
+    //const useCamera = $.urlParam('Camera');//urlParams.get('Camera');
+    // if (useCamera == "Yes") {
+    /*navigator.permissions.query({ name: 'camera' })
+        .then(function (permissionObj) {
+            console.log(permissionObj.state);
+        })
+        .catch(function (error) {
+            console.log('Got error :', error);
+        })*/
+    document.getElementById('loadingImg').style.display = "block";
+    document.getElementById('cameraDiv').style.display = "inline-block";
+    document.getElementById('fileUploadDiv').style.display = "none";
+    document.getElementById('imageData').className += " req";
+    document.getElementById('FileUpload1').classList.remove('req');
+    const player = document.getElementById('player');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const captureButton = document.getElementById('capture');
+    captureButton.style.display = "none";
+    const saveButton = document.getElementById('btnSave');
+    const redoButton = document.getElementById('redo');
 
-        const constraints = {
-            audio: false,
-            video: {
-                width: 240,
-                height: 320
-            }
-        };
-        // Attach the video stream to the video element and autoplay.
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then(function (stream) {
-                player.srcObject = stream;
-            });
-
-        captureButton.addEventListener('click', function () {
-            // Draw the video frame to the canvas.
-            fitImage(context, player);
-            //context.drawImage(player, 0, 0, canvas.width, canvas.height);
-            //img.src = canvas.toDataURL('image/webp');
-            document.getElementById('canvasDiv').style.display = "block";
-            document.getElementById('canvas').style.border = "solid 3px yellow";
-            document.getElementById('captureDiv').style.display = "none";
-            // Stop all video streams.
-            player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
-
-            return false;
+    const constraints = {
+        audio: false,
+        video: {
+            width: 240,
+            height: 320
+        }
+    };
+    // Attach the video stream to the video element and autoplay.
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(function (stream) {
+            player.srcObject = stream;
+        })
+        .catch(function (err) {
+            alert("Webcam could not load\n" + err.name + ": " + err.message);
+            SetUseCamera(false);
+            loadFileUpload();
         });
 
-        function fitImage(context, imageObj) {
-            var imageAspectRatio = imageObj.videoWidth / imageObj.videoHeight;
-            var canvasAspectRatio = canvas.width / canvas.height;
-            var renderableHeight, renderableWidth, xStart, yStart;
+    player.addEventListener('canplaythrough', function () {
+        document.getElementById('loadingImg').style.display = "none";
+        var vheight = document.getElementById('player').clientHeight;
+        var boxWidth = vheight * .75;
+        document.getElementById('pictureBox').style.width = boxWidth + "px";
+        document.getElementById('pictureBox').style.border = "3px solid red";
+        captureButton.style.display = "block";
+    })
 
-            // If image's aspect ratio is less than canvas's we fit on height
-            // and place the image centrally along width
-            if (imageAspectRatio > canvasAspectRatio) {
-                renderableHeight = canvas.height;
-                renderableWidth = imageObj.videoWidth * (renderableHeight / imageObj.videoHeight);
-                xStart = (canvas.width - renderableWidth) / 2;
-                yStart = 0;
-            }
+    captureButton.addEventListener('click', function () {
+        // Draw the video frame to the canvas.
+        fitImage(context, player);
+        //context.drawImage(player, 0, 0, canvas.width, canvas.height);
+        //img.src = canvas.toDataURL('image/webp');
+        document.getElementById('canvasDiv').style.display = "block";
+        document.getElementById('canvas').style.border = "solid 3px yellow";
+        document.getElementById('captureDiv').style.display = "none";
+        // Stop all video streams.
+        player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
+        var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
+        document.getElementById('canvas').style.border = "solid 5px green";
+        document.getElementById('cameraAlert').style.display = "none";
+        $("#imageData").val(image);
+        return false;
+    });
 
-            // If image's aspect ratio is greater than canvas's we fit on width
-            // and place the image centrally along height
-            else if (imageAspectRatio < canvasAspectRatio) {
-                renderableWidth = canvas.width
-                renderableHeight = imageObj.videoHeight * (renderableWidth / imageObj.videoWidth);
-                xStart = 0;
-                yStart = (canvas.height - renderableHeight) / 2;
-            }
+    function fitImage(context, imageObj) {
+        var imageAspectRatio = imageObj.videoWidth / imageObj.videoHeight;
+        var canvasAspectRatio = canvas.width / canvas.height;
+        var renderableHeight, renderableWidth, xStart, yStart;
 
-            // Happy path - keep aspect ratio
-            else {
-                renderableHeight = canvas.height;
-                renderableWidth = canvas.width;
-                xStart = 0;
-                yStart = 0;
-            }
-            context.drawImage(imageObj, xStart, yStart, renderableWidth, renderableHeight);
+        // If image's aspect ratio is less than canvas's we fit on height
+        // and place the image centrally along width
+        if (imageAspectRatio > canvasAspectRatio) {
+            renderableHeight = canvas.height;
+            renderableWidth = imageObj.videoWidth * (renderableHeight / imageObj.videoHeight);
+            xStart = (canvas.width - renderableWidth) / 2;
+            yStart = 0;
         }
 
-        redoButton.addEventListener('click', function () {
-            document.getElementById('canvasDiv').style.display = "none";
-            document.getElementById('canvas').style.border = "solid 3px yellow";
-            document.getElementById('captureDiv').style.display = "block";
-            // Stop all video streams.
-            player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = true });
-            return false;
-        });
-        saveButton.addEventListener('click', function () {
-            var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
-            //imageSrc = image.replace('data:image/jpg;base64,', '');
-            document.getElementById('canvas').style.border = "solid 5px green";
-            document.getElementById('cameraAlert').style.display = "none";
-            $("#imageData").val(image);
-        })
+        // If image's aspect ratio is greater than canvas's we fit on width
+        // and place the image centrally along height
+        else if (imageAspectRatio < canvasAspectRatio) {
+            renderableWidth = canvas.width
+            renderableHeight = imageObj.videoHeight * (renderableWidth / imageObj.videoWidth);
+            xStart = 0;
+            yStart = (canvas.height - renderableHeight) / 2;
+        }
 
-    }
-    else {
-        document.getElementById('cameraDiv').style.display = "none";
-        document.getElementById('fileUploadDiv').style.display = "block";
-        document.getElementById('imageData').classList.remove('req');
-        document.getElementById('FileUpload1').className += " req";
-
+        // Happy path - keep aspect ratio
+        else {
+            renderableHeight = canvas.height;
+            renderableWidth = canvas.width;
+            xStart = 0;
+            yStart = 0;
+        }
+        context.drawImage(imageObj, xStart, yStart, renderableWidth, renderableHeight);
     }
 
-})
-
-
-function displayWhenChecked(checkBox, element) {
-    var checkBox = document.getElementById(checkBox);
-    // Get the output text
-    var text = document.getElementById(element);
-
-    // If the checkbox is checked, display the output text
-    if (checkBox.checked == true) {
-        text.style.display = "block";
-    } else {
-        text.style.display = "none";
-    }
+    redoButton.addEventListener('click', function () {
+        document.getElementById('canvasDiv').style.display = "none";
+        document.getElementById('canvas').style.border = "solid 3px yellow";
+        document.getElementById('captureDiv').style.display = "block";
+        // Restart video streams.
+        player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = true });
+        return false;
+    });
+    saveButton.addEventListener('click', function () {
+        var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
+        //imageSrc = image.replace('data:image/jpg;base64,', '');
+        document.getElementById('canvas').style.border = "solid 5px green";
+        document.getElementById('cameraAlert').style.display = "none";
+        $("#imageData").val(image);
+    })
 }
-
 
 // Get the modal
 var modal = document.getElementById('termsModal');
@@ -348,6 +374,11 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks on <span> (x), close the modal
 
 $(document).ready(function () {
+
+    $('#btnCustomerNumber').click(function () {
+        $('#prevCustomerModal').css('display', 'table');
+    })
+
     $('#btnClose').click(function () {
         $(this).closest('.modal').css('display', 'none');
     })
@@ -362,15 +393,22 @@ $(document).ready(function () {
         if (this.classList.contains("invalid") && this.value != "") {
             this.classList.remove("invalid");
         }
-        if(this.id == "FileUpload1" && this.files.length > 0) 
-        {
+        if (this.id == "FileUpload1" && this.files.length > 0) {
             document.getElementById("fileContainer").classList.remove("invalid");
         }
     })
 
-    $('#Insurance').change(function () {
-        displayWhenChecked("Insurance", "InsuranceNameDiv");
-    })
+    $('#Insurance_0').on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#InsuranceNameDiv').css("display", "block");
+        }
+    });
+    $('#Insurance_1').on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#InsuranceNameDiv').css("display", "none");
+        }
+    });
+
 })
 
 
