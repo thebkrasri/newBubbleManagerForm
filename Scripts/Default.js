@@ -265,7 +265,6 @@ function loadCamera() {
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     captureButton.style.display = "none";
-    const saveButton = document.getElementById('btnSave');
     const redoButton = document.getElementById('redo');
 
     const constraints = {
@@ -353,13 +352,6 @@ function loadCamera() {
         player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = true });
         return false;
     });
-    saveButton.addEventListener('click', function () {
-        var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
-        //imageSrc = image.replace('data:image/jpg;base64,', '');
-        document.getElementById('canvas').style.border = "solid 5px green";
-        document.getElementById('cameraAlert').style.display = "none";
-        $("#imageData").val(image);
-    })
 }
 
 // Get the modal

@@ -406,7 +406,12 @@ public partial class Default : System.Web.UI.Page
         }
         else
         {
-            ShowMessage("Missing Fields", "Please fill in ALL required fields!");
+            var errs = "";
+            foreach (IValidator i in errored) {
+                errs = errs + "\n" + i.ErrorMessage.ToString();
+
+            }
+            ShowMessage("Missing Fields", "Please fill in ALL required fields!\n" + errs);
         }
     }
 

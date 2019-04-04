@@ -490,7 +490,6 @@
                 </div>
                 <div id="canvasDiv" style="display: none">
                     <canvas id="canvas" width="240" height="320"></canvas>
-                    <input type="button" id="btnSave" value="Save" style="display:none"/>
                     <input type="button" id="redo" value="Redo" />
                     <input type="hidden" name="imageData" id="imageData" runat="server" />
                 </div>

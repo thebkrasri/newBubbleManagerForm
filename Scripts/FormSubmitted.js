@@ -1,12 +1,9 @@
 ﻿$(function () {
-    var urlSr;
+    var urlStr = "Default.aspx";
     if ($.urlParam('Camera') != null) {
         if ($.urlParam('Camera').toLowerCase() == "yes") {
             urlStr = "Default.aspx?Camera=yes";
         }
-    }
-    else {
-        urlStr = "Default.aspx";
     }
     setTimeout(function () {
         location.href = urlStr;
