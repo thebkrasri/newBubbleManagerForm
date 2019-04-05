@@ -1,16 +1,22 @@
 ﻿var urlStr = "Default.aspx";
 $(function () {
+
     if ($.urlParam('Camera') != null) {
         if ($.urlParam('Camera').toLowerCase() == "yes") {
             
             urlStr = "Default.aspx?Camera=yes";
-            setTimeout(function () {
-                $('#redirectDiv').css('display', 'block');
-            }, 2000);
-            setTimeout(function () {
-                location.href = urlStr;
-           }, 7000);
+           // setTimeout(function () {
+           //     $('#redirectDiv').css('display', 'block');
+           // }, 2000);
+           // setTimeout(function () {
+              //  location.href = urlStr;
+           //}, 7000);
         }
+    }
+    if ($.urlParam('ID') != null) {
+        var idStr = $.urlParam('ID');
+        $('#IDnum').text(idStr);
+        $('#CustomerID').css('display', 'block');
     }
 });
 

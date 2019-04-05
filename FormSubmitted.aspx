@@ -105,6 +105,7 @@
         Your information has been uploaded to our database.<br />
         You are one step closer to the underwater world!
     </p>
+    <p id="CustomerID" style="display:none">Your customer ID is <span id="IDnum" style="font-weight: bold"></span></p>
     <input type="button" id="btnRefresh" value="Add Another Customer" class="button" />
     <div id="redirectDiv" style="display: none">
         <div>

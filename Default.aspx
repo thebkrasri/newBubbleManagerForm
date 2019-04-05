@@ -123,7 +123,7 @@
                 </div>
             </div>
         </div>
-        <input type="button" id="btnCustomerNumber" value="I have a Customer #" class="button"/>
+        <input type="button" id="btnCustomerNumber" value="I have a Customer #" class="button" />
         <div class="row" style="margin-top: 10px">
             <asp:RadioButtonList RepeatDirection="Horizontal" AutoPostBack="true"
                 OnSelectedIndexChanged="optLanguage_SelectedIndexChanged" ID="optLanguage" runat="server"
@@ -204,6 +204,12 @@
                             Display="Dynamic" ErrorMessage="Please fill in a phone number" CssClass="ReqFieldCSS"
                             ValidationGroup="Submit" /></span>
                     <asp:TextBox ID="Phone" runat="server" AutoCompleteType="HomePhone" CssClass=" " />
+                    <asp:Label runat="server" ID="lblFacebook" Text="lblFacebook" class="controlLabel"></asp:Label>
+                    <span>
+                        <asp:RequiredFieldValidator ID="FacebookValidator" runat="server" ControlToValidate="Facebook"
+                            Display="Dynamic" ErrorMessage="Please fill in a Facebook/Instagram/WhatsApp account" CssClass="ReqFieldCSS"
+                            ValidationGroup="Submit" /></span>
+                    <asp:TextBox ID="Facebook" runat="server" CssClass=" " />
                     <asp:Label runat="server" class="controlLabel" ID="lblPassportNum" Text="lblPassPortNum">
                     </asp:Label>
                     <span>
@@ -212,6 +218,13 @@
                             ErrorMessage="Please fill in a passport number." CssClass="ReqFieldCSS"
                             ValidationGroup="Submit" /></span>
                     <asp:TextBox ID="PassportNum" runat="server" CssClass=" " />
+                    <asp:Label runat="server" ID="lblDietaryRestrictions" Text="lblDietaryRestrictions" class="controlLabel"></asp:Label>
+                    <span>
+                        <asp:RequiredFieldValidator ID="DietaryRestrictionsValidator" runat="server" ControlToValidate="DietaryRestrictions"
+                            Display="Dynamic" ErrorMessage="Please fill in dietary restrictions" CssClass="ReqFieldCSS"
+                            ValidationGroup="Submit" /></span>
+
+                    <asp:TextBox ID="DietaryRestrictions" runat="server" CssClass=" " />
                 </div>
             </div>
         </asp:Panel>
@@ -282,8 +295,8 @@
                             <asp:PostBackTrigger ControlID="prevCustBtn" />
                         </Triggers>
                     </asp:UpdatePanel>
-                    </div>
                 </div>
+            </div>
         </asp:Panel>
         <asp:Panel ID="EmergencyContactDiv" runat="server" CssClass="pnlCSS tab">
             <asp:Label runat="server" class="sectionHeader" ID="lblEmergencyContactDiv">Emergency Contact</asp:Label>
@@ -383,10 +396,19 @@
                             </span>
                         </div>
                     </div>
+                    <div class="row" id="LastDiveDateDiv" runat="server" style="display: none; text-align: center">
+                        <asp:Label runat="server" class="controlLabel" ID="lblLastDiveDate" Text="" Style="display:block"></asp:Label>
+                        <asp:TextBox ID="LastDiveDate" runat="server" CssClass=" " Style="display:block" />
+                        <span>
+                            <asp:RequiredFieldValidator ID="LastDiveDateValidator" runat="server" ControlToValidate="LastDiveDate"
+                                Display="Dynamic" ErrorMessage="Please fill in a date last dived" CssClass="ReqFieldCSS"
+                                ValidationGroup="Submit" />
+                        </span>
+                    </div>
                     <div class="row" id="NumberOfDivesDiv" runat="server" style="display: none; text-align: center">
-                        <asp:Label runat="server" class="controlLabel" ID="lblNumberOfDives" Text="lblNumberOfDives"
-                            Style="display: inline-block"></asp:Label>
-                        <asp:TextBox ID="NumberOfDives" runat="server" CssClass="" Style="display: inline-block" />
+                        <asp:Label runat="server" class="controlLabel" ID="lblNumberOfDives" Text=""
+                            Style="display: block"></asp:Label>
+                        <asp:TextBox ID="NumberOfDives" runat="server" CssClass="" Style="display: block" />
                         <span>
                             <asp:RequiredFieldValidator ID="NumberOfDivesValidator" runat="server"
                                 ControlToValidate="NumberOfDives" Display="Dynamic"
@@ -477,10 +499,11 @@
             <br />
             <div id="cameraDiv" runat="server">
                 <div id="cameraAlert">Capture a selfie!</div>
-                <div id="captureDiv" style="width:auto;height:auto">
+                <div id="captureDiv" style="width: auto; height: auto">
                     <div style="display: table; position: relative;">
                         <div id="loadingImg">
-                            <img src="Content/loading.gif" alt="Camera Loading..." /></div>
+                            <img src="Content/loading.gif" alt="Camera Loading..." />
+                        </div>
                         <div id="pictureBox"></div>
                         <video id="player" autoplay width="auto" height="auto" style="border: none;">
                         </video>

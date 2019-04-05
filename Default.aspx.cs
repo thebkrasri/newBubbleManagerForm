@@ -260,7 +260,7 @@ public partial class Default : System.Web.UI.Page
             {
                 string label = langLabel;
                 if (displayType == "Included and Required")
-                    label = label.Substring(0, label.Length - 1) + "*";
+                    label = label.Substring(0, label.Length) + "*";
                 else if (displayType == "Do Not Include")
                 {
                     MyLabel.Visible = false;
@@ -360,6 +360,14 @@ public partial class Default : System.Web.UI.Page
             FirstName.Text = (string)dt.Rows[0]["FirstName"];
             LastName.Text = (string)dt.Rows[0]["LastName"];
             Email.Text = (string)dt.Rows[0]["Email"];
+            if (dt.Rows[0]["Phone"] != DBNull.Value)
+            {
+                Phone.Text = (string)dt.Rows[0]["Phone"];
+            }
+            if (dt.Rows[0]["Facebook"] != DBNull.Value)
+            {
+                Facebook.Text = (string)dt.Rows[0]["Facebook"];
+            }
             DateTime BirthDate = (DateTime)dt.Rows[0]["BirthDate"];
             cmbDay.SelectedValue = BirthDate.Day.ToString();
             cmbMonth.SelectedIndex = BirthDate.Month;
@@ -435,8 +443,11 @@ public partial class Default : System.Web.UI.Page
             cs.RegisterStartupScript(cstype, csname1, cstext1, true);
         }
 
-        AccessDataSource2.InsertCommand = "INSERT INTO Customer (FirstName, LastName, Gender, BirthDate ,Address1,Address2,City, StateID,CountryID,PostalCode,Email, Phone, PassportNum, LanguageID, HowHearTextID, HowHearSpecific, WhereStayID, RoomOther,RoomNo, EmergencyName, Relationship, EmergencyNumber, EmergencyEmail, DiveLevelID, DiveOrgID, NumberOfDives, Insurance, InsuranceName, EmergencyCountryID, ArrivalDate, [image]) VALUES (@FirstName,@LastName, @Gender, @BirthDate, @Address1,@Address2,@City,@StateID, @Country,@PostalCode,@Email, @Phone, @PassportNum, @LanguageID, @HowHear, @HowHearSpecific, @WhereStayID, @RoomOther, @RoomNo, @EmergencyName, @Relationship, @EmergencyNumber, @EmergencyEmail, @DiveLevelID, @DiveOrgID, @NumberOfDives, @EmergencyCountryID, @ArrivalDate, @Insurance, @InsuranceName, @MyImage)";
-        AccessDataSource2.UpdateCommand = "Update Customer Set FirstName=@FirstName, LastName=@LastName, Gender=@Gender, BirthDate=@BirthDate, Address1=@Address1,Address2=@Address2,City=@City, StateID=@StateID, CountryID=@CountryID, PostalCode=@PostalCode,Email=@Email, Phone=@Phone, PassportNum=@PassportNum, LanguageID=@LanguageID, HowHearTextID=@HowHearTextID, HowHearSpecific=@HowHearSpecific, WhereStayID =@WhereStayID, RoomOther=@RoomOther,RoomNo=@RoomNo, EmergencyName=@EmergencyName, Relationship=@Relationship, EmergencyNumber=@EmergencyNumber, EmergencyEmail=@EmergencyEmail, DiveLevelID=@DiveLevelID, DiveOrgID=@DiveOrgID, NumberOfDives=@NumberOfDives, Insurance=@Insurance, InsuranceName=@InsuranceName, EmergencyCountryID=@EmergencyCountryID, ArrivalDate=@ArrivalDate, [image]=@MyImage WHERE CustomerID=" + CustomerNumberHidden.Value;
+        AccessDataSource2.InsertCommand = "INSERT INTO Customer (FirstName, LastName, Gender, BirthDate ,Address1,Address2,City, StateID,CountryID,PostalCode,Email, Phone, PassportNum, LanguageID, HowHearTextID, HowHearSpecific, WhereStayID, RoomOther,RoomNo, EmergencyName, Relationship, EmergencyNumber, EmergencyEmail, DiveLevelID, DiveOrgID, NumberOfDives, Insurance, InsuranceName, EmergencyCountryID, Facebook, DietaryRestrictions, LastDiveDate, ArrivalDate, [image]) VALUES (@FirstName,@LastName, @Gender, @BirthDate, @Address1,@Address2,@City,@StateID, @Country,@PostalCode,@Email, @Phone, @PassportNum, @LanguageID, @HowHear, @HowHearSpecific, @WhereStayID, @RoomOther, @RoomNo, @EmergencyName, @Relationship, @EmergencyNumber, @EmergencyEmail, @DiveLevelID, @DiveOrgID, @NumberOfDives, @EmergencyCountryID, @Facebook, @DietaryRestrictions, @LastDiveDate, @ArrivalDate, @Insurance, @InsuranceName, @MyImage)";
+        AccessDataSource2.UpdateCommand = "Update Customer Set FirstName=@FirstName, LastName=@LastName, Gender=@Gender, BirthDate=@BirthDate, Address1=@Address1,Address2=@Address2,City=@City, StateID=@StateID, CountryID=@CountryID, PostalCode=@PostalCode,Email=@Email, Phone=@Phone, PassportNum=@PassportNum, LanguageID=@LanguageID, HowHearTextID=@HowHearTextID, HowHearSpecific=@HowHearSpecific, WhereStayID =@WhereStayID, RoomOther=@RoomOther,RoomNo=@RoomNo, EmergencyName=@EmergencyName, Relationship=@Relationship, EmergencyNumber=@EmergencyNumber, EmergencyEmail=@EmergencyEmail, DiveLevelID=@DiveLevelID, DiveOrgID=@DiveOrgID, NumberOfDives=@NumberOfDives, Insurance=@Insurance, InsuranceName=@InsuranceName, EmergencyCountryID=@EmergencyCountryID, Facebook=@Facebook, DietaryRestrictions=@DietaryRestrictions, LastDiveDate=@LastDiveDate, ArrivalDate=@ArrivalDate, [image]=@MyImage WHERE CustomerID=" + CustomerNumberHidden.Value;
+
+
+
         AccessDataSource2.InsertParameters.Add("FirstName", FirstName.Text);
         AccessDataSource2.InsertParameters.Add("LastName", LastName.Text);
         AccessDataSource2.InsertParameters.Add("Gender", Gender.SelectedValue);
@@ -463,10 +474,15 @@ public partial class Default : System.Web.UI.Page
         AccessDataSource2.InsertParameters.Add("DiveLevelID", DiveLevelID.SelectedValue);
         AccessDataSource2.InsertParameters.Add("DiveOrgID", DiveOrgID.SelectedValue);
         AccessDataSource2.InsertParameters.Add("NumberOfDives", NumberOfDives.Text);
-        AccessDataSource2.InsertParameters.Add("Insurance", Insurance.SelectedValue);
+        AccessDataSource2.InsertParameters.Add("Insurance", "1");
         AccessDataSource2.InsertParameters.Add("InsuranceName", InsuranceName.Text);
         AccessDataSource2.InsertParameters.Add("EmergencyCountryID", EmergencyCountryID.Text);
+        AccessDataSource2.InsertParameters.Add("Facebook", Facebook.Text);
+        AccessDataSource2.InsertParameters.Add("DietaryRestrictions", DietaryRestrictions.Text);
+        AccessDataSource2.InsertParameters.Add("LastDiveDate", LastDiveDate.Text);
         AccessDataSource2.InsertParameters.Add("ArrivalDate", DateTime.Now.ToShortDateString());
+
+
         AccessDataSource2.UpdateParameters.Add("FirstName", FirstName.Text);
         AccessDataSource2.UpdateParameters.Add("LastName", LastName.Text);
         AccessDataSource2.UpdateParameters.Add("Gender", Gender.SelectedValue);
@@ -493,20 +509,25 @@ public partial class Default : System.Web.UI.Page
         AccessDataSource2.UpdateParameters.Add("DiveLevelID", DiveLevelID.SelectedValue);
         AccessDataSource2.UpdateParameters.Add("DiveOrgID", DiveOrgID.SelectedValue);
         AccessDataSource2.UpdateParameters.Add("NumberOfDives", NumberOfDives.Text);
-        AccessDataSource2.UpdateParameters.Add("Insurance", Insurance.SelectedValue);
+        AccessDataSource2.UpdateParameters.Add("Insurance", "1");
         AccessDataSource2.UpdateParameters.Add("InsuranceName", InsuranceName.Text);
         AccessDataSource2.UpdateParameters.Add("EmergencyCountryID", EmergencyCountryID.Text);
+        AccessDataSource2.UpdateParameters.Add("Facebook", Facebook.Text);
+        AccessDataSource2.UpdateParameters.Add("DietaryRestrictions", DietaryRestrictions.Text);
+        AccessDataSource2.UpdateParameters.Add("LastDiveDate", LastDiveDate.Text);
         AccessDataSource2.UpdateParameters.Add("ArrivalDate", DateTime.Now.ToShortDateString());
 
 
         DataView dv = (DataView)LatestCustomerDataSource.Select(DataSourceSelectArguments.Empty);
-        int lastID = (int)dv.Table.Rows[0][0];
-        string fileName = "";
-        if (CustomerNumberHidden.Value == null || CustomerNumberHidden.Value == "")
-            fileName = FirstName.Text + " " + LastName.Text + "-" + lastID + ".jpg";
-        else
-            fileName = FirstName.Text + " " + LastName.Text + "-" + CustomerNumberHidden.Value + ".jpg";
+        int CustomerID;
 
+        if (CustomerNumberHidden.Value == null || CustomerNumberHidden.Value == "")
+            
+            CustomerID = (int)dv.Table.Rows[0][0] + 1;
+        else
+            CustomerID = Convert.ToInt32(CustomerNumberHidden.Value);
+
+        string fileName = FirstName.Text + " " + LastName.Text + "-" + CustomerID.ToString() + ".jpg";
         //dv = (DataView)ImageFolderDataSource.Select(DataSourceSelectArguments.Empty);
         string imagefolder = "C:/BubbleManager/Customer Photos/";
         //(string)dv.Table.Rows[0][0];
@@ -596,7 +617,7 @@ public partial class Default : System.Web.UI.Page
         else
             AccessDataSource2.Update();
 
-        string urlStr = "FormSubmitted.aspx?Camera=" + useCamera;
+        string urlStr = "FormSubmitted.aspx?Camera=" + useCamera + "&ID=" + CustomerID ;
 
         Response.Redirect(urlStr);
     }
@@ -636,11 +657,13 @@ public partial class Default : System.Web.UI.Page
         {
             this.DiveCertTypes.Style.Add("display", "");
             this.NumberOfDivesDiv.Style.Add("display", "block");
+            this.LastDiveDateDiv.Style.Add("display", "block");
         }
         else
         {
             this.DiveCertTypes.Style.Add("display", "none");
             this.NumberOfDivesDiv.Style.Add("display", "none");
+            this.LastDiveDateDiv.Style.Add("display", "none");
         }
     }
 

@@ -212,6 +212,11 @@ option:hover{
     padding: 10px;
 }
 
+#LastDiveDateDiv *, #NumberOfDivesDiv *{
+    margin: auto;
+    display: block;
+}
+
 #InsuranceDiv {
     text-align: center;
     padding-bottom: 0px;
