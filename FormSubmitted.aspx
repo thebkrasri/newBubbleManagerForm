@@ -24,9 +24,28 @@
             max-width: 75%;
             margin: auto;
         }
-        p{
+
+        p {
             font-size: 1.5em;
         }
+
+        .button {
+            padding: 0 20px;
+            height: 35px;
+            width: auto;
+            line-height: 1;
+            border-radius: 3px;
+            font-size: 16px;
+            color: black;
+            background-color: rgba(191, 191, 191, 1);
+            box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.4);
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+            .button:hover {
+                background-color: rgba(153, 153, 153, 1);
+                box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.4);
+            }
     </style>
 
     <title>Bubble Manager</title>
@@ -39,6 +58,7 @@
         Your information has been uploaded to our database.<br />
         You are one step closer to the underwater world!
     </p>
+    <input type="button" id="btnRefresh" value="Add Another Customer" class="button" />
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>

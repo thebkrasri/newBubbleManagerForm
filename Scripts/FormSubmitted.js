@@ -1,14 +1,19 @@
-﻿$(function () {
-    var urlStr = "Default.aspx";
+﻿var urlStr = "Default.aspx";
+$(function () {
     if ($.urlParam('Camera') != null) {
         if ($.urlParam('Camera').toLowerCase() == "yes") {
             urlStr = "Default.aspx?Camera=yes";
+            setTimeout(function () {
+                location.href = urlStr;
+            }, 10000);
         }
     }
-    setTimeout(function () {
-        location.href = urlStr;
-    }, 3000);
 });
+
+$('#btnRefresh').click(function () {
+    location.href = urlStr;
+})
+
 
 $.urlParam = function (name) {
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);

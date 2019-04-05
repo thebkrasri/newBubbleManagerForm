@@ -123,7 +123,7 @@
                 </div>
             </div>
         </div>
-        <input type="button" id="btnCustomerNumber" value="I have a Customer #" />
+        <input type="button" id="btnCustomerNumber" value="I have a Customer #" class="button"/>
         <div class="row" style="margin-top: 10px">
             <asp:RadioButtonList RepeatDirection="Horizontal" AutoPostBack="true"
                 OnSelectedIndexChanged="optLanguage_SelectedIndexChanged" ID="optLanguage" runat="server"
