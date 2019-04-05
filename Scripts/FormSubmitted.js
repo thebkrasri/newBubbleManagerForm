@@ -2,15 +2,20 @@
 $(function () {
     if ($.urlParam('Camera') != null) {
         if ($.urlParam('Camera').toLowerCase() == "yes") {
+            
             urlStr = "Default.aspx?Camera=yes";
             setTimeout(function () {
+                $('#redirectDiv').css('display', 'block');
+            }, 2000);
+            setTimeout(function () {
                 location.href = urlStr;
-            }, 10000);
+           }, 7000);
         }
     }
 });
 
 $('#btnRefresh').click(function () {
+    $('#redirectDiv').css('display', 'none');
     location.href = urlStr;
 })
 

@@ -46,6 +46,53 @@
                 background-color: rgba(153, 153, 153, 1);
                 box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.4);
             }
+
+        #redirectDiv div {
+            width: auto;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+
+        .dot {
+            display: inline;
+            margin: 0 0.1em;
+            position: relative;
+            font-size: 2em;
+            font-family: "Roboto", "Open Sans", sans-serif;
+            opacity: 0;
+            animation: showHideDot 2.5s ease-in-out infinite;
+        }
+
+            .dot.one {
+                animation-delay: 0.2s;
+            }
+
+            .dot.two {
+                animation-delay: 0.4s;
+            }
+
+            .dot.three {
+                animation-delay: 0.6s;
+            }
+
+        @keyframes showHideDot {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            60% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
     </style>
 
     <title>Bubble Manager</title>
@@ -59,6 +106,17 @@
         You are one step closer to the underwater world!
     </p>
     <input type="button" id="btnRefresh" value="Add Another Customer" class="button" />
+    <div id="redirectDiv" style="display: none">
+        <div>
+            <span>Redirecting back to registration form</span>
+        </div>
+        <div>
+            <span class="dot one">.</span>
+            <span class="dot two">.</span>
+            <span class="dot three">.</span>
+        </div>
+    </div>
+    
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>

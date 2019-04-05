@@ -476,8 +476,8 @@
         <asp:Panel ID="PhotoPanel" runat="server" CssClass="pnlCSS tab">
             <br />
             <div id="cameraDiv" runat="server">
-                <div id="cameraAlert">Capture and save a selfie!</div>
-                <div id="captureDiv" width="auto" height="auto">
+                <div id="cameraAlert">Capture a selfie!</div>
+                <div id="captureDiv" style="width:auto;height:auto">
                     <div style="display: table; position: relative;">
                         <div id="loadingImg">
                             <img src="Content/loading.gif" alt="Camera Loading..." /></div>

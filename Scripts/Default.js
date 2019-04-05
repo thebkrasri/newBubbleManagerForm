@@ -77,10 +77,17 @@ function showTab(n) {
     }
     if (x[n].id == "PhotoPanel") {
         //if ($.urlParam('Camera') == "Yes") {
-        if (UseCamera) {
+        if (UseCamera && (navigator.getUserMedia != null)) {
+            SetUseCamera(true);
             loadCamera();
         }
+        else if (UseCamera && (navigator.getUserMedia == null)) {
+            SetUseCamera(false);
+            alert("Camera not available in this browser!");
+            loadFileUpload();
+        }
         else {
+            SetUseCamera(false);
             loadFileUpload();
         }
     }
@@ -128,7 +135,7 @@ function validateForm() {
             // and set the current valid status to false:
             if (y[i].id == "imageData") {
                 document.getElementById("cameraAlert").style.display = "block";
-                alert("CAPTURE and SAVE a selfie!")
+                alert("CAPTURE a selfie!")
             }
             if (y[i].id == "FileUpload1") {
                 if (document.getElementById("FileUpload1").files.length == 0) {
@@ -280,7 +287,7 @@ function loadCamera() {
             player.srcObject = stream;
         })
         .catch(function (err) {
-            alert("Webcam could not load\n" + err.name + ": " + err.message);
+            alert("Webcam could not load\n" + err.name);
             SetUseCamera(false);
             loadFileUpload();
         });
