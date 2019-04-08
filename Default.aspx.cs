@@ -34,7 +34,8 @@ public partial class Default : System.Web.UI.Page
     {
         if (!this.IsPostBack)
         {
-            Insurance.SelectedIndex = -1;
+            Insurance.SelectedValue = "-1";
+            CertifiedDiver.SelectedValue = "-1";
             CountryID.DataBind();
             EmergencyCountryID.DataBind();
             HowHearTextID.DataBind();
@@ -123,17 +124,17 @@ public partial class Default : System.Web.UI.Page
                 this.Session[myControl + "Color"] = row.ItemArray[1].ToString();
             }
         }
+
         PhotoPanel.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
-        PhotoPanel.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
         PersonalInfoPanel.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
-        PersonalInfoPanel.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
+        //PersonalInfoPanel.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
         AddressPanel.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
-        AddressPanel.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
-        lblPersonalInfoPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
-        lblAddressPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
-        //lblSelfie.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
+        //AddressPanel.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
+        lblPersonalInfoPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
+        lblAddressPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
+        //lblSelfie.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
         // lblBirthDate.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
-        cbCertifiedDiver.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
+        CertifiedDiver.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
 
     }
 
@@ -183,7 +184,7 @@ public partial class Default : System.Web.UI.Page
             if (MyLabel != null)
             {
                 ((Label)MyLabel).Text = langLabel;
-                ((Label)MyLabel).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section Header TextColor"].ToString());
+                ((Label)MyLabel).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
 
                 if (display == "False")
                     MyLabel.Visible = false;
@@ -229,6 +230,16 @@ public partial class Default : System.Web.UI.Page
                             ((CheckBox)MyControl).CssClass = "req";
                         }
                          ((CheckBox)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["TextBox BackgroundColor"].ToString());
+                    }
+                    else if (MyControl is RadioButtonList)
+                    {
+                        if (displayType == "Included and Required")
+                        {
+                            ((RadioButtonList)MyControl).CssClass = "req";
+                        }
+                         ((RadioButtonList)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
+
+
                     }
                     // else if (controlName.EndsWith("ID") || controlName.StartsWith("cmb") || controlName == "Gender")
                     else if (MyControl is DropDownList)
@@ -300,7 +311,7 @@ public partial class Default : System.Web.UI.Page
             //lblMailingAddress.Text = "Dirección de envio";
             //lblPersonalInfo.Text = "Información Personal";
             lblBirthDate.Text = "Fecha de Nacimiento*";
-            cbCertifiedDiver.Text = "Marque si usted tiene certificación de buceo";
+            //CertifiedDiver.Text = "Marque si usted tiene certificación de buceo";
             //lblSelfie.Text = "por favor, cargar una imagen o sacarse una selfie!";
             // lblCustNum1.Text = "Si la recepción le ha dado un número de cliente, Introdúzca aquí:";
             // lblCustNum2.Text = "De lo contrario, introduzca su información a continuación.";
@@ -310,7 +321,7 @@ public partial class Default : System.Web.UI.Page
             //lblMailingAddress.Text = "Mailing Address";
             // lblPersonalInfo.Text = "Personal Info";
             lblBirthDate.Text = "Birth Date*";
-            cbCertifiedDiver.Text = "Check here if you are already a certified diver";
+            //CertifiedDiver.Text = "Check here if you are already a certified diver";
             //lblSelfie.Text = "Please upload a photo or take a selfie!";
             //lblCustNum1.Text = "If the front desk has given you a customer number, please enter it here:";
             // lblCustNum2.Text = "Otherwise, enter your information below.";
@@ -651,9 +662,9 @@ public partial class Default : System.Web.UI.Page
             StateDiv.Style.Add("display", "none");
         }
     }
-    protected void cbCertifiedDiver_Checked(object sender, EventArgs e)
+    protected void CertifiedDiver_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (cbCertifiedDiver.Checked)
+        if (CertifiedDiver.SelectedValue == "1")
         {
             this.DiveCertTypes.Style.Add("display", "");
             this.NumberOfDivesDiv.Style.Add("display", "block");

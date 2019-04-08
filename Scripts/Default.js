@@ -129,6 +129,14 @@ function validateForm() {
     }
     for (i = 0; i < y.length; i++) {
         // If a field is empty...
+        if (y[i].type == "radio") {
+            if (!$("input:radio[name='" + y[i].name + "']:checked").val()) {
+                y[i].classList.add("invalid");
+                valid = false;
+                document.getElementById(y[i].name).style.border = "5px solid red";
+            }
+        }
+
         if (y[i].value == "" && y[i].classList.contains("req")) {
             // add an "invalid" class to the field:
             y[i].className += " invalid";
@@ -395,6 +403,9 @@ $(document).ready(function () {
         if (this.id == "FileUpload1" && this.files.length > 0) {
             document.getElementById("fileContainer").classList.remove("invalid");
         }
+        if (this.type == "radio" && $("input:radio[name='" + this.name + "']:checked").val());
+        this.classList.remove("invalid");
+        document.getElementById(this.name).style.border = "none";
     })
 
     $('#Insurance_0').on('change', function () {

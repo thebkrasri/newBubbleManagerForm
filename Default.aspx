@@ -129,7 +129,7 @@
                 OnSelectedIndexChanged="optLanguage_SelectedIndexChanged" ID="optLanguage" runat="server"
                 CssClass="RadioButton">
                 <asp:ListItem Value="English">English</asp:ListItem>
-                <asp:ListItem Value="Spanish">Español</asp:ListItem>
+                <asp:ListItem Value="Spanish">Espa&ntilde;ol</asp:ListItem>
             </asp:RadioButtonList>
         </div>
         <asp:Panel ID="PersonalInfoPanel" runat="server" CssClass="pnlCSS tab">
@@ -366,9 +366,12 @@
             <asp:UpdatePanel ID="CertifiedDiverUpdatePanel" runat="server">
                 <ContentTemplate>
                     <div class="row" id="CertifiedDiverDiv">
-                        <asp:CheckBox ID="cbCertifiedDiver" AutoPostBack="True"
-                            Text="Check if you are already a Certified Diver" TextAlign="Right" Checked="False"
-                            OnCheckedChanged="cbCertifiedDiver_Checked" runat="server" />
+                        <asp:Label runat="server" class="controlLabel" ID="lblCertifiedDiver" Text="lblCertifiedDiver">
+                </asp:Label>
+                        <asp:RadioButtonList ID="CertifiedDiver" runat="server" RepeatDirection="Horizontal" AutoPostBack="true" OnSelectedIndexChanged="CertifiedDiver_SelectedIndexChanged">
+                            <asp:ListItem Text="Yes" Value="1" />
+                            <asp:ListItem Text="No" Value="0" />
+                        </asp:RadioButtonList>
                     </div>
                     <div id="DiveCertTypes" class="row" style="display: none; margin: auto" runat="server">
                         <div class="col-6">
@@ -397,8 +400,8 @@
                         </div>
                     </div>
                     <div class="row" id="LastDiveDateDiv" runat="server" style="display: none; text-align: center">
-                        <asp:Label runat="server" class="controlLabel" ID="lblLastDiveDate" Text="" Style="display:block"></asp:Label>
-                        <asp:TextBox ID="LastDiveDate" runat="server" CssClass=" " Style="display:block" />
+                        <asp:Label runat="server" class="controlLabel" ID="lblLastDiveDate" Text="" Style="display: block"></asp:Label>
+                        <asp:TextBox ID="LastDiveDate" runat="server" CssClass=" " Style="display: block" />
                         <span>
                             <asp:RequiredFieldValidator ID="LastDiveDateValidator" runat="server" ControlToValidate="LastDiveDate"
                                 Display="Dynamic" ErrorMessage="Please fill in a date last dived" CssClass="ReqFieldCSS"
@@ -522,8 +525,8 @@
                     Display="Dynamic" ErrorMessage="Please Upload a Photo<br />" ValidationGroup="Submit"
                     CssClass="ReqFieldCSS" />
                 <div class="imageLoader">
-                    <label class="fileContainer" id="fileContainer">
-                        <img src="Content/upload.png" height="50" />Upload Image
+                    <label class="fileContainer" id="fileContainer" runat="server">
+                        <img src="Content/upload.png" height="50" id="uploadImg"/>Upload Image
                         <asp:FileUpload ID="FileUpload1" accept="image/*" runat="server"
                             text="Choose Photo or Take Selfie" Style="display: none" />
                     </label>

@@ -49,7 +49,8 @@ form {
     position: absolute;
     width: auto;
     margin: 2em;
-    float: right;
+
+    right: 10px;
 
 }
 #statelabel
@@ -99,7 +100,7 @@ h2 {
     margin: auto;
     margin-bottom: 20px;
     overflow: hidden;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .7);
+    box-shadow: 0 5px 10px;
 }
 
 
@@ -123,7 +124,7 @@ h2 {
 select {
     position: relative;
     display: inline-block;
-    border-color: Black;
+    border:none;
     border-radius: 5px;
     padding: 5px;
     background-color: Black;
@@ -134,6 +135,7 @@ select {
     max-width: 75%;
     margin: auto;
 }
+
 
 .col-6 select{
     min-width: 25%;
@@ -208,9 +210,6 @@ option:hover{
    font-size: 1em;
 }
 
-#DivingDiv .row {
-    padding: 10px;
-}
 
 #LastDiveDateDiv *, #NumberOfDivesDiv *{
     margin: auto;
@@ -231,13 +230,16 @@ option:hover{
     display: block;
 }
 
-#InsuranceNameDiv span, #CertifiedDiverDiv {
-    text-align: left;
+ #CertifiedDiverDiv {
+    text-align: center;
 }
 #InsuranceName, #lblInsuranceName {
-    display: inline-block;
+    display: block;
+    margin: auto;
 }
-
+#CertifiedDiver {
+    margin: auto;
+}
 #DiveCertTypes * {
     text-align:center !important;
 }
@@ -345,22 +347,24 @@ float:right;
 .fileContainer {
     overflow: hidden;
     position: relative;
-    border: 2px solid #00004d;
+    border: none;
+    background-color: #bfbfbf;
     padding: 5px 10px;
     border-radius: 5px;
     display: inline-block;
     margin: auto;
     font-size: 1.5em;
+    box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.4);
 }
 .fileContainer.invalid {
     border-color: red;
     color: red;
 }
-.fileContainer:hover {
-    background-color: rgba(0, 0, 77, 0.2);
-}
-.fileContainer:active {
-        background-color: rgba(0, 0, 77, 0.5);
+    .fileContainer:hover {
+        background-color: #e6e6e6;
+    }
+    .fileContainer:active {
+        background-color: #e6e6e6;
     }
 
     .fileContainer [type=file] {
@@ -378,14 +382,18 @@ float:right;
         height: auto;
     }
 
-    img {
-        margin: auto;
-        padding-right: 10px;
-        vertical-align: middle;
-        max-height: 100px;
-        max-width: 75%;
-        margin: auto;
-    }
+img {
+    margin: auto;
+    padding-right: 10px;
+    vertical-align: middle;
+    max-height: 200px;
+    max-width: 75%;
+    margin: 20px auto;
+    -webkit-filter: drop-shadow(10px 10px 5px rgba(0,0,0,0.5));
+    filter: drop-shadow(10px 10px 5px rgba(0,0,0,0.5));
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=6, OffY=6, Color='#444')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=6, OffY=6, Color='#444')";
+}
     
     #imgPreview {
         border-radius: 20px;
@@ -394,24 +402,38 @@ float:right;
     #dvPreview {
         display: none;
     }
-    
-    .imageLoader {
-        display: inline-block;
-        width: auto;
-        margin: auto;
-    }
+
+#uploadImg {
+    -webkit-filter: none;
+    filter: none;
+    -ms-filter: none;
+    filter: none;
+    margin: 5px auto;
+}
+
+.imageLoader {
+    display: inline-block;
+    width: auto;
+    margin: auto;
+}
 
     #cameraDiv div * {
         display: block;
         margin: auto;
     }
 
-    #cameraDiv div input {
-        float: right;
-        margin: 5px;
-        width: auto;
-    }
+#cameraDiv div input {
+    float: right;
+    margin: 5px;
+    padding: 7px 15px;
+    width: auto;
+    background-color: #bfbfbf;
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.4);
+}
 
+        #cameraDiv div input:hover {
+            background-color: rgba(153, 153, 153, 1);
+        }
     #cameraAlert {
         display: none;
     }
@@ -447,7 +469,7 @@ float:right;
     padding: 5px 10px;
     font-size: 1em;
     font-family: Raleway;
-    border: 1px solid #aaaaaa;
+    border: none;
   }
 
   input[type=radio], input[type=checkbox] {
@@ -528,6 +550,9 @@ float:right;
         margin: 0px;
     
     }
+    img {
+        max-height: 150px;
+    }
       #stepbuttons {
           display: block;
           margin: auto;
@@ -547,5 +572,8 @@ float:right;
   @media only screen and (max-height: 600px) {
     #termsModal .modal-content {
         max-height: 70vh;
+    }
+    #btnCustomerNumber {
+        right: 5px;
     }
   }

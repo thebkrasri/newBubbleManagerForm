@@ -32,7 +32,7 @@ public partial class FormSubmitted : System.Web.UI.Page
                     this.Session[myControl + "Color"] = row.ItemArray[1].ToString();
                 }
             }
-             pagebody.Attributes.CssStyle.Add("color", this.Session["Section Header TextColor"].ToString());
+             pagebody.Attributes.CssStyle.Add("color", this.Session["Section TextColor"].ToString());
         }
     }
 }
