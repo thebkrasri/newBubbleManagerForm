@@ -305,17 +305,28 @@ function loadCamera() {
         var vheight = document.getElementById('player').clientHeight;
         var boxWidth = vheight * .75;
         document.getElementById('pictureBox').style.width = boxWidth + "px";
-        document.getElementById('pictureBox').style.border = "3px solid red";
-        captureButton.style.display = "block";
+        if (imgPreview.src != "") {
+            imgData = imgPreview.src;
+            var image = new Image();
+            image.onload = function () {
+                context.drawImage(image, 0, 0);
+            };
+            image.src = imgData;
+            var hiddenImg = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
+            $("#imageData").val(hiddenImg);
+            document.getElementById('canvasDiv').style.display = "block";
+            document.getElementById('captureDiv').style.display = "none";
+        }
+        else {
+            document.getElementById('pictureBox').style.border = "3px solid red";
+            captureButton.style.display = "block";
+        }
     })
 
     captureButton.addEventListener('click', function () {
         // Draw the video frame to the canvas.
         fitImage(context, player);
-        //context.drawImage(player, 0, 0, canvas.width, canvas.height);
-        //img.src = canvas.toDataURL('image/webp');
         document.getElementById('canvasDiv').style.display = "block";
-        document.getElementById('canvas').style.border = "solid 3px yellow";
         document.getElementById('captureDiv').style.display = "none";
         // Stop all video streams.
         player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
@@ -361,8 +372,9 @@ function loadCamera() {
 
     redoButton.addEventListener('click', function () {
         document.getElementById('canvasDiv').style.display = "none";
-        document.getElementById('canvas').style.border = "solid 3px yellow";
+        document.getElementById('pictureBox').style.border = "3px solid red";
         document.getElementById('captureDiv').style.display = "block";
+        captureButton.style.display = "block";
         // Restart video streams.
         player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = true });
         return false;

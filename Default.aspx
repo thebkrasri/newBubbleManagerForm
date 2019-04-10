@@ -515,7 +515,7 @@
                     <input type="button" id="capture" value="Capture" />
                 </div>
                 <div id="canvasDiv" style="display: none">
-                    <canvas id="canvas" width="240" height="320"></canvas>
+                    <canvas id="canvas" width="240" height="320" runat="server"></canvas>
                     <input type="button" id="redo" value="Redo" />
                     <input type="hidden" name="imageData" id="imageData" runat="server" />
                 </div>
@@ -532,8 +532,8 @@
                     </label>
                 </div>
 
-                <div id="dvPreview">
-                    <img src="" id="imgPreview" height="100" alt="Preview" />
+                <div id="dvPreview" runat="server">
+                    <img src="" id="imgPreview" alt="Preview" runat="server"/>
                 </div>
             </div>
             <br />

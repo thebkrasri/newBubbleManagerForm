@@ -15,10 +15,10 @@ public partial class Default : System.Web.UI.Page
     {
         get
         {
-            if (Request.QueryString["Camera"] == null)
+            if (Request.QueryString["Camera"] == null || Request.QueryString["Camera"].ToLower() != "yes")
                 return "No";
             else
-                return Request.QueryString["Camera"];
+                return Request.QueryString["Camera"].ToLower();
         }
 
     }
@@ -256,6 +256,7 @@ public partial class Default : System.Web.UI.Page
 
     protected void prevCustClick(Object Sender, EventArgs E)
     {
+        CustomerNumberError.Style["color"] = "red";
         if (CustomerNumber.Text == null)
         {
             CustomerNumberError.Visible = true;
@@ -279,38 +280,8 @@ public partial class Default : System.Web.UI.Page
         dt = OleDbTools.GetDataTable("SELECT * FROM Customer WHERE CustomerID = " + CustomerNumber.Text);
         if (dt.Rows.Count > 0)
         {
-            FirstName.Text = (string)dt.Rows[0]["FirstName"];
-            LastName.Text = (string)dt.Rows[0]["LastName"];
-            Email.Text = (string)dt.Rows[0]["Email"];
-            if (dt.Rows[0]["Phone"] != DBNull.Value)
-            {
-                Phone.Text = (string)dt.Rows[0]["Phone"];
-            }
-            if (dt.Rows[0]["Facebook"] != DBNull.Value)
-            {
-                Facebook.Text = (string)dt.Rows[0]["Facebook"];
-            }
-            DateTime BirthDate = (DateTime)dt.Rows[0]["BirthDate"];
-            cmbDay.SelectedValue = BirthDate.Day.ToString();
-            cmbMonth.SelectedIndex = BirthDate.Month;
-            cmbYear.SelectedValue = BirthDate.Year.ToString();
-            Gender.SelectedValue = (string)dt.Rows[0]["Gender"];
-            Address1.Text = (string)dt.Rows[0]["Address1"];
-            if (dt.Rows[0]["Address2"] != DBNull.Value)
-            {
-                Address2.Text = (string)dt.Rows[0]["Address2"];
-            };
-            City.Text = (string)dt.Rows[0]["City"];
-            PostalCode.Text = (string)dt.Rows[0]["PostalCode"];
-            DropDownList CountryDD = (DropDownList)Page.FindControl("CountryID");
-            DropDownList StateDD = (DropDownList)Page.FindControl("StateID");
-            Label StateLabel = (Label)Page.FindControl("lblStateID");
-            CountryDD.SelectedValue = dt.Rows[0]["CountryID"].ToString();
-            FindStates(CountryDD, StateDD, StateLabel);
-            if (dt.Rows[0]["StateID"] != DBNull.Value)
-            {
-                StateDD.SelectedValue = dt.Rows[0]["StateID"].ToString();
-            }
+            DataRow dr = dt.Rows[0];
+            InitializeCustomer(dr);
             CustomerNumberError.Text = "Customer " + FirstName.Text + " " + LastName.Text + " Found";
             CustomerNumberError.Style["color"] = "green";
             CustomerNumberHidden.Value = CustomerNumber.Text;
@@ -364,7 +335,7 @@ public partial class Default : System.Web.UI.Page
         OleDbTools.ExecuteSqlStatement(sqlStr, parameters);
         if (CustomerID == 0)
         {
-            CustomerID = Convert.ToInt32( OleDbTools.GetSingleSqlValue("SELECT TOP 1 CustomerID from [Customer] ORDER BY [CustomerID] DESC"));
+            CustomerID = Convert.ToInt32(OleDbTools.GetSingleSqlValue("SELECT TOP 1 CustomerID from [Customer] ORDER BY [CustomerID] DESC"));
         }
         string imgFilePath = UploadImage(CustomerID);
         sqlStr = "UPDATE Customer SET [image]=@MyImage WHERE CustomerID=" + CustomerID;
@@ -599,6 +570,59 @@ public partial class Default : System.Web.UI.Page
         }
         return imgFilePath;
     }
+
+    protected void InitializeCustomer(DataRow dr)
+    {
+        FirstName.Text = (string)dr["FirstName"];
+        LastName.Text = (string)dr["LastName"];
+        Email.Text = (string)dr["Email"];
+        if (dr["Phone"] != DBNull.Value)
+        {
+            Phone.Text = (string)dr["Phone"];
+        }
+        if (dr["Facebook"] != DBNull.Value)
+        {
+            Facebook.Text = (string)dr["Facebook"];
+        }
+        if (dr["PassportNum"] != DBNull.Value)
+        {
+            PassportNum.Text = (string)dr["PassportNum"];
+        }
+        DateTime BirthDate = (DateTime)dr["BirthDate"];
+        cmbDay.SelectedValue = BirthDate.Day.ToString();
+        cmbMonth.SelectedIndex = BirthDate.Month;
+        cmbYear.SelectedValue = BirthDate.Year.ToString();
+        Gender.SelectedValue = (string)dr["Gender"];
+        Address1.Text = (string)dr["Address1"];
+        if (dr["Address2"] != DBNull.Value)
+        {
+            Address2.Text = (string)dr["Address2"];
+        };
+        City.Text = (string)dr["City"];
+        PostalCode.Text = (string)dr["PostalCode"];
+        DropDownList CountryDD = (DropDownList)Page.FindControl("CountryID");
+        DropDownList StateDD = (DropDownList)Page.FindControl("StateID");
+        Label StateLabel = (Label)Page.FindControl("lblStateID");
+        CountryDD.SelectedValue = dr["CountryID"].ToString();
+        FindStates(CountryDD, StateDD, StateLabel);
+        if (dr["StateID"] != DBNull.Value)
+        {
+            StateDD.SelectedValue = dr["StateID"].ToString();
+        }
+        if (dr["Image"] != DBNull.Value)
+        {
+            string imagefolder = "C:\\BubbleManager\\Customer Photos\\";
+            string srcPath = imagefolder + dr["Image"].ToString();
+            FileStream fs = new FileStream(srcPath, FileMode.Open);
+            byte[] byData = new byte[fs.Length];
+            fs.Read(byData, 0, byData.Length);
+            fs.Close();
+            var base64 = Convert.ToBase64String(byData);
+            var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+            imgPreview.Attributes["src"] = imgSrc;
+            dvPreview.Style.Add("display", "block");
+        }
+    }
     public class OleDbTools
     {
         static readonly string conString = System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
@@ -629,7 +653,7 @@ public partial class Default : System.Web.UI.Page
 
         public static int ExecuteSqlStatement(string sqlStr, List<OleDbParameter> parameters)
         {
-           // sqlStr = "Update Customer Set FirstName=@FirstName, LastName=@LastName, Gender=@Gender, BirthDate=@BirthDate, Address1=@Address1, Address2=@Address2, City=@City, StateID=@StateID, CountryID=@CountryID, PostalCode=@PostalCode, Email=@Email, Phone=@Phone, PassportNum=@PassportNum, LanguageID=@LanguageID WHERE CustomerID=29007";
+            // sqlStr = "Update Customer Set FirstName=@FirstName, LastName=@LastName, Gender=@Gender, BirthDate=@BirthDate, Address1=@Address1, Address2=@Address2, City=@City, StateID=@StateID, CountryID=@CountryID, PostalCode=@PostalCode, Email=@Email, Phone=@Phone, PassportNum=@PassportNum, LanguageID=@LanguageID WHERE CustomerID=29007";
 
             using (OleDbConnection conn = new OleDbConnection(conString))
             using (OleDbCommand cmd = new OleDbCommand(sqlStr, conn))
@@ -650,7 +674,7 @@ public partial class Default : System.Web.UI.Page
 
 
     }
-            
+
     public class Country
     {
         #region fields
