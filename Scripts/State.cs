@@ -20,7 +20,7 @@ public class State
         else
         {
             DataTable srs;
-            srs = SQLTools.GetDataTable("Select StateName from State Where StateID = " + StateID);
+            srs = OleDbTools.GetDataTable("Select StateName from State Where StateID = " + StateID);
             _StateName = srs.Rows[0]["StateName"];
         }
     }

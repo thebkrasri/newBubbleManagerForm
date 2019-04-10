@@ -1,17 +1,19 @@
 using Microsoft.VisualBasic;
+using System.Collections.Generic;
+using System.Data;
 
 public partial class Country
 {
     #region fields
     private string _CountryID;
     private string _CountryName;
-    private List<States> _States;
-    private static List<Countries> _Countries;
+    private List<State> _States;
+    private static List<Country> _Countries;
     #endregion
     #region methods
     static Country FindCountryByCountryID(string CountryID)
     {
-        return _Countries.Find.SingleOrDefault(p => p.GetId() == CountryID);
+        return _Countries.Find(p => p.GetId() == CountryID);
     }
 
     static State FindStateByStateID(string StateID)
@@ -25,11 +27,11 @@ public partial class Country
 
     static void InitCountries()
     {
-        List Countries = new List<Country>();
-        DataTable srs;
-        srs = SQLTools.GetDataTable("Select * from Country Left JOIN [State] on State.CountryID = Country.Country ID ORDER BY CountryName, StateName");
+        List<Country> Countries = new List<Country>();
+        DataTable srs = new DataTable();
+        srs = OleDbTools.GetDataTable("Select * from Country Left JOIN [State] on State.CountryID = Country.Country ID ORDER BY CountryName, StateName");
         double PrevCountryID = -999;
-        foreach (row dr in srs.Rows)
+        foreach  (dr in srs.Rows)
         {
             if (PrevCountryID != dr[CountryID])
             {

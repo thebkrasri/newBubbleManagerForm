@@ -3,7 +3,7 @@ using System.Data.OleDb;
 using System.Data;
 
 public partial class Default {
-public class SQLTools
+public class OleDbTools
 {
     static string conString = "System.Configuration.ConfigurationManager.ConnectionStrings['" + "ConnectionString" + "'].ConnectionString";
         
