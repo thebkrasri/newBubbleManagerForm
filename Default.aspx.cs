@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class Default : System.Web.UI.Page
 {
+    
     public string useCamera
     {
         get
@@ -32,9 +33,13 @@ public partial class Default : System.Web.UI.Page
     {
         if (!this.IsPostBack)
         {
+            this.Session["imgFilePath"] = "";
+            Country.InitCountries();
+            CountryID.DataSource = Country.Countries;
+            CountryID.DataBind();
             Insurance.SelectedValue = "-1";
             CertifiedDiver.SelectedValue = "-1";
-            CountryID.DataBind();
+            EmergencyCountryID.DataSource = Country.Countries;
             EmergencyCountryID.DataBind();
             HowHearTextID.DataBind();
             WhereStayID.DataBind();
@@ -97,11 +102,9 @@ public partial class Default : System.Web.UI.Page
             }
             else
             {
-
                 this.Session[myControl + "Color"] = row.ItemArray[1].ToString();
             }
         }
-
         PhotoPanel.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
         PersonalInfoPanel.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
         AddressPanel.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
@@ -148,20 +151,15 @@ public partial class Default : System.Web.UI.Page
 
                 if (display == "False")
                     MyLabel.Visible = false;
-
             }
         }
-        int fieldControlNameIndex = fieldsdt.Columns.IndexOf("ControlName");
-        int displayTypeIndex = fieldsdt.Columns.IndexOf("DisplayType");
-        int fieldLanguageLabelIndex = fieldsdt.Columns.IndexOf(languageLabel);
         string message = "";
         foreach (DataRow row in fieldsdt.Rows)
         {
-            string controlName = row.ItemArray[fieldControlNameIndex].ToString();
-            string langLabel = row.ItemArray[fieldLanguageLabelIndex].ToString();
-            string displayType = row.ItemArray[displayTypeIndex].ToString();
+            string controlName = row["ControlName"].ToString();
+            string langLabel = row[languageLabel].ToString();
+            string displayType = row["DisplayType"].ToString();
             message = message + "</br>" + controlName + " " + langLabel + " " + displayType;
-
 
             Control MyControl = FindControl(controlName);
             if (MyControl != null)
@@ -187,8 +185,6 @@ public partial class Default : System.Web.UI.Page
                             ((RadioButtonList)MyControl).CssClass = "req";
                         }
                          ((RadioButtonList)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
-
-
                     }
                     else if (MyControl is DropDownList)
                     {
@@ -239,6 +235,7 @@ public partial class Default : System.Web.UI.Page
                 }
             }
         }
+        lblBirthDate.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
         if (lang == "Spanish")
         {
             lblBirthDate.Text = "Fecha de Nacimiento*";
@@ -251,7 +248,8 @@ public partial class Default : System.Web.UI.Page
     protected void optLanguage_SelectedIndexChanged(Object Sender, EventArgs E)
     {
         ChangeForm();
-        ScriptManager.RegisterClientScriptBlock(this, GetType(), "none", "showTab(currentTab);", true);
+        //var tabNum = currentTab.Value;
+        //ScriptManager.RegisterStartupScript(this, GetType(), "none", "showTab(" + tabNum.ToString() + ");", true);
     }
 
     protected void prevCustClick(Object Sender, EventArgs E)
@@ -337,10 +335,10 @@ public partial class Default : System.Web.UI.Page
         {
             CustomerID = Convert.ToInt32(OleDbTools.GetSingleSqlValue("SELECT TOP 1 CustomerID from [Customer] ORDER BY [CustomerID] DESC"));
         }
-        string imgFilePath = UploadImage(CustomerID);
+        UploadImage(CustomerID);
         sqlStr = "UPDATE Customer SET [image]=@MyImage WHERE CustomerID=" + CustomerID;
         parameters.Clear();
-        parameters.Add(new OleDbParameter("Image", OleDbType.VarChar) { Value = imgFilePath });
+        parameters.Add(new OleDbParameter("Image", OleDbType.VarChar) { Value = this.Session["imgFilePath"] });
         OleDbTools.ExecuteSqlStatement(sqlStr, parameters);
         string urlStr = "FormSubmitted.aspx?Camera=" + useCamera + "&ID=" + CustomerID;
         Response.Redirect(urlStr);
@@ -356,20 +354,19 @@ public partial class Default : System.Web.UI.Page
 
     protected void FindStates(DropDownList CountryDD, DropDownList StateDD, Label StateLabel)
     {
-        System.Data.DataView dv = (System.Data.DataView)this.HasStateDataSource.Select(DataSourceSelectArguments.Empty);
-        string hasState = dv[0][0].ToString();
-        //List<State> States = Country.FindCountryByCountryID(CountryDD.SelectedValue).States;
-        if (hasState == "True")
+        Country c = Country.FindCountryByCountryID(CountryDD.SelectedValue);
+        if (c.States != null)
         {
             StateDiv.Style.Add("display", "block");
+            StateDD.DataSource = c.States;
             StateDD.DataBind();
-            StateID.Items.Insert(0, new ListItem("--Select--", "0"));
-            StateDD.SelectedIndex = -1;
+            StateDD.SelectedIndex = 0;
             StateDD.CssClass = "req";
         }
         else
         {
             StateDiv.Style.Add("display", "none");
+            StateDD.CssClass = StateDD.CssClass.Replace("req", "");
         }
     }
     protected void CertifiedDiver_SelectedIndexChanged(object sender, EventArgs e)
@@ -385,8 +382,14 @@ public partial class Default : System.Web.UI.Page
             this.DiveCertTypes.Style.Add("display", "none");
             this.NumberOfDivesDiv.Style.Add("display", "none");
             this.LastDiveDateDiv.Style.Add("display", "none");
+            DiveLevelID.SelectedIndex = 0;
+            DiveOrgID.SelectedIndex = 0;
+            NumberOfDives.Text = "";
+            LastDiveDate.Text = "";
         }
     }
+
+
 
     protected List<OleDbParameter> GenerateCustomerParams()
     {
@@ -478,7 +481,7 @@ public partial class Default : System.Web.UI.Page
         }
         if (Insurance.SelectedValue != "")
         {
-            parameters.Add(new OleDbParameter("Insurance", OleDbType.Boolean) { Value = Convert.ToBoolean(Insurance.SelectedValue) });
+            parameters.Add(new OleDbParameter("Insurance", OleDbType.Boolean) { Value = Convert.ToBoolean(Convert.ToInt32(Insurance.SelectedValue)) });
         }
         else
         {
@@ -500,11 +503,10 @@ public partial class Default : System.Web.UI.Page
         return parameters;
     }
 
-    protected string UploadImage(int CustomerID)
+    protected void UploadImage(int CustomerID)
     {
         string fileName = FirstName.Text + " " + LastName.Text + "-" + CustomerID.ToString() + ".jpg";
         string imagefolder = "C:/BubbleManager/Customer Photos/";
-        string imgFilePath = "";
 
         if (!Directory.Exists(imagefolder))
         {
@@ -525,7 +527,7 @@ public partial class Default : System.Web.UI.Page
                 }
                 fs.Close();
             }
-            imgFilePath = fileName;
+            this.Session["imgFilePath"] = fileName;
         }
         else
         {
@@ -557,47 +559,53 @@ public partial class Default : System.Web.UI.Page
                 newBMP.Save(imagefolder + fileName);
                 //AccessDataSource2.InsertParameters.Add("MyImage", fileName);
                 //AccessDataSource2.UpdateParameters.Add("MyImage", fileName);
-                imgFilePath = fileName;
+                this.Session["imgFilePath"] = fileName;
                 // Once finished with the bitmap objects, we deallocate them.
                 originalBMP.Dispose();
                 newBMP.Dispose();
                 oGraphics.Dispose();
             }
-            else
-            {
-                imgFilePath = "";
-            }
         }
-        return imgFilePath;
+        // return imgFilePath;
     }
 
     protected void InitializeCustomer(DataRow dr)
     {
+        for (int i = 0; i < dr.ItemArray.Length; i++)
+        {
+            if (dr.Table.Columns[i].DataType == System.Type.GetType("System.String") && dr[i] == DBNull.Value)
+            {
+                dr[i] = "";
+            }
+            if (dr.Table.Columns[i].DataType == System.Type.GetType("System.Int32") && dr[i] == DBNull.Value)
+            {
+                dr[i] = -1;
+            }
+            /* if (dr.Table.Columns[i].DataType == System.Type.GetType("System.Boolean") && dr[i].ToString() == "False")
+             {
+               dr[i] = 0;
+             }
+             else if (dr.Table.Columns[i].DataType == System.Type.GetType("System.Boolean") && dr[i].ToString() == "True")
+             {
+                 dr[i] = 1;
+             }*/
+        }
+        //Personal Info Panel
         FirstName.Text = (string)dr["FirstName"];
         LastName.Text = (string)dr["LastName"];
         Email.Text = (string)dr["Email"];
-        if (dr["Phone"] != DBNull.Value)
-        {
-            Phone.Text = (string)dr["Phone"];
-        }
-        if (dr["Facebook"] != DBNull.Value)
-        {
-            Facebook.Text = (string)dr["Facebook"];
-        }
-        if (dr["PassportNum"] != DBNull.Value)
-        {
-            PassportNum.Text = (string)dr["PassportNum"];
-        }
+        Phone.Text = (string)dr["Phone"];
+        Facebook.Text = (string)dr["Facebook"];
+        PassportNum.Text = (string)dr["PassportNum"];
+        DietaryRestrictions.Text = (string)dr["DietaryRestrictions"];
         DateTime BirthDate = (DateTime)dr["BirthDate"];
         cmbDay.SelectedValue = BirthDate.Day.ToString();
         cmbMonth.SelectedIndex = BirthDate.Month;
         cmbYear.SelectedValue = BirthDate.Year.ToString();
         Gender.SelectedValue = (string)dr["Gender"];
+        //Address Panel
         Address1.Text = (string)dr["Address1"];
-        if (dr["Address2"] != DBNull.Value)
-        {
-            Address2.Text = (string)dr["Address2"];
-        };
+        Address2.Text = (string)dr["Address2"];
         City.Text = (string)dr["City"];
         PostalCode.Text = (string)dr["PostalCode"];
         DropDownList CountryDD = (DropDownList)Page.FindControl("CountryID");
@@ -605,14 +613,59 @@ public partial class Default : System.Web.UI.Page
         Label StateLabel = (Label)Page.FindControl("lblStateID");
         CountryDD.SelectedValue = dr["CountryID"].ToString();
         FindStates(CountryDD, StateDD, StateLabel);
-        if (dr["StateID"] != DBNull.Value)
+        StateDD.SelectedValue = dr["StateID"].ToString();
+        //Emergency Contact Panel
+        EmergencyName.Text = (string)dr["EmergencyName"];
+        Relationship.Text = (string)dr["Relationship"];
+        EmergencyNumber.Text = (string)dr["EmergencyNumber"];
+        EmergencyEmail.Text = (string)dr["EmergencyEmail"];
+        EmergencyCountryID.SelectedValue = dr["EmergencyCountryID"].ToString();
+        //Diving Panel
+        if (dr["Insurance"] == DBNull.Value)
         {
-            StateDD.SelectedValue = dr["StateID"].ToString();
+            Insurance.ClearSelection();
         }
-        if (dr["Image"] != DBNull.Value)
+        else
         {
-            string imagefolder = "C:\\BubbleManager\\Customer Photos\\";
-            string srcPath = imagefolder + dr["Image"].ToString();
+            Insurance.SelectedValue = (dr["Insurance"].ToString() == "False" ? "0" : "1");
+            if (Insurance.SelectedValue == "1")
+            {
+                InsuranceNameDiv.Style.Add("display", "block");
+            }
+        }
+        InsuranceName.Text = (string)dr["InsuranceName"];
+        if (dr["DiveLevelID"] == DBNull.Value || dr["DiveLevelID"].ToString() == "0")
+        {
+            CertifiedDiver.ClearSelection();
+        }
+        else
+        {
+            CertifiedDiver.SelectedValue = "1";
+            this.DiveCertTypes.Style.Add("display", "");
+            this.NumberOfDivesDiv.Style.Add("display", "block");
+            this.LastDiveDateDiv.Style.Add("display", "block");
+        }
+        DiveLevelID.SelectedValue = dr["DiveLevelID"].ToString();
+        DiveOrgID.SelectedValue = dr["DiveOrgID"].ToString();
+        LastDiveDate.Text = (string)dr["LastDiveDate"];
+        NumberOfDives.Text = (dr["NumberOfDives"].ToString() == "-1"? "" : dr["NumberOfDives"].ToString());
+        //Where Staying Panel
+        WhereStayID.SelectedValue = dr["WhereStayID"].ToString();
+        RoomOther.Text = (string)dr["RoomOther"];
+        RoomNo.Text = (string)dr["RoomNo"];
+        //Language Panel
+        LanguageID.SelectedValue = dr["LanguageID"].ToString();
+        //How Hear Panel
+        HowHearTextID.SelectedValue = dr["HowHearTextID"].ToString();
+        HowHearSpecific.Text = dr["HowHearSpecific"].ToString();
+        //Image
+        string imagefolder = "C:\\BubbleManager\\Customer Photos\\";
+        string srcPath = imagefolder + dr["Image"].ToString();
+        if (File.Exists(srcPath))
+        {
+            this.Session["imgFilePath"] = dr["Image"].ToString();
+            FileUploadValidator.ValidationGroup = "";
+            FileUploadValidator.Enabled = false;
             FileStream fs = new FileStream(srcPath, FileMode.Open);
             byte[] byData = new byte[fs.Length];
             fs.Read(byData, 0, byData.Length);
@@ -689,20 +742,19 @@ public partial class Default : System.Web.UI.Page
             return _Countries.Find(p => p.CountryID == CountryID);
         }
 
-
-        static void InitCountries()
+        public static void InitCountries()
         {
-            List<Country> Countries = new List<Country>();
+            Countries = new List<Country>();
             DataTable srs = new DataTable();
-            srs = OleDbTools.GetDataTable("Select * from Country Left JOIN [State] on State.CountryID = Country.Country ID ORDER BY CountryName, StateName");
+            srs = OleDbTools.GetDataTable("Select * from Country Left JOIN [State] on State.CountryID = Country.CountryID ORDER BY CountryName, StateName");
             double PrevCountryID = -999;
             foreach (DataRow dr in srs.Rows)
             {
-                if (PrevCountryID != Convert.ToDouble(dr["CountryID"]))
+                if (PrevCountryID != Convert.ToDouble(dr["Country.CountryID"]))
                 {
-                    Countries.Add(new Country(dr["CountryID"].ToString(), dr["CountryName"].ToString(), (dr["StateID"] != DBNull.Value)));
+                    Countries.Add(new Country(dr["Country.CountryID"].ToString(), dr["CountryName"].ToString(), (dr["StateID"] != DBNull.Value)));
 
-                    PrevCountryID = Convert.ToDouble(dr["CountryID"]);
+                    PrevCountryID = Convert.ToDouble(dr["Country.CountryID"]);
                 }
                 if ((dr["StateID"] != DBNull.Value))
                 {
@@ -725,7 +777,7 @@ public partial class Default : System.Web.UI.Page
 
         }
 
-        public Country(string CountryID, string CountryNam, bool hasStates)
+        public Country(string CountryID, string CountryName, bool hasStates)
         {
             _CountryID = CountryID;
             _CountryName = CountryName;
@@ -759,7 +811,7 @@ public partial class Default : System.Web.UI.Page
             }
         }
 
-        public List<Country> Countries
+        public static List<Country> Countries
         {
             get
             {
@@ -810,7 +862,7 @@ public partial class Default : System.Web.UI.Page
             _StateID = StateID;
             if (StateID == "0")
             {
-                _StateName = "none";
+                _StateName = "--Select--";
             }
             else
             {
@@ -825,7 +877,7 @@ public partial class Default : System.Web.UI.Page
             _StateID = StateID;
             if (StateID == "0")
             {
-                _StateName = "none";
+                _StateName = "--Select--";
             }
             else
             {
@@ -835,7 +887,7 @@ public partial class Default : System.Web.UI.Page
 
         #endregion
         #region properties
-        string StateID
+        public string StateID
         {
             get
             {
@@ -844,7 +896,7 @@ public partial class Default : System.Web.UI.Page
 
         }
 
-        string StateName
+        public string StateName
         {
             get
             {
@@ -856,7 +908,7 @@ public partial class Default : System.Web.UI.Page
             }
         }
 
-        public List<State> States
+        public static List<State> States
         {
             get
             {

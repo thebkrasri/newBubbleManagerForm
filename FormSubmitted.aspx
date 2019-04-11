@@ -17,12 +17,11 @@
         }
 
         img {
-            margin: auto;
+            margin: 20px auto;
             padding-right: 10px;
             vertical-align: middle;
-            max-height: 100px;
+            max-height: 200px;
             max-width: 75%;
-            margin: auto;
         }
 
         p {

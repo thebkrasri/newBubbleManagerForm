@@ -18,10 +18,6 @@
             ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
             ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
             SelectCommand="SELECT [LanguageID], [Language] from [Language] ORDER BY [Language]"></asp:SqlDataSource>
-        <asp:SqlDataSource ID="CountryDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-            ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
-            SelectCommand="SELECT [CountryID], [CountryName] from Country ORDER BY [CountryName]"></asp:SqlDataSource>
         <asp:SqlDataSource ID="HowHearDataSource" runat="server"
             ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
             ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
@@ -50,50 +46,12 @@
             ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
             ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
             SelectCommand="SELECT * FROM tblDay UNION Select 0, 'Day' from GlobalSettings order by DayID"></asp:SqlDataSource>
-        <asp:SqlDataSource ID="HasStateDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-            ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
-            SelectCommand="SELECT HasState from Country WHERE CountryID = ?">
-            <SelectParameters>
-                <asp:ControlParameter ControlID="CountryID" Name="CountryID" PropertyName="SelectedValue"
-                    Type="Int32" />
-            </SelectParameters>
-        </asp:SqlDataSource>
 
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
-        <asp:SqlDataSource ID="StatesDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-            ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
-            SelectCommand="SELECT [StateID], [StateName] from [State] WHERE CountryID = ? ORDER BY StateName">
-            <SelectParameters>
-                <asp:ControlParameter ControlID="CountryID" Name="CountryID" PropertyName="SelectedValue"
-                    Type="Int32" />
-            </SelectParameters>
-        </asp:SqlDataSource>
-        <asp:SqlDataSource ID="LatestCustomerDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-            ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
-            SelectCommand="SELECT TOP 1 CustomerID from [Customer] ORDER BY [CustomerID] DESC"></asp:SqlDataSource>
-        <asp:SqlDataSource ID="ImageFolderDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-            ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
-            SelectCommand="SELECT [SavedImagesFolder] from [GlobalSettings]"></asp:SqlDataSource>
-        <asp:SqlDataSource ID="UpdateImageDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-            ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
-            UpdateCommand="UPDATE Customer Set `image`= @ImageText WHERE CustomerID = @CustomerID">
-            <UpdateParameters>
-                <asp:Parameter Name="ImageText" Type="String" />
-                <asp:Parameter Name="CustomerID" Type="int32" />
-            </UpdateParameters>
-        </asp:SqlDataSource>
-        <asp:SqlDataSource ID="AccessDataSource2" runat="server"
-            ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-            ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"></asp:SqlDataSource>
 
 
-        <img src="Content/logo.png" alt="Welcome to Bubble Manager!" />
+        <img src="Content/logo.png" alt="Welcome to Bubble Manager!" id="imgLogo" />
 
         <div id="prevCustomerModal" class="modal" style="display: none" runat="server">
 
@@ -106,20 +64,17 @@
 
                 </div>
                 <div class="modal-content">
-                    <asp:Label runat="server" ID="lblCustNum1">If the front desk has given you a customer number enter
+                    <asp:Label runat="server" ID="lblCustNum1" style="line-height:2">If the front desk has given you a customer number enter
                         it here</asp:Label>
-                    <br>
-
+                    <asp:Label ID="CustomerNumberError" runat="server"
+                        Style="width: 100%; text-align: center; border-style: none; background: transparent; color: red; line-height:2"
+                        ReadOnly="true">
+                    </asp:Label>
                     <asp:TextBox ID="CustomerNumber" runat="server" Style="width: 100px; text-align: right;"
                         autocomplete="off">
                     </asp:TextBox>
+                    <asp:Button ID="prevCustBtn" runat="server" OnClick="prevCustClick" Text="Submit" CssClass="button" Style="margin-left: 5px"></asp:Button>
                     <asp:HiddenField ID="CustomerNumberHidden" runat="server"></asp:HiddenField>
-                    <asp:Button ID="prevCustBtn" runat="server" OnClick="prevCustClick" Text="Submit" CssClass="button"></asp:Button>
-                    <br>
-                    <asp:Label ID="CustomerNumberError" runat="server"
-                        Style="width: 100%; text-align: center; border-style: none; background: transparent; color: red;"
-                        ReadOnly="true">
-                    </asp:Label>
                 </div>
             </div>
         </div>
@@ -277,7 +232,7 @@
                                     Display="Dynamic" CssClass="ReqFieldCSS" ValidationGroup="Submit"
                                     InitialValue="0" /></span>
                             <asp:DropDownList ID="CountryID" runat="server" AutoPostBack="True"
-                                DataSourceID="CountryDataSource" DataTextField="CountryName" DataValueField="CountryID"
+                                 DataTextField="CountryName" DataValueField="CountryID"
                                 OnSelectedIndexChanged="CountryID_SelectedIndexChanged" CssClass="req" />
 
                             <div class="row" id="StateDiv" runat="server" style="display: none">
@@ -287,7 +242,7 @@
                                     <asp:RequiredFieldValidator ID="StateValidator" runat="server" ControlToValidate="StateID"
                                         ErrorMessage="Please Select a State" Display="Dynamic" CssClass="ReqFieldCSS"
                                         ValidationGroup="Submit" InitialValue="0" Enabled="false" /></span>
-                                <asp:DropDownList ID="StateID" runat="server" AutoPostBack="True" DataSourceID="StatesDataSource"
+                                <asp:DropDownList ID="StateID" runat="server" AutoPostBack="True"
                                     DataTextField="StateName" DataValueField="StateID" CssClass="req" />
                             </div>
                         </ContentTemplate>
@@ -322,7 +277,7 @@
                         <asp:RequiredFieldValidator ID="EmergencyCountryIDValidator" runat="server"
                             ControlToValidate="EmergencyCountryID" ErrorMessage="Please Select a Country"
                             Display="Dynamic" CssClass="ReqFieldCSS" ValidationGroup="Submit" /></span>
-                    <asp:DropDownList ID="EmergencyCountryID" runat="server" DataSourceID="CountryDataSource"
+                    <asp:DropDownList ID="EmergencyCountryID" runat="server"
                         DataTextField="CountryName" DataValueField="CountryID" CssClass="ddCSS" />
                     <asp:Label runat="server" class="controlLabel" ID="lblEmergencyNumber" Text="lblEmergencyNumber">
                     </asp:Label>
@@ -353,7 +308,7 @@
                     <asp:ListItem Text="No" Value="0" />
                 </asp:RadioButtonList>
             </div>
-            <div class="row" id="InsuranceNameDiv" style="display: none; text-align: center">
+            <div class="row" id="InsuranceNameDiv" style="display: none; text-align: center" runat="server">
                 <asp:Label runat="server" class="controlLabel" ID="lblInsuranceName" Text="lblInsuranceName">
                 </asp:Label>
                 <asp:TextBox ID="InsuranceName" runat="server" CssClass=" " />
@@ -367,7 +322,7 @@
                 <ContentTemplate>
                     <div class="row" id="CertifiedDiverDiv">
                         <asp:Label runat="server" class="controlLabel" ID="lblCertifiedDiver" Text="lblCertifiedDiver">
-                </asp:Label>
+                        </asp:Label>
                         <asp:RadioButtonList ID="CertifiedDiver" runat="server" RepeatDirection="Horizontal" AutoPostBack="true" OnSelectedIndexChanged="CertifiedDiver_SelectedIndexChanged">
                             <asp:ListItem Text="Yes" Value="1" />
                             <asp:ListItem Text="No" Value="0" />
@@ -508,7 +463,7 @@
                             <img src="Content/loading.gif" alt="Camera Loading..." />
                         </div>
                         <div id="pictureBox"></div>
-                        <video id="player" autoplay width="auto" height="auto" style="border: none;">
+                        <video id="player" autoplay style="border: none;">
                         </video>
                     </div>
 
@@ -526,20 +481,18 @@
                     CssClass="ReqFieldCSS" />
                 <div class="imageLoader">
                     <label class="fileContainer" id="fileContainer" runat="server">
-                        <img src="Content/upload.png" height="50" id="uploadImg"/>Upload Image
+                        <img src="Content/upload.png" height="30" id="uploadImg" />Upload Image
                         <asp:FileUpload ID="FileUpload1" accept="image/*" runat="server"
                             text="Choose Photo or Take Selfie" Style="display: none" />
                     </label>
                 </div>
 
                 <div id="dvPreview" runat="server">
-                    <img src="" id="imgPreview" alt="Preview" runat="server"/>
+                    <img src="" id="imgPreview" alt="Preview" runat="server" />
                 </div>
             </div>
             <br />
         </asp:Panel>
-
-
 
         <!-- Circles which indicates the steps of the form: -->
         <div id="stepsDiv">

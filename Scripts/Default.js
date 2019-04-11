@@ -1,8 +1,18 @@
 
 
-var currentTab = 0;
+var currentTab;
 var birthdate = "";
 var UseCamera;
+
+function SetUseCamera(bool) {
+    UseCamera = bool;
+}
+
+function GetUseCamera() {
+    return UseCamera;
+}
+
+
 $(function () {
     if ($.urlParam('Camera').toLowerCase() == "yes") {
         UseCamera = true;
@@ -25,17 +35,7 @@ function getAge(dateString) {
     return age;
 }
 
-function SetUseCamera(bool) {
-    UseCamera = bool;
-    document.getElementById('CameraUsed').value = UseCamera.toString();
-    // alert(UseCamera);
-}
 
-function GetUseCamera() {
-    //alert(UseCamera);
-    return UseCamera;
-
-}
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results == null) {
@@ -47,6 +47,7 @@ $.urlParam = function (name) {
 }
 
 $(function () {
+    currentTab = 0;
     // Current tab is set to be the first tab (0)
     showTab(currentTab); // Display the current tab
 });
@@ -62,6 +63,7 @@ function showTab(n) {
     // This function will display the specified tab of the form ...
     var x = document.getElementsByClassName("tab");
     x[n].style.display = "block";
+    $('#currentTab').value = n;
     // ... and fix the Previous/Next buttons:
     if (n == 0) {
         document.getElementById("prevBtn").style.display = "none";
@@ -76,7 +78,7 @@ function showTab(n) {
         document.getElementById("nextBtn").innerHTML = "Next";
     }
     if (x[n].id == "PhotoPanel") {
-        //if ($.urlParam('Camera') == "Yes") {
+        //($.urlParam('Camera') == "Yes") {
         if (UseCamera && (navigator.getUserMedia != null)) {
             SetUseCamera(true);
             loadCamera();
@@ -195,6 +197,11 @@ function validateForm() {
         }
     }
 
+    if (x[currentTab].id == "PhotoPanel" && document.getElementById("captureDiv").style.display != "none") {
+        alert('Capture a photo!');
+        return false;
+    }
+
     // If the valid status is true, mark the step as finished and valid:
     if (valid) {
         document.getElementsByClassName("step")[currentTab].className += " finish";
@@ -216,9 +223,12 @@ function fixStepIndicator(n) {
 
 function loadFileUpload() {
     document.getElementById('cameraDiv').style.display = "none";
+    document.getElementById('captureDiv').style.display = "none";
     document.getElementById('fileUploadDiv').style.display = "block";
     document.getElementById('imageData').classList.remove('req');
-    document.getElementById('FileUpload1').className += " req";
+    if (document.getElementById("FileUploadValidator").validationGroup == "Submit") {
+        document.getElementById('FileUpload1').className += " req";
+    }
 }
 
 $(function () {
@@ -260,16 +270,6 @@ $(function () {
 });
 
 function loadCamera() {
-    //const urlParams = new URLSearchParams(window.location.search);
-    //const useCamera = $.urlParam('Camera');//urlParams.get('Camera');
-    // if (useCamera == "Yes") {
-    /*navigator.permissions.query({ name: 'camera' })
-        .then(function (permissionObj) {
-            console.log(permissionObj.state);
-        })
-        .catch(function (error) {
-            console.log('Got error :', error);
-        })*/
     document.getElementById('loadingImg').style.display = "block";
     document.getElementById('cameraDiv').style.display = "inline-block";
     document.getElementById('fileUploadDiv').style.display = "none";
@@ -278,58 +278,46 @@ function loadCamera() {
     const player = document.getElementById('player');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
     const captureButton = document.getElementById('capture');
     captureButton.style.display = "none";
     const redoButton = document.getElementById('redo');
 
-    const constraints = {
-        audio: false,
-        video: {
-            width: 240,
-            height: 320
-        }
-    };
-    // Attach the video stream to the video element and autoplay.
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(function (stream) {
-            player.srcObject = stream;
-        })
-        .catch(function (err) {
-            alert("Webcam could not load\n" + err.name);
-            SetUseCamera(false);
-            loadFileUpload();
-        });
+    if (player.srcObject == null) {
+        const constraints = {
+            audio: false,
+            video: {
+                width: 240,
+                height: 320
+            }
+        };
+        // Attach the video stream to the video element and autoplay.
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function (stream) {
+                player.srcObject = stream;
+            })
+            .catch(function (err) {
+                alert("Webcam could not load\n" + err.name);
+                SetUseCamera(false);
+                loadFileUpload();
+            });
+    }
+    else {
+        loadCaptureDiv();
+    }
 
     player.addEventListener('canplaythrough', function () {
-        document.getElementById('loadingImg').style.display = "none";
-        var vheight = document.getElementById('player').clientHeight;
-        var boxWidth = vheight * .75;
-        document.getElementById('pictureBox').style.width = boxWidth + "px";
-        if (imgPreview.src != "") {
-            imgData = imgPreview.src;
-            var image = new Image();
-            image.onload = function () {
-                context.drawImage(image, 0, 0);
-            };
-            image.src = imgData;
-            var hiddenImg = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
-            $("#imageData").val(hiddenImg);
-            document.getElementById('canvasDiv').style.display = "block";
-            document.getElementById('captureDiv').style.display = "none";
-        }
-        else {
-            document.getElementById('pictureBox').style.border = "3px solid red";
-            captureButton.style.display = "block";
-        }
+        loadCaptureDiv();
     })
 
     captureButton.addEventListener('click', function () {
+        document.getElementById('CameraUsed').value = "true";
         // Draw the video frame to the canvas.
         fitImage(context, player);
         document.getElementById('canvasDiv').style.display = "block";
         document.getElementById('captureDiv').style.display = "none";
         // Stop all video streams.
-        player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
+       // player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
         var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
         document.getElementById('canvas').style.border = "solid 5px green";
         document.getElementById('cameraAlert').style.display = "none";
@@ -372,13 +360,40 @@ function loadCamera() {
 
     redoButton.addEventListener('click', function () {
         document.getElementById('canvasDiv').style.display = "none";
+        var vheight = document.getElementById('player').videoHeight;
+        var boxWidth = vheight * .75;
+        document.getElementById('pictureBox').style.width = boxWidth + "px";
         document.getElementById('pictureBox').style.border = "3px solid red";
         document.getElementById('captureDiv').style.display = "block";
         captureButton.style.display = "block";
         // Restart video streams.
-        player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = true });
+        //player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = true });
         return false;
     });
+    function loadCaptureDiv() {
+        document.getElementById('loadingImg').style.display = "none";
+        var vheight = document.getElementById('player').videoHeight;
+        var boxWidth = vheight * .75;
+        document.getElementById('pictureBox').style.width = boxWidth + "px";
+        if (imgPreview.src != "") {
+            // SetUseCamera(false);
+            imgData = imgPreview.src;
+            var image = new Image();
+            image.onload = function () {
+                context.drawImage(image, 0, 0);
+            };
+            image.src = imgData;
+            var hiddenImg = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
+            $("#imageData").val(hiddenImg);
+            document.getElementById('canvasDiv').style.display = "block";
+            document.getElementById('captureDiv').style.display = "none";
+        }
+        else {
+            document.getElementById('captureDiv').style.display = "block";
+            document.getElementById('pictureBox').style.border = "3px solid red";
+            captureButton.style.display = "block";
+        }
+    }
 }
 
 // Get the modal

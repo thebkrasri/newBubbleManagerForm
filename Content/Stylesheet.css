@@ -14,22 +14,59 @@ button:focus {
     clear: both;
     display: table;
 }
+
 [class*="col-"] {
     float: left;
     padding: 0;
 }
-.col-1 {width: 8.33%;}
-.col-2 {width: 16.66%;}
-.col-3 {width: 25%;}
-.col-4 {width: 33.33%;}
-.col-5 {width: 41.66%;}
-.col-6 {width: 50%;}
-.col-7 {width: 58.33%;}
-.col-8 {width: 66.66%;}
-.col-9 {width: 75%;}
-.col-10 {width: 83.33%;}
-.col-11 {width: 91.66%;}
-.col-12 {width: 100%;}
+
+.col-1 {
+    width: 8.33%;
+}
+
+.col-2 {
+    width: 16.66%;
+}
+
+.col-3 {
+    width: 25%;
+}
+
+.col-4 {
+    width: 33.33%;
+}
+
+.col-5 {
+    width: 41.66%;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.col-7 {
+    width: 58.33%;
+}
+
+.col-8 {
+    width: 66.66%;
+}
+
+.col-9 {
+    width: 75%;
+}
+
+.col-10 {
+    width: 83.33%;
+}
+
+.col-11 {
+    width: 91.66%;
+}
+
+.col-12 {
+    width: 100%;
+}
 
 body {
     width: 100%;
@@ -45,16 +82,15 @@ form {
     max-width: 700px;
     margin: auto;
 }
+
 #btnCustomerNumber {
     position: absolute;
     width: auto;
     margin: 2em;
-
     right: 10px;
-
 }
-#statelabel
- {
+
+#statelabel {
     margin: 0;
 }
 
@@ -65,28 +101,27 @@ body span {
 }
 
 h2 {
-
     color: black;
     max-width: 90%;
     text-align: center;
     font-size: 2em;
     font-weight: bold;
     text-shadow: 2px 2px 5px dimgrey;
-    margin: Auto;   
+    margin: Auto;
 }
 
 .sectionHeader {
     margin: 0 auto;
-    line-height: 1;    
+    line-height: 1;
     font-size: 1.5em;
     color: White;
     padding: 0px;
     text-align: center;
-} 
+}
 
 .pnlCSS {
     display: block;
-    background-color:rgba(150, 150, 150, 1);
+    background-color: rgba(150, 150, 150, 1);
     max-width: 600px;
     border: none;
     border-radius: 20px;
@@ -104,18 +139,18 @@ h2 {
 }
 
 
-.pnlCSS div select {
-     margin: auto;
-     align-items: center;
-     line-height: 1.8;
-     color: DarkGrey;
-}
+    .pnlCSS div select {
+        margin: auto;
+        align-items: center;
+        line-height: 1.8;
+        color: DarkGrey;
+    }
 
 .controlLabel {
-   font-size: 1em;
-   display: block;
-   text-align: center;
-   line-height: 1.7;
+    font-size: 1em;
+    display: block;
+    text-align: center;
+    line-height: 1.7;
 }
 
 
@@ -124,7 +159,7 @@ h2 {
 select {
     position: relative;
     display: inline-block;
-    border:none;
+    border: none;
     border-radius: 5px;
     padding: 5px;
     background-color: Black;
@@ -137,7 +172,7 @@ select {
 }
 
 
-.col-6 select{
+.col-6 select {
     min-width: 25%;
     max-width: 85%;
 }
@@ -152,12 +187,13 @@ select {
     background-color: rgba(179,179,179,0.8);
     border-radius: 50px;
 }
+
 select:hover {
     background-color: Black;
     color: Black;
 }
 
-option:hover{
+option:hover {
     background-color: rgba(221, 221, 221, 1);
     color: Black;
 }
@@ -176,7 +212,7 @@ option:hover{
     text-align: center;
     margin: 0 auto;
 }
-  
+
 .btn {
     margin: auto;
     align: center;
@@ -190,11 +226,10 @@ option:hover{
     font-family: 'Raleway';
     line-height: 1.2;
     padding: 5px 10px;
-    box-shadow: 
-      0 2px 3px #000000, /*bottom external highlight*/
-      0 -1px 1px #666, /*top external shadow*/ 
-      inset 0 -5px 5px rgba(0,0,0,0.5), /*bottom internal shadow*/ 
-      inset 0 5px 5px #d6d6d6; /*top internal highlight*/
+    box-shadow: 0 2px 3px #000000, /*bottom external highlight*/
+    0 -1px 1px #666, /*top external shadow*/
+    inset 0 -5px 5px rgba(0,0,0,0.5), /*bottom internal shadow*/
+    inset 0 5px 5px #d6d6d6; /*top internal highlight*/
 }
 
 #Button1:hover {
@@ -202,16 +237,16 @@ option:hover{
 }
 
 #FileUpload1 {
-   margin: auto;
-   padding: 5px;
-   line-height: 1.2;
-   max-width: 90%;
-   text-align: center;
-   font-size: 1em;
+    margin: auto;
+    padding: 5px;
+    line-height: 1.2;
+    max-width: 90%;
+    text-align: center;
+    font-size: 1em;
 }
 
 
-#LastDiveDateDiv *, #NumberOfDivesDiv *{
+#LastDiveDateDiv *, #NumberOfDivesDiv * {
     margin: auto;
     display: block;
 }
@@ -220,6 +255,7 @@ option:hover{
     text-align: center;
     padding-bottom: 0px;
 }
+
 #Insurance, #lblInsurance {
     display: inline-block;
     width: auto;
@@ -230,24 +266,27 @@ option:hover{
     display: block;
 }
 
- #CertifiedDiverDiv {
+#CertifiedDiverDiv {
     text-align: center;
 }
+
 #InsuranceName, #lblInsuranceName {
     display: block;
     margin: auto;
 }
+
 #CertifiedDiver {
     margin: auto;
 }
+
 #DiveCertTypes * {
-    text-align:center !important;
+    text-align: center !important;
 }
 
 .ReqFieldCSS {
-   color: firebrick;
-   text-align: center;
-   line-height: 1;
+    color: firebrick;
+    text-align: center;
+    line-height: 1;
 }
 
 
@@ -280,7 +319,7 @@ option:hover{
 }
 /* Modal Content */
 .modal-content {
-    background:transparent;
+    background: transparent;
     margin: auto;
     width: auto;
     position: relative;
@@ -289,7 +328,6 @@ option:hover{
     border: none;
     overflow: auto; /* Enable scroll if needed */
     display: block;
-
 }
 
 .modal-header {
@@ -301,15 +339,16 @@ option:hover{
     padding: 10px 20px;
     font-size: 16pt;
     font-weight: bold;
- }
-
- #termsModal {
-     padding-top: 5vh;
- }
- #termsModal .modal-body {
-    padding-top: 5px;
-    max-width: 95%;
 }
+
+#termsModal {
+    padding-top: 5vh;
+}
+
+    #termsModal .modal-body {
+        padding-top: 5px;
+        max-width: 95%;
+    }
 
 #pTerms {
     text-align: left;
@@ -317,12 +356,12 @@ option:hover{
 }
 
 .btn-group {
-float:right;
+    float: right;
 }
 /* The Close Button */
- .close {
+.close {
     background: transparent;
-    border:none;
+    border: none;
     color: rgb(26, 26, 26);
     float: right;
     font-size: 28px;
@@ -333,16 +372,16 @@ float:right;
     width: auto;
 }
 
- .close:hover,
- .close:focus {
-    color: grey;
-    text-decoration: none;
-    cursor: pointer;
-}
+    .close:hover,
+    .close:focus {
+        color: grey;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-.close:active {
-    color: red;
-}
+    .close:active {
+        color: red;
+    }
 
 .fileContainer {
     overflow: hidden;
@@ -356,13 +395,16 @@ float:right;
     font-size: 1.5em;
     box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.4);
 }
-.fileContainer.invalid {
-    border-color: red;
-    color: red;
-}
+
+    .fileContainer.invalid {
+        border-color: red;
+        color: red;
+    }
+
     .fileContainer:hover {
         background-color: #e6e6e6;
     }
+
     .fileContainer:active {
         background-color: #e6e6e6;
     }
@@ -384,23 +426,26 @@ float:right;
 
 img {
     margin: auto;
-    padding-right: 10px;
     vertical-align: middle;
     max-height: 200px;
     max-width: 75%;
     margin: 20px auto;
+}
+
+#imgLogo {
     -webkit-filter: drop-shadow(10px 10px 5px rgba(0,0,0,0.5));
     filter: drop-shadow(10px 10px 5px rgba(0,0,0,0.5));
     -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=6, OffY=6, Color='#444')";
     filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=6, OffY=6, Color='#444')";
 }
-    
-    #imgPreview {
-        border-radius: 20px;
-    }
-    
-    #dvPreview {
-        display: none;
+
+
+
+#dvPreview {
+    display: none;
+}
+    #dvPreview img {
+        border-radius: 5px;
     }
 
 #uploadImg {
@@ -409,6 +454,7 @@ img {
     -ms-filter: none;
     filter: none;
     margin: 5px auto;
+    padding-right: 10px;
 }
 
 .imageLoader {
@@ -417,10 +463,10 @@ img {
     margin: auto;
 }
 
-    #cameraDiv div * {
-        display: block;
-        margin: auto;
-    }
+#cameraDiv div * {
+    display: block;
+    margin: auto;
+}
 
 #cameraDiv div input {
     float: right;
@@ -431,51 +477,52 @@ img {
     box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.4);
 }
 
-        #cameraDiv div input:hover {
-            background-color: rgba(153, 153, 153, 1);
-        }
-    #cameraAlert {
-        display: none;
+    #cameraDiv div input:hover {
+        background-color: rgba(153, 153, 153, 1);
     }
 
-    #pictureBox, #loadingImg{
-        border: none;
-        background: transparent;
-        height: 100%;
-        left:50%;
-        top:50%;
-        -webkit-transform: translate(-50%, -50%);
-         -moz-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        position:absolute;
-    }
+#cameraAlert {
+    display: none;
+}
 
-    /*Tab View CSS*/
-    /* Style the form */
+#pictureBox, #loadingImg {
+    border: none;
+    background: transparent;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+/*Tab View CSS*/
+/* Style the form */
 #regForm {
     background-color: #ffffff;
     margin: 100px auto;
     padding: 40px;
     width: 70%;
     min-width: 300px;
-  }
-  
-  /* Style the input fields */
-  input {
+}
+
+/* Style the input fields */
+input {
     padding: 10px;
     width: 350px;
-    max-width:75%;
+    max-width: 75%;
     border-radius: 5px;
     padding: 5px 10px;
     font-size: 1em;
     font-family: Raleway;
     border: none;
-  }
+}
 
-  input[type=radio], input[type=checkbox] {
-    max-width: 100%;
-    width: auto;
-  }
+    input[type=radio], input[type=checkbox] {
+        max-width: 100%;
+        width: auto;
+    }
 
 .button {
     padding: 0 20px;
@@ -494,86 +541,90 @@ img {
         background-color: rgba(153, 153, 153, 1);
         box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.4);
     }
-  
-  /* Mark input boxes that gets an error on validation: */
-  input.invalid, select.invalid {
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid, select.invalid {
     background-color: #ff9999 !important;
-  }
-  
-  /* Hide all steps by default: */
-  .tab {
+}
+
+/* Hide all steps by default: */
+.tab {
     display: none;
-  }
+}
 
-  #stepbuttons {
-    overflow:auto;
-    max-width:90%;
-    display:block;
-  }
-
-  #stepbuttons div {
-      float: right;
-  }
-  
-  #stepsDiv {
-    text-align:center;
-    margin:auto;
-    width:80%;
+#stepbuttons {
+    overflow: auto;
+    max-width: 90%;
     display: block;
-  }
-  /* Make circles that indicate the steps of the form: */
-  .step {
+}
+
+    #stepbuttons div {
+        float: right;
+    }
+
+#stepsDiv {
+    text-align: center;
+    margin: auto;
+    width: 80%;
+    display: block;
+}
+/* Make circles that indicate the steps of the form: */
+.step {
     height: 15px;
     width: 15px;
     margin: 0 2px;
     background-color: #bbbbbb;
-    border: none; 
+    border: none;
     border-radius: 50%;
     display: inline-block;
     opacity: 0.5;
-  }
-  
-  /* Mark the active step: */
-  .step.active {
-    opacity: 1;
-  }
-  
-  /* Mark the steps that are finished and valid: */
-  .step.finish {
-    background-color: #4CAF50;
-  }
+}
 
-  @media only screen and (max-width: 600px) {
+    /* Mark the active step: */
+    .step.active {
+        opacity: 1;
+    }
+
+    /* Mark the steps that are finished and valid: */
+    .step.finish {
+        background-color: #4CAF50;
+    }
+
+@media only screen and (max-width: 600px) {
     #btnCustomerNumber {
         position: relative;
         float: unset;
         margin: 0px;
-    
     }
+
     img {
         max-height: 150px;
     }
-      #stepbuttons {
-          display: block;
-          margin: auto;
-      }
 
-      #stepbuttons div {
-          float: unset;
-      }
-      .pnlCSS {
-          max-width: 90%;
-      }
+    #stepbuttons {
+        display: block;
+        margin: auto;
+    }
+
+        #stepbuttons div {
+            float: unset;
+        }
+
+    .pnlCSS {
+        max-width: 90%;
+    }
+
     #termsModal .modal-content {
         max-height: 80vh;
     }
-  }
+}
 
-  @media only screen and (max-height: 600px) {
+@media only screen and (max-height: 600px) {
     #termsModal .modal-content {
         max-height: 70vh;
     }
+
     #btnCustomerNumber {
         right: 5px;
     }
-  }
+}
