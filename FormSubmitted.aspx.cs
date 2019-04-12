@@ -33,6 +33,8 @@ public partial class FormSubmitted : System.Web.UI.Page
                 }
             }
              pagebody.Attributes.CssStyle.Add("color", this.Session["Section TextColor"].ToString());
+            pnlFormSubmitted.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
+            pnlFormSubmitted.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
         }
     }
 }

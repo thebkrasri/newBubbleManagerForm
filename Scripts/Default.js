@@ -14,7 +14,8 @@ function GetUseCamera() {
 
 
 $(function () {
-    if ($.urlParam('Camera').toLowerCase() == "yes") {
+    var c = $.urlParam('Camera');
+    if (c != null && c.toLowerCase() == "yes") {
         UseCamera = true;
         document.getElementById('CameraUsed').value = "true";
     }
@@ -113,6 +114,10 @@ function nextPrev(n) {
     if (currentTab >= x.length) {
         //...the form gets submitted:
         document.getElementById("termsModal").style.display = "table";
+        x[currentTab - 1].style.display = "none";
+        document.getElementById("stepsDiv").style.display = "none";
+        document.getElementById("stepbuttons").style.display = "none";
+        document.getElementById("optLanguage").style.display = "none";
         return false;
     }
     // Otherwise, display the correct tab:
@@ -317,7 +322,7 @@ function loadCamera() {
         document.getElementById('canvasDiv').style.display = "block";
         document.getElementById('captureDiv').style.display = "none";
         // Stop all video streams.
-       // player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
+        // player.srcObject.getVideoTracks().forEach(function (track) { track.enabled = false });
         var image = document.getElementById("canvas").toDataURL("image/png").replace('data:image/png;base64,', '');
         document.getElementById('canvas').style.border = "solid 5px green";
         document.getElementById('cameraAlert').style.display = "none";
@@ -397,22 +402,20 @@ function loadCamera() {
 }
 
 // Get the modal
-var modal = document.getElementById('termsModal');
+//var modal = document.getElementById('termsModal');
 
 // Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+//var btn = document.getElementById("myBtn");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on <span> (x), close the modal
+//var span = document.getElementsByClassName("close")[0];
 
 $(document).ready(function () {
 
     $('#btnCustomerNumber').click(function () {
         $('#prevCustomerModal').css('display', 'table');
     })
-
+    // When the user clicks on <span> (x), close the modal
     $('#btnClose').click(function () {
         $(this).closest('.modal').css('display', 'none');
     })
@@ -445,7 +448,4 @@ $(document).ready(function () {
             $('#InsuranceNameDiv').css("display", "none");
         }
     });
-
 })
-
-

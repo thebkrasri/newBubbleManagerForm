@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class Default : System.Web.UI.Page
 {
-    
+
     public string useCamera
     {
         get
@@ -111,7 +111,8 @@ public partial class Default : System.Web.UI.Page
         lblPersonalInfoPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
         lblAddressPanel.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
         CertifiedDiver.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
-
+        lblCamera.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
+        lblFileUpload.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
     }
 
     protected void ChangeForm()
@@ -342,6 +343,11 @@ public partial class Default : System.Web.UI.Page
         OleDbTools.ExecuteSqlStatement(sqlStr, parameters);
         string urlStr = "FormSubmitted.aspx?Camera=" + useCamera + "&ID=" + CustomerID;
         Response.Redirect(urlStr);
+        //IDnum.InnerText = CustomerID.ToString();
+        //submittingImg.Style.Add("display", "none");
+        //divThankYou.Style.Add("display", "block");
+        //pnlFormSubmitted.Style.Add("display", "block");
+        //stepbuttons.Style.Add("display", "none");
     }
 
     protected void CountryID_SelectedIndexChanged(object sender, EventArgs e)
@@ -388,8 +394,6 @@ public partial class Default : System.Web.UI.Page
             LastDiveDate.Text = "";
         }
     }
-
-
 
     protected List<OleDbParameter> GenerateCustomerParams()
     {
@@ -648,7 +652,7 @@ public partial class Default : System.Web.UI.Page
         DiveLevelID.SelectedValue = dr["DiveLevelID"].ToString();
         DiveOrgID.SelectedValue = dr["DiveOrgID"].ToString();
         LastDiveDate.Text = (string)dr["LastDiveDate"];
-        NumberOfDives.Text = (dr["NumberOfDives"].ToString() == "-1"? "" : dr["NumberOfDives"].ToString());
+        NumberOfDives.Text = (dr["NumberOfDives"].ToString() == "-1" ? "" : dr["NumberOfDives"].ToString());
         //Where Staying Panel
         WhereStayID.SelectedValue = dr["WhereStayID"].ToString();
         RoomOther.Text = (string)dr["RoomOther"];

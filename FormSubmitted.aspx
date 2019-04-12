@@ -6,7 +6,7 @@
 
 <head runat="server">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
-
+    <link rel="stylesheet" type="text/css" href="Content/StyleSheet.css" />
     <style>
         body {
             text-align: center;
@@ -18,34 +18,32 @@
 
         img {
             margin: 20px auto;
-            padding-right: 10px;
+
             vertical-align: middle;
             max-height: 200px;
             max-width: 75%;
         }
 
         p {
-            font-size: 1.5em;
+            font-size: 1.2em;
+            line-height: 1.5;
+            font-weight: normal;
+        }
+        .CustNum {
+            display:inline;
         }
 
         .button {
-            padding: 0 20px;
-            height: 35px;
-            width: auto;
-            line-height: 1;
-            border-radius: 3px;
-            font-size: 16px;
-            color: black;
-            background-color: rgba(191, 191, 191, 1);
-            box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.4);
-            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            margin: auto;
+            max-width: 100%;
         }
 
-            .button:hover {
-                background-color: rgba(153, 153, 153, 1);
-                box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.4);
-            }
-
+        #divThankYou img {
+            margin: 0;
+            padding: 0;
+            padding-left: 22px;
+        }
         #redirectDiv div {
             width: auto;
             display: inline-block;
@@ -53,70 +51,30 @@
             font-size: 1.2em;
         }
 
-        .dot {
-            display: inline;
-            margin: 0 0.1em;
-            position: relative;
-            font-size: 2em;
-            font-family: "Roboto", "Open Sans", sans-serif;
-            opacity: 0;
-            animation: showHideDot 2.5s ease-in-out infinite;
-        }
-
-            .dot.one {
-                animation-delay: 0.2s;
-            }
-
-            .dot.two {
-                animation-delay: 0.4s;
-            }
-
-            .dot.three {
-                animation-delay: 0.6s;
-            }
-
-        @keyframes showHideDot {
-            0% {
-                opacity: 0;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            60% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
+       #pnlFormSubmitted {
+           max-width: 90vw;
+           margin: 20px auto;
+       }
     </style>
 
     <title>Bubble Manager</title>
 </head>
 
 <body runat="server" id="pagebody">
-    <img src="Content/logo.png" alt="Welcome to Bubble Manager!" />
-    <h1>Thank you!</h1>
-    <p>
-        Your information has been uploaded to our database.<br />
-        You are one step closer to the underwater world!
-    </p>
-    <p id="CustomerID" style="display:none">Your customer ID is <span id="IDnum" style="font-weight: bold"></span></p>
-    <input type="button" id="btnRefresh" value="Add Another Customer" class="button" />
-    <div id="redirectDiv" style="display: none">
-        <div>
-            <span>Redirecting back to registration form</span>
+    <img src="Content/logo.png" alt="Welcome to Bubble Manager!" id="imgLogo" />
+    <asp:Panel runat="server" ID="pnlFormSubmitted" Style=" padding: 20px" CssClass="pnlCSS">
+        <div id="divThankYou" runat="server">
+            <img src="Content/success.png" height="120" />
+            <h1 style="margin: 0">Thank you!</h1>
+            <p style="margin-top: 0">
+                Your information has been uploaded to our database.<br />
+                You are one step closer to the underwater world!
+                            <br />
+                <span class="CustNum">Your customer ID is <span id="IDnum" class="CustNum" style="font-weight: bold; font-size: 16pt;" runat="server"></span>.</span>
+                </p>
+                <input type="button" id="btnRefresh" value="Add Another Customer" class="button" onclick="redirect()" />
         </div>
-        <div>
-            <span class="dot one">.</span>
-            <span class="dot two">.</span>
-            <span class="dot three">.</span>
-        </div>
-    </div>
-    
+    </asp:Panel>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
