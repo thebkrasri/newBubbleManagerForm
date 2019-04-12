@@ -5,25 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head runat="server">
+      <link rel="icon" href="Content/logo.ico" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
     <link rel="stylesheet" type="text/css" href="Content/StyleSheet.css" />
     <style>
-        body {
-            text-align: center;
-            font-family: 'Raleway';
-            margin: auto;
-            height: 100%;
-            width: 100%
-        }
-
-        img {
-            margin: 20px auto;
-
-            vertical-align: middle;
-            max-height: 200px;
-            max-width: 75%;
-        }
-
         p {
             font-size: 1.2em;
             line-height: 1.5;
@@ -52,7 +37,7 @@
         }
 
        #pnlFormSubmitted {
-           max-width: 90vw;
+           max-width: 900px;
            margin: 20px auto;
        }
     </style>

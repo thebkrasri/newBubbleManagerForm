@@ -7,7 +7,7 @@
 <head runat="server">
     <link rel="stylesheet" type="text/css" href="Content/StyleSheet.css" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
-
+    <link rel="icon" href="Content/logo.ico" />
     <title>Bubble Manager</title>
 </head>
 

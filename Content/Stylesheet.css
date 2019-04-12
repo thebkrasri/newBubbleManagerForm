@@ -347,7 +347,7 @@ option:hover {
 
     #termsModal .modal-body {
         padding-top: 5px;
-        max-width: 95%;
+        max-width: 900px;
     }
 
 #pTerms {
@@ -427,7 +427,7 @@ option:hover {
 img {
     margin: auto;
     vertical-align: middle;
-    max-height: 200px;
+    max-height: 150px;
     max-width: 75%;
     margin: 20px auto;
 }
@@ -612,6 +612,9 @@ input.invalid, select.invalid {
 
     #termsModal .modal-content {
         max-height: 80vh;
+    }
+    #termsModal .modal-body {
+        max-width: 95%;
     }
 }
 
