@@ -465,8 +465,8 @@ img {
 }
 
 #cameraDiv div input {
-    float: right;
-    margin: 5px;
+    float: unset;
+    margin: 5px auto;
     padding: 7px 15px;
     width: auto;
     background-color: #bfbfbf;

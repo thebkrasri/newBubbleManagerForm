@@ -140,7 +140,6 @@ public partial class Default : System.Web.UI.Page
                 {
                     Panel p = (Panel)MyControl;
                     p.BackColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BackgroundColor"].ToString());
-                    p.BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section BorderColor"].ToString());
                 }
             }
 
