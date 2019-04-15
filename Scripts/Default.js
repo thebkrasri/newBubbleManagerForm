@@ -312,7 +312,14 @@ function loadCamera() {
     }
 
     player.addEventListener('canplaythrough', function () {
-        loadCaptureDiv();
+        if (player.srcObject.active) {
+            loadCaptureDiv();
+        }
+        else {
+            alert('Unable to use webcam! Check if in use by another app.');
+            SetUseCamera(false);
+            loadFileUpload();
+        }
     })
 
     captureButton.addEventListener('click', function () {
