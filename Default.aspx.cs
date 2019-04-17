@@ -185,6 +185,7 @@ public partial class Default : System.Web.UI.Page
                             ((RadioButtonList)MyControl).CssClass = "req";
                         }
                          ((RadioButtonList)MyControl).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
+                        ((RadioButtonList)MyControl).BorderColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Required Field MessageColor"].ToString());
                     }
                     else if (MyControl is DropDownList)
                     {
@@ -378,7 +379,7 @@ public partial class Default : System.Web.UI.Page
     {
         if (CertifiedDiver.SelectedValue == "1")
         {
-            this.DiveCertTypes.Style.Add("display", "");
+            this.DiveCertTypes.Style.Add("display", "table");
             this.NumberOfDivesDiv.Style.Add("display", "block");
             this.LastDiveDateDiv.Style.Add("display", "block");
         }
@@ -644,7 +645,7 @@ public partial class Default : System.Web.UI.Page
         else
         {
             CertifiedDiver.SelectedValue = "1";
-            this.DiveCertTypes.Style.Add("display", "");
+            this.DiveCertTypes.Style.Add("display", "table");
             this.NumberOfDivesDiv.Style.Add("display", "block");
             this.LastDiveDateDiv.Style.Add("display", "block");
         }

@@ -60,6 +60,18 @@ $(function () {
         n++;
     }
 });
+
+$('html').bind('keypress', function (e) {
+    if (e.keyCode == 13) {
+        return false;
+    }
+});
+$("#CustomerNumber").keyup(function (event) {
+    if (event.keyCode === 13) {
+        $("#prevCustBtn").click();
+    }
+});
+
 function showTab(n) {
     // This function will display the specified tab of the form ...
     var x = document.getElementsByClassName("tab");
@@ -140,7 +152,7 @@ function validateForm() {
             if (!$("input:radio[name='" + y[i].name + "']:checked").val()) {
                 y[i].classList.add("invalid");
                 valid = false;
-                document.getElementById(y[i].name).style.border = "5px solid red";
+                document.getElementById(y[i].name).style.borderWidth = "5px";
             }
         }
 
@@ -442,7 +454,7 @@ $(document).ready(function () {
         }
         if (this.type == "radio" && $("input:radio[name='" + this.name + "']:checked").val());
         this.classList.remove("invalid");
-        document.getElementById(this.name).style.border = "none";
+        document.getElementById(this.name).style.borderWidth = "0px";
     })
 
     $('#Insurance_0').on('change', function () {
