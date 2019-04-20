@@ -477,7 +477,7 @@ public partial class Default : System.Web.UI.Page
         }
         if (NumberOfDives.Text != "")
         {
-            parameters.Add(new OleDbParameter("NumberOfDives", OleDbType.Numeric) { Value = Convert.ToInt32(NumberOfDives.Text) });
+            parameters.Add(new OleDbParameter("NumberOfDives", OleDbType.VarChar) { Value = NumberOfDives.Text });
         }
         else
         {

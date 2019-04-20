@@ -124,13 +124,20 @@ function nextPrev(n) {
         document.getElementById("nextBtn").Text = "Submit";
     }
     if (currentTab >= x.length) {
+        var pterms = document.getElementById("pTerms").innerHTML.length;
         //...the form gets submitted:
-        document.getElementById("termsModal").style.display = "table";
-        x[currentTab - 1].style.display = "none";
-        document.getElementById("stepsDiv").style.display = "none";
-        document.getElementById("stepbuttons").style.display = "none";
-        document.getElementById("optLanguage").style.display = "none";
-        return false;
+        if (pterms != 0) {
+            document.getElementById("termsModal").style.display = "table";
+            x[currentTab - 1].style.display = "none";
+            document.getElementById("stepsDiv").style.display = "none";
+            document.getElementById("stepbuttons").style.display = "none";
+            document.getElementById("optLanguage").style.display = "none";
+            return false;
+        }
+        else {
+            $('#btnShipper').click();
+
+        }
     }
     // Otherwise, display the correct tab:
     showTab(currentTab);
