@@ -143,7 +143,7 @@
                             <br />
                             <asp:Label runat="server" class="controlLabel" ID="lblEmail" Text="lblEmail"></asp:Label>
                             <span>
-                                <asp:RegularExpressionValidator ID="RegValEmailValidator" runat="server"
+                                <asp:RegularExpressionValidator ID="EmailRegExValidator" runat="server"
                                     ControlToValidate="Email" Display="Dynamic" ErrorMessage="Please enter valid email"
                                     ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" CssClass="ReqFieldCSS"
                                     ValidationGroup="validator" />
@@ -189,7 +189,7 @@
                         <div class="col-12">
                             <asp:Label runat="server" class="controlLabel" ID="lblAddress1" Text="lblAddress1"></asp:Label>
                             <span>
-                                <asp:RegularExpressionValidator runat="server" ControlToValidate="Address1" Display="Dynamic"
+                                <asp:RegularExpressionValidator ID="Address1RegExValidator" runat="server" ControlToValidate="Address1" Display="Dynamic"
                                     ErrorMessage="Please Fill in Street Address, Not Email!" CssClass="ReqFieldCSS"
                                     ValidationExpression="^((?!@).)*$" ValidationGroup="validator" />
                                 <asp:RequiredFieldValidator ID="Address1Validator" runat="server" ControlToValidate="Address1"
@@ -206,7 +206,7 @@
                             <br />
                             <asp:Label runat="server" class="controlLabel" ID="lblCity" Text="lblCity"></asp:Label>
                             <span>
-                                <asp:RegularExpressionValidator ID="RegExpressCityValidator" runat="server"
+                                <asp:RegularExpressionValidator ID="CityRegExValidator" runat="server"
                                     ControlToValidate="City" Display="Dynamic"
                                     ErrorMessage="Please enter City in Alpha-Latin Characters"
                                     ValidationExpression="^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\-\'\.\s]*)$"
@@ -513,11 +513,12 @@
                             <p id="pTerms" runat="server" />
                             <div class="btn-group">
                                 <asp:Button ID="btnCancel" runat="server" class="button" Text="Cancel" />
-                                <asp:Button ID="btnShipper" runat="server" class="button" OnClick="Button1_Click" Text="Accept" />
+                                <asp:Button ID="btnShipper" runat="server" class="button" onclientclick="disableButton()" OnClick="Button1_Click" Text="Accept" />
                             </div>
                         </div>
                     </div>
                 </div>
+        <img id="submittingGif" src="Content/loading.gif" style="display:none"/>
         <asp:HiddenField runat="server" ID="CameraUsed"></asp:HiddenField>
     </form>
 </body>

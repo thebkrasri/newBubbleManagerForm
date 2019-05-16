@@ -235,6 +235,11 @@ public partial class Default : System.Web.UI.Page
                     MyValidator.Visible = false;
                 }
             }
+            Control MyRegExValidator = FindControl(controlName + "RegExValidator");
+            if (MyRegExValidator != null)
+            {
+                ((RegularExpressionValidator)MyRegExValidator).ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Required Field MessageColor"].ToString());
+            }
         }
         lblBirthDate.ForeColor = System.Drawing.ColorTranslator.FromHtml(this.Session["Section TextColor"].ToString());
         if (lang == "Spanish")
@@ -298,6 +303,7 @@ public partial class Default : System.Web.UI.Page
 
     protected void Button1_Click(Object Sender, EventArgs E)
     {
+        btnShipper.Enabled = false;
         Page.Validate("Submit");
         List<IValidator> errored = this.Validators.Cast<IValidator>().Where(v => !v.IsValid).ToList();
         if (Page.IsValid)
@@ -312,6 +318,7 @@ public partial class Default : System.Web.UI.Page
                 errs = errs + "\n" + i.ErrorMessage.ToString();
             }
             ShowMessage("Missing Fields", "Please fill in ALL required fields!\n" + errs);
+            btnShipper.Enabled = true;
         }
     }
 
@@ -577,22 +584,26 @@ public partial class Default : System.Web.UI.Page
     {
         for (int i = 0; i < dr.ItemArray.Length; i++)
         {
-            if (dr.Table.Columns[i].DataType == System.Type.GetType("System.String") && dr[i] == DBNull.Value)
+            if (dr.Table.Columns[i].DataType == System.Type.GetType("System.String"))
             {
-                dr[i] = "";
+                if (dr[i] == DBNull.Value)
+                {
+                    dr[i] = "";
+                }
+                else
+                {
+                    dr[i] = dr[i].ToString().Trim();
+                }
             }
             if (dr.Table.Columns[i].DataType == System.Type.GetType("System.Int32") && dr[i] == DBNull.Value)
             {
-                dr[i] = -1;
+                dr[i] = 0;
             }
-            /* if (dr.Table.Columns[i].DataType == System.Type.GetType("System.Boolean") && dr[i].ToString() == "False")
-             {
-               dr[i] = 0;
-             }
-             else if (dr.Table.Columns[i].DataType == System.Type.GetType("System.Boolean") && dr[i].ToString() == "True")
-             {
-                 dr[i] = 1;
-             }*/
+            if (dr.Table.Columns[i].DataType == System.Type.GetType("System.DateTime") && dr[i] == DBNull.Value)
+            {
+                dr[i] = DateTime.MinValue;
+            }
+
         }
         //Personal Info Panel
         FirstName.Text = (string)dr["FirstName"];
@@ -603,10 +614,26 @@ public partial class Default : System.Web.UI.Page
         PassportNum.Text = (string)dr["PassportNum"];
         DietaryRestrictions.Text = (string)dr["DietaryRestrictions"];
         DateTime BirthDate = (DateTime)dr["BirthDate"];
-        cmbDay.SelectedValue = BirthDate.Day.ToString();
-        cmbMonth.SelectedIndex = BirthDate.Month;
-        cmbYear.SelectedValue = BirthDate.Year.ToString();
-        Gender.SelectedValue = (string)dr["Gender"];
+        if (BirthDate == DateTime.MinValue)
+        {
+            cmbDay.SelectedIndex = 0;
+            cmbMonth.SelectedIndex = 0;
+            cmbYear.SelectedIndex = 0;
+        }
+        else
+        {
+            cmbDay.SelectedValue = BirthDate.Day.ToString();
+            cmbMonth.SelectedIndex = BirthDate.Month;
+            cmbYear.SelectedValue = BirthDate.Year.ToString();
+        }
+        if ((string)dr["Gender"] == "")
+        {
+            Gender.SelectedIndex = 0;
+        }
+        else
+        {
+            Gender.SelectedValue = (string)dr["Gender"];
+        }
         //Address Panel
         Address1.Text = (string)dr["Address1"];
         Address2.Text = (string)dr["Address2"];
@@ -616,7 +643,10 @@ public partial class Default : System.Web.UI.Page
         DropDownList StateDD = (DropDownList)Page.FindControl("StateID");
         Label StateLabel = (Label)Page.FindControl("lblStateID");
         CountryDD.SelectedValue = dr["CountryID"].ToString();
-        FindStates(CountryDD, StateDD, StateLabel);
+        if (CountryDD.SelectedValue != "0")
+        {
+            FindStates(CountryDD, StateDD, StateLabel);
+        }
         StateDD.SelectedValue = dr["StateID"].ToString();
         //Emergency Contact Panel
         EmergencyName.Text = (string)dr["EmergencyName"];

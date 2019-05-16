@@ -125,18 +125,18 @@ function nextPrev(n) {
     }
     if (currentTab >= x.length) {
         var pterms = document.getElementById("pTerms").innerHTML.length;
+        x[currentTab - 1].style.display = "none";
+        document.getElementById("stepsDiv").style.display = "none";
+        document.getElementById("stepbuttons").style.display = "none";
+        document.getElementById("optLanguage").style.display = "none";
+        document.getElementById("submittingGif").style.display = "block";
         //...the form gets submitted:
         if (pterms != 0) {
             document.getElementById("termsModal").style.display = "table";
-            x[currentTab - 1].style.display = "none";
-            document.getElementById("stepsDiv").style.display = "none";
-            document.getElementById("stepbuttons").style.display = "none";
-            document.getElementById("optLanguage").style.display = "none";
             return false;
         }
         else {
             $('#btnShipper').click();
-
         }
     }
     // Otherwise, display the correct tab:
@@ -163,7 +163,7 @@ function validateForm() {
             }
         }
 
-        if (y[i].value == "" && y[i].classList.contains("req")) {
+        if (y[i].value.trim() == "" && y[i].classList.contains("req")) {
             // add an "invalid" class to the field:
             y[i].className += " invalid";
             // and set the current valid status to false:
@@ -474,4 +474,9 @@ $(document).ready(function () {
             $('#InsuranceNameDiv').css("display", "none");
         }
     });
+
 })
+function disableButton() {
+    document.getElementById("termsModal").style.display = "none";
+    $('btnShipper').attr('disabled', 'disabled');
+}
