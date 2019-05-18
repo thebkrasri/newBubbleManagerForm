@@ -73,7 +73,7 @@
                     <asp:TextBox ID="CustomerNumber" runat="server" Style="width: 100px; text-align: right;"
                         autocomplete="off">
                     </asp:TextBox>
-                    <asp:Button ID="prevCustBtn" runat="server" OnClick="prevCustClick" Text="Submit" CssClass="button" Style="margin-left: 5px"></asp:Button>
+                    <asp:Button ID="prevCustBtn" runat="server" OnClick="prevCustClick" Text="Submit" CssClass="button" Style="margin-left: 5px;margin-bottom:0px"></asp:Button>
                     <asp:HiddenField ID="CustomerNumberHidden" runat="server"></asp:HiddenField>
                 </div>
             </div>
