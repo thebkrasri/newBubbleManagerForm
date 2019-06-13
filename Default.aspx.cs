@@ -41,22 +41,28 @@ public partial class Default : System.Web.UI.Page
             CertifiedDiver.SelectedValue = "-1";
             EmergencyCountryID.DataSource = Country.Countries;
             EmergencyCountryID.DataBind();
+            NationalityCountryID.DataSource = Country.Countries;
+            NationalityCountryID.DataBind();
             HowHearTextID.DataBind();
             WhereStayID.DataBind();
             DiveLevelID.DataBind();
             DiveOrgID.DataBind();
             LanguageID.DataBind();
+            CheckinInstructorID.DataBind();
             //Add blank item at index 0
             CountryID.Items.Insert(0, new ListItem("--Select--", "0"));
             CountryID.SelectedIndex = -1;
             EmergencyCountryID.Items.Insert(0, new ListItem("--Select--", "0"));
             EmergencyCountryID.SelectedIndex = -1;
+            NationalityCountryID.Items.Insert(0, new ListItem("--Select--", "0"));
+            NationalityCountryID.SelectedIndex = -1;
             Gender.Items.Insert(0, new ListItem("--Select--", "0"));
             DiveOrgID.Items.Insert(0, new ListItem("--Select--", "0"));
             DiveLevelID.Items.Insert(0, new ListItem("--Select--", "0"));
             WhereStayID.Items.Insert(0, new ListItem("--Select--", "0"));
             HowHearTextID.Items.Insert(0, new ListItem("--Select--", "0"));
             LanguageID.Items.Insert(0, new ListItem("--Select--", "0"));
+            CheckinInstructorID.Items.Insert(0, new ListItem("--Select--", "0"));
 
             var Termsdt = new DataTable();
             Termsdt = OleDbTools.GetDataTable("SELECT TermsText, ShowTerms, [Language] FROM GlobalSettings, [Language] WHERE GlobalSettings.LanguageID = [Language].LanguageID");
@@ -330,12 +336,12 @@ public partial class Default : System.Web.UI.Page
         string sqlStr;
         if (CustomerNumberHidden.Value == null || CustomerNumberHidden.Value == "")
         {
-            sqlStr = "INSERT INTO Customer (FirstName, LastName, Gender, BirthDate ,Address1,Address2,City, StateID,CountryID,PostalCode,Email, Phone, PassportNum, LanguageID, HowHearTextID, HowHearSpecific, WhereStayID, RoomOther,RoomNo, EmergencyName, Relationship, EmergencyNumber, EmergencyEmail, DiveLevelID, DiveOrgID, NumberOfDives, Insurance, InsuranceName, EmergencyCountryID, Facebook, DietaryRestrictions, LastDiveDate, ArrivalDate) VALUES (@FirstName,@LastName, @Gender, @BirthDate, @Address1,@Address2,@City,@StateID, @Country,@PostalCode,@Email, @Phone, @PassportNum, @LanguageID, @HowHear, @HowHearSpecific, @WhereStayID, @RoomOther, @RoomNo, @EmergencyName, @Relationship, @EmergencyNumber, @EmergencyEmail, @DiveLevelID, @DiveOrgID, @NumberOfDives, @EmergencyCountryID, @Facebook, @DietaryRestrictions, @LastDiveDate, @ArrivalDate, @Insurance, @InsuranceName)";
+            sqlStr = "INSERT INTO Customer (FirstName, LastName, Gender, BirthDate ,Address1,Address2,City, StateID,CountryID,PostalCode,Email, Phone, PassportNum, LanguageID, HowHearTextID, HowHearSpecific, WhereStayID, RoomOther,RoomNo, EmergencyName, Relationship, EmergencyNumber, EmergencyEmail, DiveLevelID, DiveOrgID, NumberOfDives, Insurance, InsuranceName, EmergencyCountryID, Facebook, DietaryRestrictions, LastDiveDate, ArrivalDate, NationalityCountryID, CheckinInstructorID, InsurancePolicyNumber, InsuranceContactPhone, WelcomeEmailPending) VALUES (@FirstName,@LastName, @Gender, @BirthDate, @Address1,@Address2,@City,@StateID, @Country,@PostalCode,@Email, @Phone, @PassportNum, @LanguageID, @HowHear, @HowHearSpecific, @WhereStayID, @RoomOther, @RoomNo, @EmergencyName, @Relationship, @EmergencyNumber, @EmergencyEmail, @DiveLevelID, @DiveOrgID, @NumberOfDives, @EmergencyCountryID, @Facebook, @DietaryRestrictions, @LastDiveDate, @ArrivalDate, @Insurance, @InsuranceName, @NationalityCountryID, @CheckinInstructorID, @InsurancePolicyNumber, @InsuranceContactPhone, @WelcomeEmailPending)";
         }
         else
         {
             CustomerID = Convert.ToInt32(CustomerNumberHidden.Value);
-            sqlStr = "Update Customer Set FirstName=@FirstName, LastName=@LastName, Gender=@Gender, BirthDate=@BirthDate, Address1=@Address1,Address2=@Address2,City=@City, StateID=@StateID, CountryID=@CountryID, PostalCode=@PostalCode,Email=@Email, Phone=@Phone, PassportNum=@PassportNum, LanguageID=@LanguageID, HowHearTextID=@HowHearTextID, HowHearSpecific=@HowHearSpecific, WhereStayID =@WhereStayID, RoomOther=@RoomOther,RoomNo=@RoomNo, EmergencyName=@EmergencyName, Relationship=@Relationship, EmergencyNumber=@EmergencyNumber, EmergencyEmail=@EmergencyEmail, DiveLevelID=@DiveLevelID, DiveOrgID=@DiveOrgID, NumberOfDives=@NumberOfDives, Insurance=@Insurance, InsuranceName=@InsuranceName, EmergencyCountryID=@EmergencyCountryID, Facebook=@Facebook, DietaryRestrictions=@DietaryRestrictions, LastDiveDate=@LastDiveDate, ArrivalDate=@ArrivalDate WHERE CustomerID=" + CustomerID;
+            sqlStr = "Update Customer Set FirstName=@FirstName, LastName=@LastName, Gender=@Gender, BirthDate=@BirthDate, Address1=@Address1,Address2=@Address2,City=@City, StateID=@StateID, CountryID=@CountryID, PostalCode=@PostalCode,Email=@Email, Phone=@Phone, PassportNum=@PassportNum, LanguageID=@LanguageID, HowHearTextID=@HowHearTextID, HowHearSpecific=@HowHearSpecific, WhereStayID =@WhereStayID, RoomOther=@RoomOther,RoomNo=@RoomNo, EmergencyName=@EmergencyName, Relationship=@Relationship, EmergencyNumber=@EmergencyNumber, EmergencyEmail=@EmergencyEmail, DiveLevelID=@DiveLevelID, DiveOrgID=@DiveOrgID, NumberOfDives=@NumberOfDives, Insurance=@Insurance, InsuranceName=@InsuranceName, EmergencyCountryID=@EmergencyCountryID, Facebook=@Facebook, DietaryRestrictions=@DietaryRestrictions, LastDiveDate=@LastDiveDate, ArrivalDate=@ArrivalDate, NationalityCountryID=@NationalityCountryID, CheckinInstructorID=@CheckinInstructorID, InsurancePolicyNumber=@InsurancePolicyNumber, InsuranceContactPhone=@InsuranceContactPhone, WelcomeEmailPending=@WelcomeEmailPending WHERE CustomerID=" + CustomerID;
         }
         List<OleDbParameter> parameters = GenerateCustomerParams();
         OleDbTools.ExecuteSqlStatement(sqlStr, parameters);
@@ -406,7 +412,8 @@ public partial class Default : System.Web.UI.Page
     {
         String BDayString = "";
         BDayString = cmbDay.Text + "-" + cmbMonth.Text + "-" + cmbYear.Text;
-
+        String UseWelcomeEmail = OleDbTools.GetSingleSqlValue("SELECT TOP 1 UseWelcomeEmail from [GlobalSettings]");
+     
         List<OleDbParameter> parameters = new List<OleDbParameter>();
         parameters.Add(new OleDbParameter("FirstName", OleDbType.VarChar) { Value = FirstName.Text });
         parameters.Add(new OleDbParameter("LastName", OleDbType.VarChar) { Value = LastName.Text });
@@ -511,6 +518,33 @@ public partial class Default : System.Web.UI.Page
         parameters.Add(new OleDbParameter("DietaryRestrictions", OleDbType.VarChar) { Value = DietaryRestrictions.Text });
         parameters.Add(new OleDbParameter("LastDiveDate", OleDbType.VarChar) { Value = LastDiveDate.Text });
         parameters.Add(new OleDbParameter("ArrivalDate", OleDbType.DBDate) { Value = DateTime.Now.ToShortDateString() });
+        if (NationalityCountryID.SelectedValue != "")
+        {
+            parameters.Add(new OleDbParameter("NationalityCountryID", OleDbType.Numeric) { Value = Convert.ToInt32(NationalityCountryID.SelectedValue) });
+        }
+        else
+        {
+            parameters.Add(new OleDbParameter("NationalityCountryID", OleDbType.Numeric) { Value = DBNull.Value });
+        }
+        if (CheckinInstructorID.SelectedValue != "")
+        {
+            parameters.Add(new OleDbParameter("CheckinInstructorID", OleDbType.Numeric) { Value = Convert.ToInt32(CheckinInstructorID.SelectedValue) });
+        }
+        else
+        {
+            parameters.Add(new OleDbParameter("CheckinInstructorID", OleDbType.Numeric) { Value = DBNull.Value });
+        }
+        parameters.Add(new OleDbParameter("InsurancePolicyNumber", OleDbType.VarChar) { Value = InsurancePolicyNumber.Text });
+        parameters.Add(new OleDbParameter("InsuranceContactPhone", OleDbType.VarChar) { Value = InsuranceContactPhone.Text });
+        if (UseWelcomeEmail == "True")
+        {
+            parameters.Add(new OleDbParameter("WelcomeEmailPending", OleDbType.Boolean) { Value = true });
+        }
+        else
+        {
+            parameters.Add(new OleDbParameter("WelcomeEmailPending", OleDbType.Boolean) { Value = false });
+        }
+
         return parameters;
     }
 
@@ -668,6 +702,8 @@ public partial class Default : System.Web.UI.Page
             }
         }
         InsuranceName.Text = (string)dr["InsuranceName"];
+        InsurancePolicyNumber.Text = (string)dr["InsurancePolicyNumber"];
+        InsuranceContactPhone.Text = (string)dr["InsuranceContactPhone"];
         if (dr["DiveLevelID"] == DBNull.Value || dr["DiveLevelID"].ToString() == "0")
         {
             CertifiedDiver.ClearSelection();
@@ -687,11 +723,13 @@ public partial class Default : System.Web.UI.Page
         WhereStayID.SelectedValue = dr["WhereStayID"].ToString();
         RoomOther.Text = (string)dr["RoomOther"];
         RoomNo.Text = (string)dr["RoomNo"];
-        //Language Panel
+        //Nationailty Panel
+        NationalityCountryID.SelectedValue = dr["NationalityCountryID"].ToString();
         LanguageID.SelectedValue = dr["LanguageID"].ToString();
         //How Hear Panel
         HowHearTextID.SelectedValue = dr["HowHearTextID"].ToString();
         HowHearSpecific.Text = dr["HowHearSpecific"].ToString();
+        CheckinInstructorID.SelectedValue = dr["CheckinInstructorID"].ToString();
         //Image
         string imagefolder = "C:\\BubbleManager\\Customer Photos\\";
         string srcPath = imagefolder + dr["Image"].ToString();
